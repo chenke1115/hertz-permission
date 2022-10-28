@@ -1,0 +1,33 @@
+# iSmart config file
+Debug: true
+
+# Server config
+Server: 
+  Http:
+    Addr: ":8080"
+  Client:
+  Rpc:
+
+# Log config
+Log:
+  Dir: "./logs/"
+
+# Database config
+Database:
+  Driver: "mysql"  # mysql || postgresql || postgres
+  Host: "192.168.0.100"
+  Port: 3306
+  Username: "root"
+  Password: "asdf1234"
+  Dbname: "ismart"
+
+# Redis config
+Redis:
+  Network: "tcp"
+  Addr: ":6379"
+  Password:
+  Size: 10
+
+# Swagger config
+Swagger:
+  Host: "http://192.168.1.100:8080"
