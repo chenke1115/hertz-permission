@@ -1,0 +1,100 @@
+/*
+ * @Author: changge <changge1519@gmail.com>
+ * @Date: 2022-10-28 11:47:56
+ * @LastEditTime: 2022-10-28 16:56:00
+ * @Description: Do not edit
+ */
+package model
+
+import (
+	"errors"
+	"time"
+
+	iErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors"
+	gErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors/gorm"
+
+	"github.com/chenke1115/ismart-permission/internal/constant/status"
+	"gorm.io/gorm"
+)
+
+type Permission struct {
+	ID         int       `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
+	PID        int       `json:"pid" gorm:"column:pid; type:int(11); index; comment:父级ID"`
+	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:权限名称"`
+	Alias      string    `json:"alias" gorm:"type:varchar(64); not null; unique; comment:别名"`
+	Key        string    `json:"key" gorm:"type:varchar(64); comment:权限全局ID[类型为目录可空]"`
+	Components string    `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
+	Sort       int       `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
+	Icon       string    `json:"icon" gorm:"type:varchar(255); comment:图标"`
+	Visible    int       `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示;0:隐藏]"`
+	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常;0:停用]"`
+	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
+	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
+	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
+	CreatedAt  time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
+	UpdatedAt  time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+
+	// ignore
+	Child []Permission `json:"child" gorm:"-"`
+}
+
+/**
+ * @description: Table name
+ * @return {*}
+ */
+func (p Permission) TableName() string {
+	return "permission"
+}
+
+/**
+ * @description: Do create
+ * @param {*gorm.DB} tx
+ * @return {*}
+ */
+func (p Permission) Create(tx *gorm.DB) (err error) {
+	err = tx.Create(&p).Error
+	if err != nil {
+		if gErrors.IsUniqueConstraintError(err) {
+			err = iErrors.Wrap(err, status.PermissionParamUniqueErrCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}
+
+/**
+ * @description: Do edit
+ * @param {*gorm.DB} tx
+ * @return {*}
+ */
+func (p Permission) Edit(tx *gorm.DB) (err error) {
+	err = tx.Updates(&p).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = iErrors.Wrap(err, status.PermissionNotExistCode)
+		} else if gErrors.IsUniqueConstraintError(err) {
+			err = iErrors.Wrap(err, status.PermissionParamUniqueErrCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}
+
+/**
+ * @description: Get by ID
+ * @param {int} id
+ * @return {*}
+ */
+func GetPermissionByID(id int) (permission Permission, err error) {
+	err = GetDB().Model(&Permission{}).First(&permission, "id = ?", id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = iErrors.Wrap(err, status.PermissionNotExistCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}

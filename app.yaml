@@ -19,7 +19,7 @@ Database:
   Port: 3306
   Username: "root"
   Password: "asdf1234"
-  Dbname: "ismart"
+  Dbname: "common"
 
 # Redis config
 Redis:
