@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2022-10-28 09:43:01
+ * @LastEditTime: 2022-10-31 10:36:48
  * @Description: Do not edit
  */
 package permission
@@ -19,7 +19,7 @@ import (
  * @param {*app.RequestContext} c
  * @return {*}
  */
-func PermissionList(ctx context.Context, c *app.RequestContext) {
+func ListHandler(ctx context.Context, c *app.RequestContext) {
 	var (
 		err error
 	)

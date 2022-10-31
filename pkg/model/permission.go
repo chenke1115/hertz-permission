@@ -1,18 +1,20 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-10-28 16:56:00
+ * @LastEditTime: 2022-10-31 17:24:52
  * @Description: Do not edit
  */
 package model
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	iErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors"
 	gErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors/gorm"
 
+	"github.com/chenke1115/ismart-permission/internal/constant/global"
 	"github.com/chenke1115/ismart-permission/internal/constant/status"
 	"gorm.io/gorm"
 )
@@ -22,7 +24,7 @@ type Permission struct {
 	PID        int       `json:"pid" gorm:"column:pid; type:int(11); index; comment:父级ID"`
 	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:权限名称"`
 	Alias      string    `json:"alias" gorm:"type:varchar(64); not null; unique; comment:别名"`
-	Key        string    `json:"key" gorm:"type:varchar(64); comment:权限全局ID[类型为目录可空]"`
+	Key        string    `json:"key" gorm:"type:varchar(64); comment:权限全局标识[路由, 类型为目录可空]"`
 	Components string    `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
 	Sort       int       `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
 	Icon       string    `json:"icon" gorm:"type:varchar(255); comment:图标"`
@@ -97,4 +99,19 @@ func GetPermissionByID(id int) (permission Permission, err error) {
 		}
 	}
 	return
+}
+
+/**
+ * @description: Verify that the route is valid
+ * @param {string} key
+ * @return {*}
+ */
+func IsValidRoute(key string) bool {
+	for _, route := range global.RouteInfo {
+		if strings.HasPrefix(key, route.Path) && strings.HasSuffix(key, route.Path) {
+			return true
+		}
+	}
+
+	return false
 }

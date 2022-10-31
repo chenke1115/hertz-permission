@@ -1,0 +1,119 @@
+basePath: /
+definitions:
+  response.BaseResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  title: iSmart-Permission
+  version: 1.0.0
+paths:
+  /api/permission/add:
+    post:
+      consumes:
+      - application/json
+      description: This is a api to add permission
+      parameters:
+      - description: 父级ID
+        example: 1
+        in: body
+        maximum: 10
+        name: pid
+        required: true
+        schema:
+          type: integer
+      - description: 权限名称
+        example: '"permission.add"'
+        in: body
+        maxLength: 32
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 别名
+        example: '"添加权限"'
+        in: body
+        maxLength: 32
+        name: alias
+        required: true
+        schema:
+          type: string
+      - description: 权限全局ID[类型为目录可空]
+        in: body
+        maxLength: 32
+        name: key
+        schema:
+          type: string
+      - description: 前端页面路径[类型为按钮可空]
+        in: body
+        maxLength: 32
+        name: components
+        schema:
+          type: string
+      - default: 0
+        description: 排序[从小到大]
+        in: body
+        name: sort
+        schema:
+          type: integer
+      - description: 图标
+        in: body
+        maxLength: 255
+        name: icon
+        schema:
+          type: string
+      - description: 菜单状态[1:显示;0:隐藏]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: visible
+        schema:
+          type: integer
+      - description: 菜单状态[1:显示;0:隐藏]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: status
+        schema:
+          type: integer
+      - description: 备注
+        in: body
+        maxLength: 255
+        name: remark
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 添加权限
+      tags:
+      - PermissionAdd
+schemes:
+- http
+swagger: "2.0"
