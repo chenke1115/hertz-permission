@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:39:26
- * @LastEditTime: 2022-11-01 17:40:03
+ * @LastEditTime: 2022-11-01 18:02:40
  * @Description: Do not edit
  */
 package user
@@ -12,5 +12,5 @@ func RegisterUserRouter(g *route.RouterGroup) {
 	// Group
 	userGroup := g.Group("/user")
 
-	userGroup.POST("/:id/bind", BindHandler)
+	userGroup.POST("/:id/assign", AssignHandler)
 }

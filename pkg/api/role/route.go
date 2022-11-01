@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:34:57
- * @LastEditTime: 2022-11-01 17:33:06
+ * @LastEditTime: 2022-11-01 18:01:59
  * @Description: Do not edit
  */
 package role
@@ -23,5 +23,4 @@ func RegisterRoleRouter(g *route.RouterGroup) {
 	roleGroup.GET("/:id/info", InfoHandler)
 	roleGroup.PUT("/:id/edit", EditHandler)
 	roleGroup.DELETE("/:id/del", DelHandler)
-	roleGroup.POST("/:id/bind", BindHandler)
 }
