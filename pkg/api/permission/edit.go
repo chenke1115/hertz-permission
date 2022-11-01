@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:45:52
- * @LastEditTime: 2022-11-01 10:47:03
+ * @LastEditTime: 2022-11-01 17:08:33
  * @Description: Do not edit
  */
 package permission
@@ -22,6 +22,7 @@ type ReqEditData struct {
 	PID        int    `json:"pid,required" form:"pid,required"`     //lint:ignore SA5008 ignoreCheck
 	Name       string `json:"name,required" form:"name,required"`   //lint:ignore SA5008 ignoreCheck
 	Alias      string `json:"alias,required" form:"alias,required"` //lint:ignore SA5008 ignoreCheck
+	Type       string `json:"type,required" form:"type,required"`   //lint:ignore SA5008 ignoreCheck
 	Key        string `json:"key" form:"key"`
 	Components string `json:"components" form:"components"`
 	Sort       int    `json:"sort" form:"sort"`
@@ -41,6 +42,7 @@ type ReqEditData struct {
 // @Param       pid        body     int    true  "父级ID" example(1)
 // @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
 // @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
+// @Param       type       body     string true  "权限类型[D:目录;M:菜单;B:按钮]"   Enums("D", "M", "B")
 // @Param       key        body     string false "权限全局标识[即路由，类型为目录可空]" maxlength(32)
 // @Param       components body     string false "前端页面路径[类型为按钮可空]"     maxlength(32)
 // @Param       sort       body     int    false "排序[从小到大]"            default(0)

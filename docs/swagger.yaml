@@ -29,6 +29,8 @@ definitions:
         type: integer
       status:
         type: integer
+      type:
+        type: string
       update_at:
         type: string
       update_by:
@@ -36,6 +38,31 @@ definitions:
       update_time:
         type: integer
       visible:
+        type: integer
+    type: object
+  model.Role:
+    properties:
+      create_at:
+        type: string
+      creator_id:
+        type: integer
+      id:
+        type: integer
+      is_del:
+        type: string
+      key:
+        type: string
+      name:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+      update_at:
+        type: string
+      update_by:
+        type: string
+      update_time:
         type: integer
     type: object
   permission.RespInfo:
@@ -50,6 +77,28 @@ definitions:
       data: {}
       message:
         type: string
+    type: object
+  role.RespInfo:
+    properties:
+      role:
+        $ref: '#/definitions/model.Role'
+    type: object
+  role.RespList:
+    properties:
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      roles:
+        items:
+          $ref: '#/definitions/model.Role'
+        type: array
+      stime:
+        type: string
+      total:
+        type: integer
     type: object
 host: 127.0.0.1:8080
 info:
@@ -125,6 +174,16 @@ paths:
         in: body
         maxLength: 32
         name: alias
+        required: true
+        schema:
+          type: string
+      - description: 权限类型[D:目录;M:菜单;B:按钮]
+        enum:
+        - '"D"'
+        - '"M"'
+        - '"B"'
+        in: body
+        name: type
         required: true
         schema:
           type: string
@@ -264,6 +323,16 @@ paths:
         required: true
         schema:
           type: string
+      - description: 权限类型[D:目录;M:菜单;B:按钮]
+        enum:
+        - '"D"'
+        - '"M"'
+        - '"B"'
+        in: body
+        name: type
+        required: true
+        schema:
+          type: string
       - description: 权限全局标识[即路由，类型为目录可空]
         in: body
         maxLength: 32
@@ -334,6 +403,260 @@ paths:
       summary: 添加权限
       tags:
       - PermissionAdd
+  /api/permission/list:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of permission list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Permission'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 权限列表
+      tags:
+      - PermissionList
+  /api/role/{id}/del:
+    delete:
+      consumes:
+      - application/json
+      description: This is a api to add role
+      parameters:
+      - description: 角色ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 删除角色
+      tags:
+      - RoleDel
+  /api/role/{id}/edit:
+    put:
+      consumes:
+      - application/json
+      description: This is a api to edit role
+      parameters:
+      - description: 角色ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: 角色名
+        example: “系统管理员”
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 角色标识
+        example: “SYS_ADMIN”
+        in: body
+        name: Key
+        required: true
+        schema:
+          type: string
+      - description: 角色状态[1:正常;0:停用]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: status
+        schema:
+          type: integer
+      - description: 备注
+        in: body
+        maxLength: 255
+        name: remark
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 编辑角色
+      tags:
+      - RoleEdit
+  /api/role/{id}/info:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of role info
+      parameters:
+      - description: 角色ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/role.RespInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 角色详情
+      tags:
+      - RoleInfo
+  /api/role/add:
+    post:
+      consumes:
+      - application/json
+      description: This is a api to add role
+      parameters:
+      - description: 角色名
+        example: “系统管理员”
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 角色标识
+        example: “SYS_ADMIN”
+        in: body
+        name: Key
+        required: true
+        schema:
+          type: string
+      - description: 角色状态[1:正常;0:停用]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: status
+        schema:
+          type: integer
+      - description: 备注
+        in: body
+        maxLength: 255
+        name: remark
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 添加角色
+      tags:
+      - RoleAdd
+  /api/role/list:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of role list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/role.RespList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 角色列表
+      tags:
+      - RoleList
 schemes:
 - http
 swagger: "2.0"

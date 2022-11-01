@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-01 10:24:46
+ * @LastEditTime: 2022-11-01 17:13:07
  * @Description: Do not edit
  */
 package model
@@ -27,9 +27,10 @@ type Permission struct {
 	Key        string    `json:"key" gorm:"type:varchar(64); unique; comment:权限全局标识[即路由, 类型为目录可空]"`
 	Components string    `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
 	Sort       int       `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
+	Type       string    `json:"type" gorm:"type:char(1); comment:权限类型[D:目录 M:菜单 B:按钮]"`
 	Icon       string    `json:"icon" gorm:"type:varchar(255); comment:图标"`
-	Visible    int       `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示;0:隐藏]"`
-	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常;0:停用]"`
+	Visible    int       `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示 0:隐藏]"`
+	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常 0:停用]"`
 	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
 	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
 	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
