@@ -4,7 +4,7 @@ Debug: true
 # Server config
 Server: 
   Http:
-    Addr: ":8080"
+    Addr: "127.0.0.1:8080"
   Client:
   Rpc:
 
@@ -30,4 +30,4 @@ Redis:
 
 # Swagger config
 Swagger:
-  Host: ":8080"
+  Host: "127.0.0.1:8080"

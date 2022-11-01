@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-10-28 16:59:07
+ * @LastEditTime: 2022-11-01 10:07:34
  * @Description: Do not edit
  */
 package model
@@ -41,7 +41,7 @@ type PermissionRoleQuery struct {
  * @description: Table name
  * @return {*}
  */
-func (role Role) TableName() string {
+func (model Role) TableName() string {
 	return "role"
 }
 
@@ -49,7 +49,7 @@ func (role Role) TableName() string {
  * @description: Do Search
  * @return {*}
  */
-func (q PermissionRoleQuery) Search() (list *[]Role, total int64, err error) {
+func (query PermissionRoleQuery) Search() (list *[]Role, total int64, err error) {
 	// Init
 	list = &[]Role{}
 
@@ -57,16 +57,16 @@ func (q PermissionRoleQuery) Search() (list *[]Role, total int64, err error) {
 	tx := GetDB().Model(&Role{})
 
 	// Set search conditions
-	if q.Stime != "" {
-		tx = tx.Where("`created_at` >= ?", q.Stime)
+	if query.Stime != "" {
+		tx = tx.Where("`created_at` >= ?", query.Stime)
 	}
 
-	if q.Etime != "" {
-		tx = tx.Where("`created_at` < ?", q.Etime)
+	if query.Etime != "" {
+		tx = tx.Where("`created_at` < ?", query.Etime)
 	}
 
 	// Get data
-	total, err = crudAll(&q.PaginationQuery, tx, list)
+	total, err = crudAll(&query.PaginationQuery, tx, list)
 
 	return
 }
@@ -76,8 +76,8 @@ func (q PermissionRoleQuery) Search() (list *[]Role, total int64, err error) {
  * @param {*gorm.DB} tx
  * @return {*}
  */
-func (role Role) Create(tx *gorm.DB) (err error) {
-	err = tx.Create(&role).Error
+func (model Role) Create(tx *gorm.DB) (err error) {
+	err = tx.Create(&model).Error
 	if err != nil {
 		if gErrors.IsUniqueConstraintError(err) {
 			err = iErrors.Wrap(err, status.RoleParamUniqueErrCode)
@@ -93,8 +93,8 @@ func (role Role) Create(tx *gorm.DB) (err error) {
  * @param {*gorm.DB} tx
  * @return {*}
  */
-func (role Role) Edit(tx *gorm.DB) (err error) {
-	err = tx.Updates(&role).Error
+func (model Role) Edit(tx *gorm.DB) (err error) {
+	err = tx.Updates(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.RoleNotExistCode)
@@ -115,9 +115,9 @@ func (role Role) Edit(tx *gorm.DB) (err error) {
  * @param {*gorm.DB} tx
  * @return {*}
  */
-func (role Role) Del(tx *gorm.DB) (err error) {
+func (model Role) Del(tx *gorm.DB) (err error) {
 	// Do del
-	if err = tx.Unscoped().Delete(role).Error; err != nil {
+	if err = tx.Unscoped().Delete(model).Error; err != nil {
 		err = iErrors.WrapCode(err, iErrors.BadRequest)
 	}
 

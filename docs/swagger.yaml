@@ -1,5 +1,48 @@
 basePath: /
 definitions:
+  model.Permission:
+    properties:
+      alias:
+        type: string
+      child:
+        description: ignore
+        items:
+          $ref: '#/definitions/model.Permission'
+        type: array
+      components:
+        type: string
+      create_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      remark:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: integer
+      update_at:
+        type: string
+      update_by:
+        type: string
+      update_time:
+        type: integer
+      visible:
+        type: integer
+    type: object
+  permission.RespInfo:
+    properties:
+      permission:
+        $ref: '#/definitions/model.Permission'
+    type: object
   response.BaseResponse:
     properties:
       code:
@@ -14,6 +57,183 @@ info:
   title: iSmart-Permission
   version: 1.0.0
 paths:
+  /api/permission/{id}/del:
+    delete:
+      consumes:
+      - application/json
+      description: This is a api to del permission
+      parameters:
+      - description: 权限ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 删除权限
+      tags:
+      - PermissionDel
+  /api/permission/{id}/edit:
+    put:
+      consumes:
+      - application/json
+      description: This is a api to edit permission
+      parameters:
+      - description: 权限ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: 父级ID
+        example: 1
+        in: body
+        name: pid
+        required: true
+        schema:
+          type: integer
+      - description: 权限名称
+        example: '"permission.add"'
+        in: body
+        maxLength: 32
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 别名
+        example: '"添加权限"'
+        in: body
+        maxLength: 32
+        name: alias
+        required: true
+        schema:
+          type: string
+      - description: 权限全局标识[即路由，类型为目录可空]
+        in: body
+        maxLength: 32
+        name: key
+        schema:
+          type: string
+      - description: 前端页面路径[类型为按钮可空]
+        in: body
+        maxLength: 32
+        name: components
+        schema:
+          type: string
+      - default: 0
+        description: 排序[从小到大]
+        in: body
+        name: sort
+        schema:
+          type: integer
+      - description: 图标
+        in: body
+        maxLength: 255
+        name: icon
+        schema:
+          type: string
+      - description: 菜单状态[1:显示;0:隐藏]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: visible
+        schema:
+          type: integer
+      - description: 菜单状态[1:显示;0:隐藏]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: status
+        schema:
+          type: integer
+      - description: 备注
+        in: body
+        maxLength: 255
+        name: remark
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 修改权限
+      tags:
+      - PermissionEdit
+  /api/permission/{id}/info:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of permission info
+      parameters:
+      - description: 权限ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/permission.RespInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 权限详情
+      tags:
+      - PermissionInfo
   /api/permission/add:
     post:
       consumes:
@@ -44,7 +264,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: 权限全局ID[类型为目录可空]
+      - description: 权限全局标识[即路由，类型为目录可空]
         in: body
         maxLength: 32
         name: key

@@ -65,7 +65,7 @@ const docTemplate = `{
                     },
                     {
                         "maxLength": 32,
-                        "description": "权限全局ID[类型为目录可空]",
+                        "description": "权限全局标识[即路由，类型为目录可空]",
                         "name": "key",
                         "in": "body",
                         "schema": {
@@ -172,9 +172,364 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/permission/{id}/del": {
+            "delete": {
+                "description": "This is a api to del permission",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PermissionDel"
+                ],
+                "summary": "删除权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "权限ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/permission/{id}/edit": {
+            "put": {
+                "description": "This is a api to edit permission",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PermissionEdit"
+                ],
+                "summary": "修改权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "权限ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "example": 1,
+                        "description": "父级ID",
+                        "name": "pid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "maxLength": 32,
+                        "example": "\"permission.add\"",
+                        "description": "权限名称",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "maxLength": 32,
+                        "example": "\"添加权限\"",
+                        "description": "别名",
+                        "name": "alias",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "maxLength": 32,
+                        "description": "权限全局标识[即路由，类型为目录可空]",
+                        "name": "key",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "maxLength": 32,
+                        "description": "前端页面路径[类型为按钮可空]",
+                        "name": "components",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "default": 0,
+                        "description": "排序[从小到大]",
+                        "name": "sort",
+                        "in": "body",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "maxLength": 255,
+                        "description": "图标",
+                        "name": "icon",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "enum": [
+                            1,
+                            0
+                        ],
+                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "name": "visible",
+                        "in": "body",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "enum": [
+                            1,
+                            0
+                        ],
+                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "name": "status",
+                        "in": "body",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "maxLength": 255,
+                        "description": "备注",
+                        "name": "remark",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/permission/{id}/info": {
+            "get": {
+                "description": "This is a api of permission info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PermissionInfo"
+                ],
+                "summary": "权限详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "权限ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/permission.RespInfo"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.Permission": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "child": {
+                    "description": "ignore",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Permission"
+                    }
+                },
+                "components": {
+                    "type": "string"
+                },
+                "create_at": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "type": "integer"
+                }
+            }
+        },
+        "permission.RespInfo": {
+            "type": "object",
+            "properties": {
+                "permission": {
+                    "$ref": "#/definitions/model.Permission"
+                }
+            }
+        },
         "response.BaseResponse": {
             "type": "object",
             "properties": {

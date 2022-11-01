@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:29:31
- * @LastEditTime: 2022-10-31 10:36:20
+ * @LastEditTime: 2022-11-01 10:33:02
  * @Description: Do not edit
  */
 package permission
@@ -18,6 +18,8 @@ func RegisterPermissionRouter(g *route.RouterGroup) {
 	permissionGroup := g.Group("/permission")
 	permissionGroup.GET("/list", ListHandler)
 	permissionGroup.POST("/add", AddHandler)
-	permissionGroup.POST("/:id/edit", EditHandler)
-	permissionGroup.POST("/:id/del", DelHandler)
+
+	permissionGroup.GET("/:id/info", InfoHandler)
+	permissionGroup.PUT("/:id/edit", EditHandler)
+	permissionGroup.DELETE("/:id/del", DelHandler)
 }

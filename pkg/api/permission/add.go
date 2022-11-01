@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-10-31 17:45:42
+ * @LastEditTime: 2022-11-01 10:24:52
  * @Description: Do not edit
  */
 package permission
@@ -17,7 +17,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
-type ReqAddPermission struct {
+type ReqAddData struct {
 	PID        int    `json:"pid,required" form:"pid,required"`     //lint:ignore SA5008 ignoreCheck
 	Name       string `json:"name,required" form:"name,required"`   //lint:ignore SA5008 ignoreCheck
 	Alias      string `json:"alias,required" form:"alias,required"` //lint:ignore SA5008 ignoreCheck
@@ -39,20 +39,20 @@ type ReqAddPermission struct {
 // @Param       pid        body     int    true  "父级ID" maximum(10) example(1)
 // @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
 // @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
-// @Param       key        body     string false "权限全局标识[类型为目录可空]" maxlength(32)
-// @Param       components body     string false "前端页面路径[类型为按钮可空]" maxlength(32)
-// @Param       sort       body     int    false "排序[从小到大]"        default(0)
-// @Param       icon       body     string false "图标"              maxlength(255)
-// @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]" Enums(1, 0)
-// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]" Enums(1, 0)
-// @Param       remark     body     string false "备注"              maxlength(255)
+// @Param       key        body     string false "权限全局标识[即路由，类型为目录可空]" maxlength(32)
+// @Param       components body     string false "前端页面路径[类型为按钮可空]"     maxlength(32)
+// @Param       sort       body     int    false "排序[从小到大]"            default(0)
+// @Param       icon       body     string false "图标"                  maxlength(255)
+// @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
+// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
+// @Param       remark     body     string false "备注"                  maxlength(255)
 // @Success     200        {object} response.BaseResponse{data=interface{}}
 // @Failure     400        {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/add [post]
 func AddHandler(ctx context.Context, c *app.RequestContext) {
 	var (
 		err error
-		req ReqAddPermission
+		req ReqAddData
 	)
 
 	// Response

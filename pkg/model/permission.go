@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-10-31 17:24:52
+ * @LastEditTime: 2022-11-01 10:24:46
  * @Description: Do not edit
  */
 package model
@@ -24,7 +24,7 @@ type Permission struct {
 	PID        int       `json:"pid" gorm:"column:pid; type:int(11); index; comment:父级ID"`
 	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:权限名称"`
 	Alias      string    `json:"alias" gorm:"type:varchar(64); not null; unique; comment:别名"`
-	Key        string    `json:"key" gorm:"type:varchar(64); comment:权限全局标识[路由, 类型为目录可空]"`
+	Key        string    `json:"key" gorm:"type:varchar(64); unique; comment:权限全局标识[即路由, 类型为目录可空]"`
 	Components string    `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
 	Sort       int       `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
 	Icon       string    `json:"icon" gorm:"type:varchar(255); comment:图标"`
@@ -44,7 +44,7 @@ type Permission struct {
  * @description: Table name
  * @return {*}
  */
-func (p Permission) TableName() string {
+func (model Permission) TableName() string {
 	return "permission"
 }
 
@@ -53,8 +53,8 @@ func (p Permission) TableName() string {
  * @param {*gorm.DB} tx
  * @return {*}
  */
-func (p Permission) Create(tx *gorm.DB) (err error) {
-	err = tx.Create(&p).Error
+func (model Permission) Create(tx *gorm.DB) (err error) {
+	err = tx.Create(&model).Error
 	if err != nil {
 		if gErrors.IsUniqueConstraintError(err) {
 			err = iErrors.Wrap(err, status.PermissionParamUniqueErrCode)
@@ -70,8 +70,8 @@ func (p Permission) Create(tx *gorm.DB) (err error) {
  * @param {*gorm.DB} tx
  * @return {*}
  */
-func (p Permission) Edit(tx *gorm.DB) (err error) {
-	err = tx.Updates(&p).Error
+func (model Permission) Edit(tx *gorm.DB) (err error) {
+	err = tx.Updates(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.PermissionNotExistCode)
@@ -81,6 +81,23 @@ func (p Permission) Edit(tx *gorm.DB) (err error) {
 			err = iErrors.WrapCode(err, iErrors.BadRequest)
 		}
 	}
+	return
+}
+
+/**
+ * @description: Do del
+ * @param {*gorm.DB} tx
+ * @return {*}
+ */
+func (model Permission) Del(tx *gorm.DB) (err error) {
+	// Is in use
+	// TODO
+
+	// Do del
+	if err = tx.Unscoped().Delete(model).Error; err != nil {
+		err = iErrors.WrapCode(err, iErrors.BadRequest)
+	}
+
 	return
 }
 
