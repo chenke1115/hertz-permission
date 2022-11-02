@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-01 17:13:07
+ * @LastEditTime: 2022-11-02 14:31:49
  * @Description: Do not edit
  */
 package model
@@ -50,11 +50,28 @@ func (model Permission) TableName() string {
 }
 
 /**
+ * @description: Before operating
+ * @return {*}
+ */
+func (model Permission) Before() error {
+	// Check key
+	if !IsValidRoute(model.Key) {
+		return iErrors.New(status.PermissionKeyErrorCode)
+	}
+
+	return nil
+}
+
+/**
  * @description: Do create
  * @param {*gorm.DB} tx
  * @return {*}
  */
 func (model Permission) Create(tx *gorm.DB) (err error) {
+	if err = model.Before(); err != nil {
+		return
+	}
+
 	err = tx.Create(&model).Error
 	if err != nil {
 		if gErrors.IsUniqueConstraintError(err) {

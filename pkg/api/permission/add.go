@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-01 17:02:42
+ * @LastEditTime: 2022-11-02 11:19:16
  * @Description: Do not edit
  */
 package permission
@@ -18,16 +18,16 @@ import (
 )
 
 type ReqAddData struct {
-	PID        int    `json:"pid,required" form:"pid,required"`     //lint:ignore SA5008 ignoreCheck
-	Name       string `json:"name,required" form:"name,required"`   //lint:ignore SA5008 ignoreCheck
-	Alias      string `json:"alias,required" form:"alias,required"` //lint:ignore SA5008 ignoreCheck
-	Type       string `json:"type,required" form:"type,required"`   //lint:ignore SA5008 ignoreCheck
-	Key        string `json:"key" form:"key"`
-	Components string `json:"components" form:"components"`
-	Sort       int    `json:"sort" form:"sort"`
+	Name       string `json:"name,required" form:"name,required"`             //lint:ignore SA5008 ignoreCheck
+	Alias      string `json:"alias,required" form:"alias,required"`           //lint:ignore SA5008 ignoreCheck
+	Type       string `json:"type,required" form:"type,required"`             //lint:ignore SA5008 ignoreCheck
+	Key        string `json:"key,required" form:"key,required"`               //lint:ignore SA5008 ignoreCheck
+	Components string `json:"components,required" form:"components,required"` //lint:ignore SA5008 ignoreCheck
+	PID        int    `json:"pid" form:"pid" default:"0"`
+	Sort       int    `json:"sort" form:"sort" default:"0"`
 	Icon       string `json:"icon" form:"icon"`
-	Visible    int    `json:"visible" form:"visible"`
-	Status     int    `json:"status" form:"status"`
+	Visible    int    `json:"visible" form:"visible" default:"1"`
+	Status     int    `json:"status" form:"status" default:"1"`
 	Remark     string `json:"remark" form:"remark"`
 }
 
@@ -37,11 +37,11 @@ type ReqAddData struct {
 // @Tags        PermissionAdd
 // @Accept      json
 // @Produce     json
-// @Param       pid        body     int    true  "父级ID" maximum(10) example(1)
+// @Param       pid        body     int    true  "父级ID" maximum(10) default(0)
 // @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
 // @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
 // @Param       type       body     string true  "权限类型[D:目录;M:菜单;B:按钮]"   Enums("D", "M", "B")
-// @Param       key        body     string false "权限全局标识[即路由，类型为目录可空]" maxlength(32)
+// @Param       key        body     string false "权限全局标识[即后端路由，类型为目录可空]" maxlength(32)
 // @Param       components body     string false "前端页面路径[类型为按钮可空]"     maxlength(32)
 // @Param       sort       body     int    false "排序[从小到大]"            default(0)
 // @Param       icon       body     string false "图标"                  maxlength(255)
@@ -69,12 +69,6 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	// Check route
-	if !model.IsValidRoute(req.Key) {
-		err = errors.New(status.PermissionKeyErrorCode)
-		return
-	}
-
 	// Binding to permission model
 	permission := &model.Permission{}
 	err = c.Bind(&permission)
@@ -83,7 +77,5 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	if err = permission.Create(model.GetDB()); err != nil {
-		return
-	}
+	err = permission.Create(model.GetDB())
 }

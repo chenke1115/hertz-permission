@@ -17,5 +17,5 @@ git config --global url."git@github.com:chenke1115/".insteadof "https://github.c
 
 ### 4. go get 
 ```shell
-gp get -u -v github.com/chenke1115/ismart-permission
+go get -u -v github.com/chenke1115/hertz-permission
 ```
