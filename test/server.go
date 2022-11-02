@@ -10,10 +10,10 @@ import (
 	"context"
 	"time"
 
-	_ "github.com/chenke1115/ismart-permission/docs"
-	"github.com/chenke1115/ismart-permission/internal/constant/global"
-	"github.com/chenke1115/ismart-permission/pkg/route"
-	"github.com/chenke1115/ismart-permission/test/configs"
+	_ "github.com/chenke1115/hertz-permission/docs"
+	"github.com/chenke1115/hertz-permission/internal/constant/global"
+	"github.com/chenke1115/hertz-permission/pkg/route"
+	"github.com/chenke1115/hertz-permission/test/configs"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"

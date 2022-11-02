@@ -103,7 +103,7 @@ definitions:
 host: 127.0.0.1:8080
 info:
   contact: {}
-  title: iSmart-Permission
+  title: hertz-permission
   version: 1.0.0
 paths:
   /api/permission/{id}/del:

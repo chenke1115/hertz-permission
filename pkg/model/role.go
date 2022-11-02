@@ -10,11 +10,11 @@ import (
 	"errors"
 	"time"
 
-	iErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors"
-	gErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors/gorm"
+	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
+	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
 
-	"github.com/chenke1115/ismart-permission/internal/constant/status"
-	"github.com/chenke1115/ismart-permission/internal/pkg/query"
+	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/query"
 	"gorm.io/gorm"
 )
 

@@ -10,13 +10,13 @@ import (
 	"flag"
 	"path"
 
-	"github.com/chenke1115/ismart-permission/test"
-	"github.com/chenke1115/ismart-permission/test/configs"
+	"github.com/chenke1115/hertz-permission/test"
+	"github.com/chenke1115/hertz-permission/test/configs"
 )
 
 var configFile = flag.String("c", path.Base("app.yaml"), "config file")
 
-// @title    iSmart-Permission
+// @title    hertz-permission
 // @version  1.0.0
 // @BasePath /
 // @host     127.0.0.1:8080

@@ -7,8 +7,8 @@
 package route
 
 import (
-	"github.com/chenke1115/ismart-permission/pkg/api/permission"
-	"github.com/chenke1115/ismart-permission/pkg/api/role"
+	"github.com/chenke1115/hertz-permission/pkg/api/permission"
+	"github.com/chenke1115/hertz-permission/pkg/api/role"
 
 	"github.com/cloudwego/hertz/pkg/route"
 )

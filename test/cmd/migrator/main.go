@@ -10,8 +10,8 @@ import (
 	"flag"
 	"path"
 
-	"github.com/chenke1115/ismart-permission/pkg/model"
-	"github.com/chenke1115/ismart-permission/test/configs"
+	"github.com/chenke1115/hertz-permission/pkg/model"
+	"github.com/chenke1115/hertz-permission/test/configs"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"gorm.io/gorm"
 )

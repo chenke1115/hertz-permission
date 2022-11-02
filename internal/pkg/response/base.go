@@ -9,8 +9,8 @@ package response
 import (
 	"runtime"
 
-	"github.com/chenke1115/ismart-permission/internal/pkg/conver"
-	"github.com/chenke1115/ismart-permission/internal/pkg/errors"
+	"github.com/chenke1115/hertz-permission/internal/pkg/conver"
+	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

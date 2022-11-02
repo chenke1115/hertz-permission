@@ -1,4 +1,4 @@
-# ismart-permission
+# hertz-permission
 module of role-admin
 
 ## use

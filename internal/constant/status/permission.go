@@ -6,7 +6,7 @@
  */
 package status
 
-import "github.com/chenke1115/ismart-permission/internal/pkg/errors"
+import "github.com/chenke1115/hertz-permission/internal/pkg/errors"
 
 // Permission
 const (

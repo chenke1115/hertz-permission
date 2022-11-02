@@ -9,7 +9,7 @@ package permission
 import (
 	"context"
 
-	"github.com/chenke1115/ismart-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 
 	"github.com/cloudwego/hertz/pkg/app"
 )

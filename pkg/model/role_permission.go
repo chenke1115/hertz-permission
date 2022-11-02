@@ -7,9 +7,9 @@
 package model
 
 import (
-	"github.com/chenke1115/ismart-permission/internal/constant/status"
-	iErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors"
-	gErrors "github.com/chenke1115/ismart-permission/internal/pkg/errors/gorm"
+	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
+	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
 
 	"gorm.io/gorm"
 )

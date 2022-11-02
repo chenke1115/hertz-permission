@@ -10,10 +10,10 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/chenke1115/ismart-permission/internal/constant/status"
-	"github.com/chenke1115/ismart-permission/internal/pkg/errors"
-	"github.com/chenke1115/ismart-permission/internal/pkg/response"
-	"github.com/chenke1115/ismart-permission/pkg/model"
+	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
+	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-permission/pkg/model"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 

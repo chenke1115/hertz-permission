@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chenke1115/ismart-permission/internal/pkg/query"
-	"github.com/chenke1115/ismart-permission/test/configs"
+	"github.com/chenke1115/hertz-permission/internal/pkg/query"
+	"github.com/chenke1115/hertz-permission/test/configs"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

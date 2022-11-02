@@ -1089,7 +1089,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "127.0.0.1:8080",
 	BasePath:         "/",
 	Schemes:          []string{"http"},
-	Title:            "iSmart-Permission",
+	Title:            "hertz-permission",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
