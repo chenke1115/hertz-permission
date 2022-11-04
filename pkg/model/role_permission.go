@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:55:40
- * @LastEditTime: 2022-11-01 15:34:07
+ * @LastEditTime: 2022-11-03 17:10:26
  * @Description: Do not edit
  */
 package model
@@ -57,4 +57,16 @@ func (model RolePermission) Del(tx *gorm.DB) (err error) {
 	}
 
 	return
+}
+
+/**
+ * @description: check permission_id is exist
+ * @param {int} permission_id
+ * @return {*}
+ */
+func IsExistPermissionID(permission_id int) bool {
+	res := RolePermission{}
+	err := GetDB().Model(&RolePermission{}).First(&res, "permission_id = ?", permission_id).Error
+
+	return err == nil
 }

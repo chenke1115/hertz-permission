@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-11 15:14:59
- * @LastEditTime: 2022-10-12 14:42:14
+ * @LastEditTime: 2022-11-03 14:29:33
  * @Description: Do not edit
  */
 package match
@@ -24,11 +24,19 @@ const (
 	 * The last letter cannot be _, and _ cannot be consecutive
 	 */
 	usernamePattern = `^[a-zA-Z][a-z0-9A-Z]*(_[a-z0-9A-Z]+)*$`
+
+	/*
+	 * Valid characters are 0-9, a-z, a-z, .
+	 * The first letter cannot be ., 0-9
+	 * The last letter cannot be ., and . cannot be consecutive
+	 */
+	keyPattern = `^[a-zA-Z][a-z0-9A-Z]*(.[a-z0-9A-Z]+)*$`
 )
 
 var (
 	nicknameRegexp = regexp.MustCompile(nicknamePattern)
 	usernameRegexp = regexp.MustCompile(usernamePattern)
+	keyRegexp      = regexp.MustCompile(keyPattern)
 )
 
 /**
@@ -96,4 +104,17 @@ func IsChineseChar(str string) bool {
 	}
 
 	return false
+}
+
+/**
+ * @description: Check whether the key is valid
+ * @param {string} str
+ * @return {*}
+ */
+func IsKeyString(str string) bool {
+	if len(str) == 0 {
+		return false
+	}
+
+	return keyRegexp.MatchString(str)
 }

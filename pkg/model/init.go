@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2022-10-28 17:04:06
+ * @LastEditTime: 2022-11-04 17:55:32
  * @Description: Do not edit
  */
 package model
@@ -79,7 +79,7 @@ func loadDB() {
 	// connet
 	sqldb, err := gorm.Open(dialect, &gorm.Config{
 		// 初始化时禁用外键约束
-		DisableForeignKeyConstraintWhenMigrating: false,
+		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
 		panic(fmt.Errorf("数据库连接失败 %v", err.Error()))

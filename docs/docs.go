@@ -32,7 +32,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "maximum": 10,
-                        "example": 1,
+                        "default": 0,
                         "description": "父级ID",
                         "name": "pid",
                         "in": "body",
@@ -79,7 +79,7 @@ const docTemplate = `{
                     },
                     {
                         "maxLength": 32,
-                        "description": "权限全局标识[即路由，类型为目录可空]",
+                        "description": "权限全局标识[即后端路由，类型为目录可空]",
                         "name": "key",
                         "in": "body",
                         "schema": {
@@ -212,9 +212,62 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
+                                            "$ref": "#/definitions/permission.RespList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/permission/option": {
+            "get": {
+                "description": "This is a api of permission option",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PermissionOption"
+                ],
+                "summary": "权限下拉选项",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.Permission"
+                                                "$ref": "#/definitions/model.PermissionOption"
                                             }
                                         }
                                     }
@@ -696,6 +749,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/role/option": {
+            "get": {
+                "description": "This is a api of role option",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "RoleOption"
+                ],
+                "summary": "角色下拉选项",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/role/{id}/del": {
             "delete": {
                 "description": "This is a api to add role",
@@ -925,21 +1034,90 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/user/{id}/assign": {
+            "post": {
+                "description": "This is a api to assign role for user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserRoleAssign"
+                ],
+                "summary": "角色分配",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "model.Permission": {
+        "model.PermissionOption": {
             "type": "object",
             "properties": {
                 "alias": {
                     "type": "string"
                 },
                 "child": {
-                    "description": "ignore",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Permission"
+                        "$ref": "#/definitions/model.PermissionOption"
                     }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "show": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PermissionShow": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
                 },
                 "components": {
                     "type": "string"
@@ -981,7 +1159,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "update_time": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "visible": {
                     "type": "integer"
@@ -1029,8 +1207,79 @@ const docTemplate = `{
         "permission.RespInfo": {
             "type": "object",
             "properties": {
-                "permission": {
-                    "$ref": "#/definitions/model.Permission"
+                "alias": {
+                    "type": "string"
+                },
+                "components": {
+                    "type": "string"
+                },
+                "create_at": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "string"
+                },
+                "visible": {
+                    "type": "integer"
+                }
+            }
+        },
+        "permission.RespList": {
+            "type": "object",
+            "properties": {
+                "etime": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.PermissionShow"
+                    }
+                },
+                "stime": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },

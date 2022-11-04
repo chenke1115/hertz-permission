@@ -1,14 +1,24 @@
 basePath: /
 definitions:
-  model.Permission:
+  model.PermissionOption:
     properties:
       alias:
         type: string
       child:
-        description: ignore
         items:
-          $ref: '#/definitions/model.Permission'
+          $ref: '#/definitions/model.PermissionOption'
         type: array
+      id:
+        type: integer
+      name:
+        type: string
+      show:
+        type: string
+    type: object
+  model.PermissionShow:
+    properties:
+      alias:
+        type: string
       components:
         type: string
       create_at:
@@ -36,7 +46,7 @@ definitions:
       update_by:
         type: string
       update_time:
-        type: integer
+        type: string
       visible:
         type: integer
     type: object
@@ -67,8 +77,55 @@ definitions:
     type: object
   permission.RespInfo:
     properties:
-      permission:
-        $ref: '#/definitions/model.Permission'
+      alias:
+        type: string
+      components:
+        type: string
+      create_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      remark:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: integer
+      type:
+        type: string
+      update_at:
+        type: string
+      update_by:
+        type: string
+      update_time:
+        type: string
+      visible:
+        type: integer
+    type: object
+  permission.RespList:
+    properties:
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      permissions:
+        items:
+          $ref: '#/definitions/model.PermissionShow'
+        type: array
+      stime:
+        type: string
+      total:
+        type: integer
     type: object
   response.BaseResponse:
     properties:
@@ -299,8 +356,8 @@ paths:
       - application/json
       description: This is a api to add permission
       parameters:
-      - description: 父级ID
-        example: 1
+      - default: 0
+        description: 父级ID
         in: body
         maximum: 10
         name: pid
@@ -333,7 +390,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: 权限全局标识[即路由，类型为目录可空]
+      - description: 权限全局标识[即后端路由，类型为目录可空]
         in: body
         maxLength: 32
         name: key
@@ -418,9 +475,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  items:
-                    $ref: '#/definitions/model.Permission'
-                  type: array
+                  $ref: '#/definitions/permission.RespList'
               type: object
         "400":
           description: Bad Request
@@ -434,6 +489,37 @@ paths:
       summary: 权限列表
       tags:
       - PermissionList
+  /api/permission/option:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of permission option
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.PermissionOption'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 权限下拉选项
+      tags:
+      - PermissionOption
   /api/role/{id}/del:
     delete:
       consumes:
@@ -657,6 +743,66 @@ paths:
       summary: 角色列表
       tags:
       - RoleList
+  /api/role/option:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of role option
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 角色下拉选项
+      tags:
+      - RoleOption
+  /api/user/{id}/assign:
+    post:
+      consumes:
+      - application/json
+      description: This is a api to assign role for user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 角色分配
+      tags:
+      - UserRoleAssign
 schemes:
 - http
 swagger: "2.0"

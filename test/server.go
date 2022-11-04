@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2022-10-31 17:32:53
+ * @LastEditTime: 2022-11-03 14:10:00
  * @Description: Do not edit
  */
 package test
@@ -12,6 +12,7 @@ import (
 
 	_ "github.com/chenke1115/hertz-permission/docs"
 	"github.com/chenke1115/hertz-permission/internal/constant/global"
+	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/route"
 	"github.com/chenke1115/hertz-permission/test/configs"
 
@@ -26,7 +27,9 @@ func RegisterRoute(h *server.Hertz) {
 	h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler))
 
 	// use middleware
-	h.Use()
+	h.Use(
+		middleware.Recovery(), // Recovery
+	)
 
 	// Group of api
 	apiGroup := h.Group("api")

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-02 11:19:16
+ * @LastEditTime: 2022-11-03 15:56:20
  * @Description: Do not edit
  */
 package permission
@@ -10,7 +10,9 @@ import (
 	"context"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
+	_ "github.com/chenke1115/hertz-permission/internal/pkg/errors/validate"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
@@ -18,17 +20,17 @@ import (
 )
 
 type ReqAddData struct {
-	Name       string `json:"name,required" form:"name,required"`             //lint:ignore SA5008 ignoreCheck
-	Alias      string `json:"alias,required" form:"alias,required"`           //lint:ignore SA5008 ignoreCheck
-	Type       string `json:"type,required" form:"type,required"`             //lint:ignore SA5008 ignoreCheck
-	Key        string `json:"key,required" form:"key,required"`               //lint:ignore SA5008 ignoreCheck
-	Components string `json:"components,required" form:"components,required"` //lint:ignore SA5008 ignoreCheck
+	Name       string `json:"name,required" form:"name,required" vd:"len($)<64"`             //lint:ignore SA5008 ignoreCheck
+	Alias      string `json:"alias,required" form:"alias,required" vd:"len($)<64"`           //lint:ignore SA5008 ignoreCheck
+	Type       string `json:"type,required" form:"type,required"`                            //lint:ignore SA5008 ignoreCheck
+	Key        string `json:"key,required" form:"key,required"`                              //lint:ignore SA5008 ignoreCheck
+	Components string `json:"components,required" form:"components,required" vd:"len($)<64"` //lint:ignore SA5008 ignoreCheck
 	PID        int    `json:"pid" form:"pid" default:"0"`
 	Sort       int    `json:"sort" form:"sort" default:"0"`
 	Icon       string `json:"icon" form:"icon"`
 	Visible    int    `json:"visible" form:"visible" default:"1"`
 	Status     int    `json:"status" form:"status" default:"1"`
-	Remark     string `json:"remark" form:"remark"`
+	Remark     string `json:"remark" form:"remark" vd:"len($)<256"`
 }
 
 // AddHandler goDoc
@@ -76,6 +78,10 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 		err = errors.Wrapf(err, status.PermissionParamBindingErrorCode)
 		return
 	}
+
+	// set UpdateBy and UpdateTime
+	permission.UpdateBy = "admin" // TODO
+	permission.UpdateTime = date.DateUnix()
 
 	err = permission.Create(model.GetDB())
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 10:33:30
- * @LastEditTime: 2022-11-01 10:48:22
+ * @LastEditTime: 2022-11-03 16:08:43
  * @Description: Do not edit
  */
 package permission
@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
@@ -19,7 +20,8 @@ import (
 )
 
 type RespInfo struct {
-	Permission model.Permission `json:"permission"`
+	model.Permission
+	UpdateTime string `json:"update_time"`
 }
 
 // InfoHandler goDoc
@@ -54,4 +56,5 @@ func InfoHandler(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp.Permission, err = model.GetPermissionByID(ID)
+	resp.UpdateTime = date.DateFormat(resp.Permission.UpdateTime)
 }
