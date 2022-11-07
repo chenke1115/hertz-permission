@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-11-01 17:14:08
+ * @LastEditTime: 2022-11-07 18:04:54
  * @Description: Do not edit
  */
 package model
@@ -10,11 +10,14 @@ import (
 	"errors"
 	"time"
 
+	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/array"
+	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
-
-	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/match"
 	"github.com/chenke1115/hertz-permission/internal/pkg/query"
+
 	"gorm.io/gorm"
 )
 
@@ -22,14 +25,25 @@ type Role struct {
 	ID         int       `json:"id" gorm:"type:int(11); not null; primaryKey; autoIncrement"`
 	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:角色名称"`
 	CreatorID  int       `json:"creator_id" gorm:"type:bigint(20); not null; unsigned; comment:创建者ID"`
-	Key        string    `json:"key" gorm:"type:varchar(64); comment:角色标识[跟permission.key区分开]"`
+	Key        string    `json:"key" gorm:"type:varchar(64); unique; comment:角色标识[跟permission.key区分开]"`
 	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:角色状态[1:正常 0:停用]"`
 	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
 	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
 	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	IsDel      string    `json:"is_del" gorm:"type:tinyint(1); default:1; comment:[1:正常 0:删除]"`
+	IsDel      string    `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
 	CreatedAt  time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
 	UpdatedAt  time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+}
+
+type RoleShow struct {
+	Role
+	UpdateTime string `json:"update_time"`
+}
+
+type RoleOption struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Key  string `json:"key"`
 }
 
 type RoleQuery struct {
@@ -45,13 +59,33 @@ func (model Role) TableName() string {
 	return "role"
 }
 
+func (model Role) Before() error {
+	// Name
+	if model.Name != "" && !match.IsNicknameString(model.Name) {
+		return iErrors.New(status.RoleNameErrorCode)
+	}
+
+	// Key
+	if model.Key != "" && !match.IsUserNameString(model.Key) {
+		return iErrors.New(status.RoleKeyErrorCode)
+	}
+
+	// Status
+	if !array.In(model.Status, []int{status.StateEnabled, status.StateInit}) {
+		return iErrors.New(status.RoleStatusErrorCode)
+	}
+
+	return nil
+}
+
 /**
  * @description: Do Search
  * @return {*}
  */
-func (query RoleQuery) Search() (list *[]Role, total int64, err error) {
+func (query RoleQuery) Search() (list *[]RoleShow, total int64, err error) {
 	// Init
-	list = &[]Role{}
+	list = &[]RoleShow{}
+	roles := &[]Role{}
 
 	// Init db-query
 	tx := GetDB().Model(&Role{})
@@ -66,7 +100,29 @@ func (query RoleQuery) Search() (list *[]Role, total int64, err error) {
 	}
 
 	// Get data
-	total, err = crudAll(&query.PaginationQuery, tx, list)
+	total, err = crudAll(&query.PaginationQuery, tx, roles)
+	for _, role := range *roles {
+		roleShow := RoleShow{}
+		roleShow.Role = role
+		roleShow.UpdateTime = date.DateFormat(role.UpdateTime)
+		*list = append(*list, roleShow)
+	}
+
+	return
+}
+
+/**
+ * @description: Get Option
+ * @return {*}
+ */
+func (model Role) Option() (option []RoleOption, err error) {
+	err = GetDB().Model(&Role{}).Select("`id`, `name`, `key`").
+		Where("`is_del` = 0 and `status` = 1").
+		Scan(&option).Error
+	if err != nil {
+		err = iErrors.WrapCode(err, iErrors.BadRequest)
+		return
+	}
 
 	return
 }
@@ -77,6 +133,10 @@ func (query RoleQuery) Search() (list *[]Role, total int64, err error) {
  * @return {*}
  */
 func (model Role) Create(tx *gorm.DB) (err error) {
+	if err = model.Before(); err != nil {
+		return
+	}
+
 	err = tx.Create(&model).Error
 	if err != nil {
 		if gErrors.IsUniqueConstraintError(err) {
@@ -94,6 +154,10 @@ func (model Role) Create(tx *gorm.DB) (err error) {
  * @return {*}
  */
 func (model Role) Edit(tx *gorm.DB) (err error) {
+	if err = model.Before(); err != nil {
+		return
+	}
+
 	err = tx.Updates(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -156,4 +220,16 @@ func GetRoleByName(name string) (role Role, err error) {
 		}
 	}
 	return
+}
+
+/**
+ * @description: Is enable
+ * @param {int} id
+ * @return {*}
+ */
+func IsEnableRole(tx *gorm.DB, id int) bool {
+	var role Role
+	err := tx.Model(&Role{}).First(&role, "id = ? and status = 1 and is_del = 0", id).Error
+
+	return err == nil
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2022-11-04 17:55:32
+ * @LastEditTime: 2022-11-07 16:46:03
  * @Description: Do not edit
  */
 package model
@@ -36,6 +36,7 @@ var Tables []interface{} = []interface{}{
 	Role{},
 	RolePermission{},
 	UserRole{},
+	UserInfo{},
 }
 
 /**

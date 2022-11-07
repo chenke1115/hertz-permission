@@ -50,7 +50,16 @@ definitions:
       visible:
         type: integer
     type: object
-  model.Role:
+  model.RoleOption:
+    properties:
+      id:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+    type: object
+  model.RoleShow:
     properties:
       create_at:
         type: string
@@ -73,7 +82,7 @@ definitions:
       update_by:
         type: string
       update_time:
-        type: integer
+        type: string
     type: object
   permission.RespInfo:
     properties:
@@ -137,8 +146,28 @@ definitions:
     type: object
   role.RespInfo:
     properties:
-      role:
-        $ref: '#/definitions/model.Role'
+      create_at:
+        type: string
+      creator_id:
+        type: integer
+      id:
+        type: integer
+      is_del:
+        type: string
+      key:
+        type: string
+      name:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+      update_at:
+        type: string
+      update_by:
+        type: string
+      update_time:
+        type: string
     type: object
   role.RespList:
     properties:
@@ -150,7 +179,7 @@ definitions:
         type: integer
       roles:
         items:
-          $ref: '#/definitions/model.Role'
+          $ref: '#/definitions/model.RoleShow'
         type: array
       stime:
         type: string
@@ -520,6 +549,37 @@ paths:
       summary: 权限下拉选项
       tags:
       - PermissionOption
+  /api/permission/route:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of route option
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 路由下拉选项
+      tags:
+      - PermissionRouteOption
   /api/role/{id}/del:
     delete:
       consumes:
@@ -759,7 +819,7 @@ paths:
             - properties:
                 data:
                   items:
-                    type: string
+                    $ref: '#/definitions/model.RoleOption'
                   type: array
               type: object
         "400":

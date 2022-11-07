@@ -296,6 +296,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/permission/route": {
+            "get": {
+                "description": "This is a api of route option",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PermissionRouteOption"
+                ],
+                "summary": "路由下拉选项",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/permission/{id}/del": {
             "delete": {
                 "description": "This is a api to del permission",
@@ -776,7 +832,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "type": "string"
+                                                "$ref": "#/definitions/model.RoleOption"
                                             }
                                         }
                                     }
@@ -1166,7 +1222,21 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Role": {
+        "model.RoleOption": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.RoleShow": {
             "type": "object",
             "properties": {
                 "create_at": {
@@ -1200,7 +1270,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "update_time": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1298,8 +1368,38 @@ const docTemplate = `{
         "role.RespInfo": {
             "type": "object",
             "properties": {
-                "role": {
-                    "$ref": "#/definitions/model.Role"
+                "create_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_del": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "string"
                 }
             }
         },
@@ -1318,7 +1418,7 @@ const docTemplate = `{
                 "roles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Role"
+                        "$ref": "#/definitions/model.RoleShow"
                     }
                 },
                 "stime": {

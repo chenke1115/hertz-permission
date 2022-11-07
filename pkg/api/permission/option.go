@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:53:08
- * @LastEditTime: 2022-11-04 18:14:03
+ * @LastEditTime: 2022-11-07 14:40:25
  * @Description: Do not edit
  */
 package permission
@@ -9,6 +9,7 @@ package permission
 import (
 	"context"
 
+	"github.com/chenke1115/hertz-permission/internal/constant/global"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
@@ -41,4 +42,33 @@ func OptionHandler(ctx context.Context, c *app.RequestContext) {
 
 	option := model.Permission{}
 	resp, err = option.Option()
+}
+
+// RouteHandler goDoc
+// @Summary     路由下拉选项
+// @Description This is a api of route option
+// @Tags        PermissionRouteOption
+// @Accept      json
+// @Produce     json
+// @Success     200 {object} response.BaseResponse{data=[]string{}}
+// @Failure     400 {object} response.BaseResponse{data=interface{}}
+// @Router      /api/permission/route [get]
+func RouteHandler(ctx context.Context, c *app.RequestContext) {
+	var (
+		err  error
+		resp []string
+	)
+
+	defer func() {
+		if err != nil {
+			resp = make([]string, 0)
+		}
+
+		response.HandleResponse(c, err, resp)
+	}()
+
+	resp = make([]string, len(global.RouteInfo))
+	for k, v := range global.RouteInfo {
+		resp[k] = v.Path
+	}
 }

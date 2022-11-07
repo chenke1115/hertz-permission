@@ -44,12 +44,12 @@ type ReqAddData struct {
 // @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
 // @Param       type       body     string true  "权限类型[D:目录;M:菜单;B:按钮]"   Enums("D", "M", "B")
 // @Param       key        body     string false "权限全局标识[即后端路由，类型为目录可空]" maxlength(32)
-// @Param       components body     string false "前端页面路径[类型为按钮可空]"     maxlength(32)
-// @Param       sort       body     int    false "排序[从小到大]"            default(0)
-// @Param       icon       body     string false "图标"                  maxlength(255)
-// @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
-// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
-// @Param       remark     body     string false "备注"                  maxlength(255)
+// @Param       components body     string false "前端页面路径[类型为按钮可空]"       maxlength(32)
+// @Param       sort       body     int    false "排序[从小到大]"              default(0)
+// @Param       icon       body     string false "图标"                    maxlength(255)
+// @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"       Enums(1, 0)
+// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]"       Enums(1, 0)
+// @Param       remark     body     string false "备注"                    maxlength(255)
 // @Success     200        {object} response.BaseResponse{data=interface{}}
 // @Failure     400        {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/add [post]

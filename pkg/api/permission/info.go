@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 10:33:30
- * @LastEditTime: 2022-11-03 16:08:43
+ * @LastEditTime: 2022-11-07 10:39:31
  * @Description: Do not edit
  */
 package permission
@@ -56,5 +56,9 @@ func InfoHandler(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp.Permission, err = model.GetPermissionByID(ID)
+	if err != nil {
+		return
+	}
+
 	resp.UpdateTime = date.DateFormat(resp.Permission.UpdateTime)
 }

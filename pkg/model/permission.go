@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-04 18:15:20
+ * @LastEditTime: 2022-11-07 14:29:30
  * @Description: Do not edit
  */
 package model
@@ -224,25 +224,28 @@ func (model Permission) Del(tx *gorm.DB) (err error) {
  * @return {*}
  */
 func (model Permission) GetOption(pid int) (list []PermissionOption, err error) {
-	err = GetDB().Model(&Permission{}).Select("id, pid, name, alias").Where("pid = ?", pid).Scan(&list).Error
+	err = GetDB().Model(&Permission{}).
+		Select("id, pid, name, alias").
+		Where("pid = ? and status = 1", pid).
+		Scan(&list).Error
 	if err != nil {
 		err = iErrors.WrapCode(err, iErrors.BadRequest)
 		return
 	}
 
-	for k1, v1 := range list {
-		var c1 []PermissionOption
-		c1, err = model.GetOption(v1.ID)
+	for k, v := range list {
+		var c []PermissionOption
+		c, err = model.GetOption(v.ID)
 		if err != nil {
 			err = iErrors.WrapCode(err, iErrors.BadRequest)
 			return
 		}
 
-		list[k1].Show = fmt.Sprintf("%s[%s]", v1.Alias, v1.Name)
-		if len(c1) > 0 {
-			list[k1].Child = c1
+		list[k].Show = fmt.Sprintf("%s[%s]", v.Alias, v.Name)
+		if len(c) > 0 {
+			list[k].Child = c
 		} else {
-			list[k1].Child = []PermissionOption{}
+			list[k].Child = []PermissionOption{}
 		}
 	}
 

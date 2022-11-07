@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 11:46:59
- * @LastEditTime: 2022-11-01 15:10:36
+ * @LastEditTime: 2022-11-07 10:42:07
  * @Description: Do not edit
  */
 package role
@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
@@ -19,7 +20,8 @@ import (
 )
 
 type RespInfo struct {
-	Role model.Role `json:"role"`
+	model.Role
+	UpdateTime string `json:"update_time"`
 }
 
 // InfoHandler goDoc
@@ -54,4 +56,9 @@ func InfoHandler(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp.Role, err = model.GetRoleByID(ID)
+	if err != nil {
+		return
+	}
+
+	resp.UpdateTime = date.DateFormat(resp.Role.UpdateTime)
 }

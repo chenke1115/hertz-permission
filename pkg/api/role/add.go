@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-01 14:52:05
+ * @LastEditTime: 2022-11-07 10:15:42
  * @Description: Do not edit
  */
 package role
@@ -10,6 +10,7 @@ import (
 	"context"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
@@ -18,10 +19,10 @@ import (
 )
 
 type ReqAddData struct {
-	Name   string `json:"name,required" form:"name,required"` //lint:ignore SA5008 ignoreCheck
-	Key    string `json:"key,required" form:"key,required"`   //lint:ignore SA5008 ignoreCheck
+	Name   string `json:"name,required" form:"name,required" vd:"len($)<32"` //lint:ignore SA5008 ignoreCheck
+	Key    string `json:"key,required" form:"key,required" vd:"len($)<32"`   //lint:ignore SA5008 ignoreCheck
 	Status int    `json:"status" form:"status"`
-	Remark string `json:"remark" form:"remark"`
+	Remark string `json:"remark" form:"remark" vd:"len($)<256"`
 }
 
 // AddHandler goDoc
@@ -61,6 +62,10 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 		err = errors.Wrapf(err, status.RoleParamBindingErrorCode)
 		return
 	}
+
+	role.CreatorID = 1      // TODO
+	role.UpdateBy = "admin" // TODO
+	role.UpdateTime = date.DateUnix()
 
 	err = role.Create(model.GetDB())
 }

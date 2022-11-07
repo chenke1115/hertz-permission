@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2022-11-01 15:11:27
+ * @LastEditTime: 2022-11-07 11:02:00
  * @Description: Do not edit
  */
 package role
@@ -19,8 +19,8 @@ import (
 )
 
 type RespList struct {
-	Total int64         `json:"total"`
-	Roles *[]model.Role `json:"roles"`
+	Total int64             `json:"total"`
+	Roles *[]model.RoleShow `json:"roles"`
 	query.PaginationQuery
 }
 
