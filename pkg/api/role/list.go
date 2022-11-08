@@ -1,13 +1,14 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2022-11-07 11:02:00
+ * @LastEditTime: 2022-11-08 11:57:04
  * @Description: Do not edit
  */
 package role
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
@@ -61,4 +62,46 @@ func ListHandler(ctx context.Context, c *app.RequestContext) {
 	resp.PaginationQuery = query.PaginationQuery
 
 	resp.Roles, resp.Total, err = query.Search()
+}
+
+// BindListHandler goDoc
+// @Summary     绑定权限数组
+// @Description This is a api of bind permission for role
+// @Tags        RoleBindPermissionList
+// @Accept      json
+// @Produce     json
+// @Param       id  query    int true "角色ID" example(1)
+// @Success     200 {object} response.BaseResponse{data=[]int{}}
+// @Failure     400 {object} response.BaseResponse{data=interface{}}
+// @Router      /api/role/{id}/bind [get]
+func BindListHandler(ctx context.Context, c *app.RequestContext) {
+	var (
+		err  error
+		ID   int
+		resp []int
+		role model.Role
+	)
+
+	// Response
+	defer func() {
+		if err != nil {
+			resp = []int{}
+		}
+
+		response.HandleResponse(c, err, &resp)
+	}()
+
+	// ID
+	if ID, err = strconv.Atoi(c.Param("id")); err != nil {
+		err = errors.Wrap(err, status.RoleIdMissCode)
+		return
+	}
+
+	// Find
+	if role, err = model.GetRoleByID(ID); err != nil {
+		return
+	}
+
+	// Get
+	resp, err = role.BindList()
 }

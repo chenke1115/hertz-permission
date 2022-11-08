@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-28 09:31:13
- * @LastEditTime: 2022-11-03 17:22:17
+ * @LastEditTime: 2022-11-08 11:25:20
  * @Description: Do not edit
  */
 package status
@@ -21,6 +21,7 @@ const (
 	PermissionTypeErrorCode
 	PermissionStatusErrorCode
 	PermissionIsUseErrorCode
+	PermissionIsUnableErrorCode
 )
 
 // Message for codes
@@ -36,4 +37,5 @@ func init() {
 	errors.NewCode(PermissionTypeErrorCode, "权限类型不在枚举值内")
 	errors.NewCode(PermissionStatusErrorCode, "权限状态不在枚举值内")
 	errors.NewCode(PermissionIsUseErrorCode, "权限被使用中，移除后在执行该操作")
+	errors.NewCode(PermissionIsUnableErrorCode, "权限不存在或状态异常")
 }

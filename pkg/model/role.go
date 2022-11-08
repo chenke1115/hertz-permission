@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-11-07 18:04:54
+ * @LastEditTime: 2022-11-08 14:08:02
  * @Description: Do not edit
  */
 package model
@@ -72,7 +72,7 @@ func (model Role) Before() error {
 
 	// Status
 	if !array.In(model.Status, []int{status.StateEnabled, status.StateInit}) {
-		return iErrors.New(status.RoleStatusErrorCode)
+		return iErrors.New(status.RoleStatusParamErrCode)
 	}
 
 	return nil
@@ -186,6 +186,63 @@ func (model Role) Del(tx *gorm.DB) (err error) {
 	}
 
 	return
+}
+
+/**
+ * @description: Get bind list
+ * @return {*}
+ */
+func (model Role) BindList() (list []int, err error) {
+	var perList []RolePermission
+	rolePer := RolePermission{RoleID: model.ID}
+	perList, err = rolePer.List()
+	if err != nil {
+		return
+	}
+
+	for _, item := range perList {
+		list = append(list, item.PermissionID)
+	}
+
+	return
+}
+
+/**
+ * @description: Binding permission for role
+ * @param {[]int} perIDs
+ * @return {*}
+ */
+func (model Role) Binding(db *gorm.DB, perIDs []int) (err error) {
+	return db.Transaction(func(tx *gorm.DB) error {
+		// Save
+		for _, perID := range perIDs {
+			rolePer := RolePermission{
+				RoleID:       model.ID,
+				PermissionID: perID,
+			}
+			if err = rolePer.Save(tx); err != nil {
+				return err
+			}
+		}
+
+		// Del
+		var ids []int
+		rolePer := RolePermission{RoleID: model.ID}
+		ids, err = rolePer.NotIn(tx, perIDs)
+		if err != nil {
+			return err
+		}
+
+		if len(ids) > 0 {
+			err = (&RolePermission{}).DelBatch(tx, ids)
+			if err != nil {
+				return err
+			}
+		}
+
+		// commit
+		return nil
+	})
 }
 
 /**

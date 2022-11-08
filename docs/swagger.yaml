@@ -580,6 +580,85 @@ paths:
       summary: 路由下拉选项
       tags:
       - PermissionRouteOption
+  /api/role/{id}/bind:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of bind permission for role
+      parameters:
+      - description: 角色ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  items:
+                    type: integer
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 绑定权限数组
+      tags:
+      - RoleBindPermissionList
+    post:
+      consumes:
+      - application/json
+      description: This is a api to binding permission for role
+      parameters:
+      - description: 角色ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: 权限ID数组
+        in: body
+        name: permission_ids
+        required: true
+        schema:
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 绑定权限
+      tags:
+      - RoleBindingPermission
   /api/role/{id}/del:
     delete:
       consumes:
@@ -839,6 +918,19 @@ paths:
       consumes:
       - application/json
       description: This is a api to assign role for user
+      parameters:
+      - description: 账户ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: 权限ID数组
+        in: body
+        name: role_ids
+        required: true
+        schema:
+          type: array
       produces:
       - application/json
       responses:

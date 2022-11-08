@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-07 14:29:30
+ * @LastEditTime: 2022-11-08 11:21:43
  * @Description: Do not edit
  */
 package model
@@ -268,6 +268,16 @@ func GetPermissionByID(id int) (permission Permission, err error) {
 	}
 
 	return
+}
+
+/**
+ * @description: Is enable
+ * @param {int} id
+ * @return {*}
+ */
+func IsEnablePermission(tx *gorm.DB, id int) bool {
+	err := tx.Model(&Permission{}).First(&Permission{}, "id = ? and status = 1", id).Error
+	return err == nil
 }
 
 /**

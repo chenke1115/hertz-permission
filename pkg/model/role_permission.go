@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:55:40
- * @LastEditTime: 2022-11-03 17:10:26
+ * @LastEditTime: 2022-11-08 14:10:28
  * @Description: Do not edit
  */
 package model
@@ -26,6 +26,15 @@ type RolePermission struct {
  */
 func (model RolePermission) TableName() string {
 	return "role_permission"
+}
+
+/**
+ * @description: List
+ * @return {*}
+ */
+func (model RolePermission) List() (list []RolePermission, err error) {
+	err = GetDB().Model(&RolePermission{}).Where(&model).Scan(&list).Error
+	return
 }
 
 /**
@@ -60,13 +69,75 @@ func (model RolePermission) Del(tx *gorm.DB) (err error) {
 }
 
 /**
+ * @description: Del batch
+ * @param {*gorm.DB} tx
+ * @param {[]int} ids
+ * @return {*}
+ */
+func (model RolePermission) DelBatch(tx *gorm.DB, ids []int) (err error) {
+	// Do del
+	if err = tx.Unscoped().Where("id in (?)", ids).Delete(model).Error; err != nil {
+		err = iErrors.WrapCode(err, iErrors.BadRequest)
+	}
+
+	return
+}
+
+/**
+ * @description: Not In
+ * @param {*gorm.DB} tx
+ * @param {[]int} roleIDs
+ * @return {*}
+ */
+func (model RolePermission) NotIn(tx *gorm.DB, perIDs []int) (ids []int, err error) {
+	err = tx.Select("id").Model(&RolePermission{}).Where(&model).
+		Where("permission_id not in (?)", perIDs).
+		Scan(&ids).Error
+	return
+}
+
+/**
+ * @description: Is exist
+ * @param {*gorm.DB} tx
+ * @return {*}
+ */
+func (model RolePermission) IsExist(tx *gorm.DB) bool {
+	err := tx.Where(&model).First(&RolePermission{}).Error
+	return err == nil
+}
+
+/**
+ * @description: Do save
+ * @param {*gorm.DB} tx
+ * @return {*}
+ */
+func (model RolePermission) Save(tx *gorm.DB) (err error) {
+	if !IsEnablePermission(tx, model.PermissionID) {
+		return iErrors.New(status.PermissionIsUnableErrorCode)
+	}
+
+	if !model.IsExist(tx) {
+		err = tx.Create(&model).Error
+		if err != nil {
+			if gErrors.IsUniqueConstraintError(err) {
+				err = iErrors.Wrap(err, status.RoleParamUniqueErrCode)
+			} else {
+				err = iErrors.WrapCode(err, iErrors.BadRequest)
+			}
+			return
+		}
+	}
+
+	return
+}
+
+/**
  * @description: check permission_id is exist
  * @param {int} permission_id
  * @return {*}
  */
 func IsExistPermissionID(permission_id int) bool {
-	res := RolePermission{}
-	err := GetDB().Model(&RolePermission{}).First(&res, "permission_id = ?", permission_id).Error
-
+	err := GetDB().Model(&RolePermission{}).
+		First(&RolePermission{}, "permission_id = ?", permission_id).Error
 	return err == nil
 }

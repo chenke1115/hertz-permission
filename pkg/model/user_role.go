@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 16:15:00
- * @LastEditTime: 2022-11-07 18:40:26
+ * @LastEditTime: 2022-11-08 11:23:46
  * @Description: Do not edit
  */
 package model
@@ -109,7 +109,7 @@ func (model UserRole) NotIn(tx *gorm.DB, roleIDs []int) (ids []int, err error) {
  */
 func (model UserRole) Save(tx *gorm.DB) (err error) {
 	if !IsEnableRole(tx, model.RoleID) {
-		return iErrors.WrapCode(err, status.RoleStatusErrorCode)
+		return iErrors.New(status.RoleStatusErrorCode)
 	}
 
 	if !model.IsExist(tx) {
