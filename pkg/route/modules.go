@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:20:25
- * @LastEditTime: 2022-11-07 17:40:17
+ * @LastEditTime: 2022-11-09 10:10:14
  * @Description: Do not edit
  */
 package route
@@ -23,5 +23,4 @@ func LoadModules(g *route.RouterGroup) {
 	permission.RegisterPermissionRouter(g)
 	role.RegisterRoleRouter(g)
 	user.RegisterUserRouter(g)
-
 }

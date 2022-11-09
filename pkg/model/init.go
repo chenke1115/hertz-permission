@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2022-11-07 16:46:03
+ * @LastEditTime: 2022-11-09 15:42:51
  * @Description: Do not edit
  */
 package model
@@ -33,10 +33,8 @@ var once sync.Once
 // Tables use for migration
 var Tables []interface{} = []interface{}{
 	Permission{},
-	Role{},
-	RolePermission{},
-	UserRole{},
-	UserInfo{},
+	Role{}, RolePermission{},
+	UserRole{}, UserInfo{}, User{},
 }
 
 /**

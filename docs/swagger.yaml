@@ -1,5 +1,24 @@
 basePath: /
 definitions:
+  model.APIUser:
+    properties:
+      account:
+        type: string
+      create_at:
+        type: string
+      customer_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: integer
+      update_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
   model.PermissionOption:
     properties:
       alias:
@@ -185,6 +204,23 @@ definitions:
         type: string
       total:
         type: integer
+    type: object
+  user.RespList:
+    properties:
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      stime:
+        type: string
+      total:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/model.APIUser'
+        type: array
     type: object
 host: 127.0.0.1:8080
 info:
@@ -913,6 +949,62 @@ paths:
       summary: 角色下拉选项
       tags:
       - RoleOption
+  /api/user/{:id}/edit:
+    put:
+      consumes:
+      - application/json
+      description: This is a api to edit user
+      parameters:
+      - description: 用户ID
+        example: 1
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: 用户名
+        example: '"长歌"'
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 登陆账户
+        example: '"changge@ismart.com"'
+        in: body
+        name: account
+        required: true
+        schema:
+          type: string
+      - default: 0
+        description: 关联客户账户ID
+        in: body
+        name: customer_id
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 编辑用户
+      tags:
+      - UserEdit
   /api/user/{id}/assign:
     post:
       consumes:
@@ -955,6 +1047,187 @@ paths:
       summary: 角色分配
       tags:
       - UserRoleAssign
+  /api/user/{user_id}/reset:
+    put:
+      consumes:
+      - application/json
+      description: This is a api of reset user password
+      parameters:
+      - description: 用户列表返回的UserID
+        example: 1
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: 旧密码
+        example: '"Admin123!"'
+        in: body
+        name: old_password
+        required: true
+        schema:
+          type: string
+      - description: 新密码
+        example: '"Admin123#"'
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 确认新密码
+        example: '"Admin123#"'
+        in: body
+        name: confirm_password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 用户密码重置
+      tags:
+      - UserResetPassword
+  /api/user/{user_id}/state:
+    put:
+      consumes:
+      - application/json
+      description: This is a api of edit user status
+      parameters:
+      - description: 用户列表返回的UserID
+        example: 1
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: 用户状态[1:启用 0:失效]
+        enum:
+        - 1
+        - 0
+        in: body
+        name: status
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 用户状态变更
+      tags:
+      - UserStateEdit
+  /api/user/add:
+    post:
+      consumes:
+      - application/json
+      description: This is a api to add user
+      parameters:
+      - description: 用户名
+        example: '"长歌"'
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 登陆账户
+        example: '"changge@ismart.com"'
+        in: body
+        name: account
+        required: true
+        schema:
+          type: string
+      - default: 0
+        description: 关联客户账户ID
+        in: body
+        name: customer_id
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 添加用户
+      tags:
+      - UserAdd
+  /api/user/list:
+    get:
+      consumes:
+      - application/json
+      description: This is a api for user list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/user.RespList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 用户列表
+      tags:
+      - UserList
 schemes:
 - http
 swagger: "2.0"

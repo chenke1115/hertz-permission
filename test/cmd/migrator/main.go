@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-31 11:50:38
- * @LastEditTime: 2022-10-28 16:48:15
+ * @LastEditTime: 2022-11-08 15:28:37
  * @Description: Do not edit
  */
 package main
@@ -25,7 +25,7 @@ var configFile = flag.String("c", path.Base("app.yaml"), "config file")
 func main() {
 	flag.Parse()
 
-	// Config of iSmart
+	// Config
 	_ = configs.InitConfig(*configFile)
 
 	if err := model.GetDB().Transaction(func(tx *gorm.DB) error {
