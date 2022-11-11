@@ -1,13 +1,14 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-11-09 16:13:49
+ * @LastEditTime: 2022-11-11 18:17:14
  * @Description: Do not edit
  */
 package model
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
@@ -26,9 +27,10 @@ type UserInfo struct {
 	Name       string    `json:"name" gorm:"type:varchar(32); not null; comment:用户名"`
 	Account    string    `json:"account" gorm:"type:varchar(32); unique; not null; comment:登录账户"`
 	CustomerID int       `json:"customer_id" gorm:"type:int(11); index; not null; comment:客户ID"`
-	CreatedAt  time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
+	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 }
+
 type APIUser struct {
 	UserInfo
 	UserID int `json:"user_id"`
@@ -39,6 +41,15 @@ type UserQuery struct {
 	APIUser
 	query.PaginationQuery
 	Status string `json:"status" form:"status"`
+}
+
+type CurrentUser struct {
+	ID          int      `json:"id"`
+	Name        string   `json:"name"`
+	Account     string   `json:"account"`
+	CustomerID  int      `json:"customer_id"`
+	Roles       []string `json:"roles"`
+	Permissions []string `json:"permissions"`
 }
 
 /**
@@ -232,11 +243,46 @@ func GetUserInfoByID(id int) (userInfo UserInfo, err error) {
  * @param {string} hashedPassword
  * @return {*}
  */
-func CheckUsernameAndPassword(username string, hashedPassword string) (userInfo UserInfo, err error) {
+func CheckUsernameAndPassword(username string, hashedPassword string) (cuser CurrentUser, err error) {
+	var userInfo UserInfo
 	err = GetDB().Model(UserInfo{}).
 		Select("user_info.*").
 		Where("user_info.account = ? and user.password = ?", username, hashedPassword).
 		Joins("inner join user on user.account_id=user_info.id").
 		First(&userInfo).Error
+	if err != nil {
+		return
+	}
+
+	cuser.ID = userInfo.ID
+	cuser.Name = userInfo.Name
+	cuser.Account = userInfo.Account
+	cuser.CustomerID = userInfo.CustomerID
+	cuser.Roles, err = GetRolesByUID(cuser.ID)
 	return
+}
+
+/**
+ * @description: Judge the ID is owner id or not
+ * @param {int} id
+ * @return {*}
+ */
+func (cuser CurrentUser) IsOwner(id int) bool {
+	return cuser.CustomerID == id
+}
+
+/**
+ * @description: Check role permission
+ * @param {string} permissionFunc
+ * @return {*}
+ */
+func (cuser CurrentUser) CheckPermission(permissionFunc string) bool {
+	permissions := cuser.Permissions
+	for _, permission := range permissions {
+		if strings.HasPrefix(permissionFunc, permission) {
+			return true
+		}
+	}
+
+	return false
 }

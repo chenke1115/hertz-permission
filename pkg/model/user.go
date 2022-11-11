@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-08 16:52:22
- * @LastEditTime: 2022-11-09 17:41:07
+ * @LastEditTime: 2022-11-10 14:57:03
  * @Description: Do not edit
  */
 package model
@@ -24,8 +24,8 @@ type User struct {
 	ActivateToken string    `json:"activate_token" gorm:"type:varchar(255); comment:生效TOKEN"`
 	ResetToken    string    `json:"reset_token" gorm:"type:varchar(255); comment:重置TOKEN"`
 	Status        int       `json:"enabled" gorm:"type:char(1); index; default:1; comment:生效状态[1:启用 0:失效]"`
-	CreatedAt     time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt     time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	CreatedAt     time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
+	UpdatedAt     time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 }
 
 /**
@@ -59,7 +59,7 @@ func (model User) Create(tx *gorm.DB) (err error) {
  * @return {*}
  */
 func (model User) Edit(tx *gorm.DB) (err error) {
-	err = tx.Updates(&model).Error
+	err = tx.Save(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.UserNotExistCode)

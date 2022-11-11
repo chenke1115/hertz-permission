@@ -16,6 +16,187 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/auth/login": {
+            "post": {
+                "description": "This is an api to login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth.Login"
+                ],
+                "summary": "登陆",
+                "parameters": [
+                    {
+                        "maxLength": 32,
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "maxLength": 32,
+                        "description": "密码",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "description": "This is an api to logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth.Logout"
+                ],
+                "summary": "退出登陆",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh_token": {
+            "post": {
+                "description": "This is an api to refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth.RefreshToken"
+                ],
+                "summary": "刷新TOKEN",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/permission/add": {
             "post": {
                 "description": "This is a api to add permission",
@@ -999,7 +1180,7 @@ const docTemplate = `{
         },
         "/api/role/{id}/del": {
             "delete": {
-                "description": "This is a api to add role",
+                "description": "This is a api to del role",
                 "consumes": [
                     "application/json"
                 ],
@@ -1284,6 +1465,59 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/current": {
+            "get": {
+                "description": "This is an api to get current user info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CurrentUser"
+                ],
+                "summary": "当前用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.CurrentUser"
                                         }
                                     }
                                 }
@@ -1705,7 +1939,7 @@ const docTemplate = `{
                 "account": {
                     "type": "string"
                 },
-                "create_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "customer_id": {
@@ -1720,11 +1954,40 @@ const docTemplate = `{
                 "status": {
                     "type": "integer"
                 },
-                "update_at": {
+                "updated_at": {
                     "type": "string"
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.CurrentUser": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1760,7 +2023,7 @@ const docTemplate = `{
                 "components": {
                     "type": "string"
                 },
-                "create_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "icon": {
@@ -1790,13 +2053,13 @@ const docTemplate = `{
                 "type": {
                     "type": "string"
                 },
-                "update_at": {
-                    "type": "string"
-                },
                 "update_by": {
                     "type": "string"
                 },
                 "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "visible": {
@@ -1821,7 +2084,7 @@ const docTemplate = `{
         "model.RoleShow": {
             "type": "object",
             "properties": {
-                "create_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "creator_id": {
@@ -1831,7 +2094,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "is_del": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "key": {
                     "type": "string"
@@ -1845,13 +2108,13 @@ const docTemplate = `{
                 "status": {
                     "type": "integer"
                 },
-                "update_at": {
-                    "type": "string"
-                },
                 "update_by": {
                     "type": "string"
                 },
                 "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -1865,7 +2128,7 @@ const docTemplate = `{
                 "components": {
                     "type": "string"
                 },
-                "create_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "icon": {
@@ -1895,13 +2158,13 @@ const docTemplate = `{
                 "type": {
                     "type": "string"
                 },
-                "update_at": {
-                    "type": "string"
-                },
                 "update_by": {
                     "type": "string"
                 },
                 "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "visible": {
@@ -1950,7 +2213,7 @@ const docTemplate = `{
         "role.RespInfo": {
             "type": "object",
             "properties": {
-                "create_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "creator_id": {
@@ -1960,7 +2223,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "is_del": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "key": {
                     "type": "string"
@@ -1974,13 +2237,13 @@ const docTemplate = `{
                 "status": {
                     "type": "integer"
                 },
-                "update_at": {
-                    "type": "string"
-                },
                 "update_by": {
                     "type": "string"
                 },
                 "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

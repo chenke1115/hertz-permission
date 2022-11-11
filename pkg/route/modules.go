@@ -1,12 +1,13 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:20:25
- * @LastEditTime: 2022-11-09 10:10:14
+ * @LastEditTime: 2022-11-11 16:24:43
  * @Description: Do not edit
  */
 package route
 
 import (
+	"github.com/chenke1115/hertz-permission/pkg/api/auth"
 	"github.com/chenke1115/hertz-permission/pkg/api/permission"
 	"github.com/chenke1115/hertz-permission/pkg/api/role"
 	"github.com/chenke1115/hertz-permission/pkg/api/user"
@@ -20,6 +21,25 @@ import (
  * @return {*}
  */
 func LoadModules(g *route.RouterGroup) {
+	LoadModulesWithoutAuth(g)
+	LoadModulesWithAuth(g)
+}
+
+/**
+ * @description: without auth
+ * @param {*route.RouterGroup} g
+ * @return {*}
+ */
+func LoadModulesWithoutAuth(g *route.RouterGroup) {
+	auth.RegisterAuthRouter(g)
+}
+
+/**
+ * @description: with auth
+ * @param {*route.RouterGroup} g
+ * @return {*}
+ */
+func LoadModulesWithAuth(g *route.RouterGroup) {
 	permission.RegisterPermissionRouter(g)
 	role.RegisterRoleRouter(g)
 	user.RegisterUserRouter(g)

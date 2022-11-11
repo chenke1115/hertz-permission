@@ -4,7 +4,7 @@ definitions:
     properties:
       account:
         type: string
-      create_at:
+      created_at:
         type: string
       customer_id:
         type: integer
@@ -14,10 +14,29 @@ definitions:
         type: string
       status:
         type: integer
-      update_at:
+      updated_at:
         type: string
       user_id:
         type: integer
+    type: object
+  model.CurrentUser:
+    properties:
+      account:
+        type: string
+      customer_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+      roles:
+        items:
+          type: string
+        type: array
     type: object
   model.PermissionOption:
     properties:
@@ -40,7 +59,7 @@ definitions:
         type: string
       components:
         type: string
-      create_at:
+      created_at:
         type: string
       icon:
         type: string
@@ -60,11 +79,11 @@ definitions:
         type: integer
       type:
         type: string
-      update_at:
-        type: string
       update_by:
         type: string
       update_time:
+        type: string
+      updated_at:
         type: string
       visible:
         type: integer
@@ -80,14 +99,14 @@ definitions:
     type: object
   model.RoleShow:
     properties:
-      create_at:
+      created_at:
         type: string
       creator_id:
         type: integer
       id:
         type: integer
       is_del:
-        type: string
+        type: integer
       key:
         type: string
       name:
@@ -96,11 +115,11 @@ definitions:
         type: string
       status:
         type: integer
-      update_at:
-        type: string
       update_by:
         type: string
       update_time:
+        type: string
+      updated_at:
         type: string
     type: object
   permission.RespInfo:
@@ -109,7 +128,7 @@ definitions:
         type: string
       components:
         type: string
-      create_at:
+      created_at:
         type: string
       icon:
         type: string
@@ -129,11 +148,11 @@ definitions:
         type: integer
       type:
         type: string
-      update_at:
-        type: string
       update_by:
         type: string
       update_time:
+        type: string
+      updated_at:
         type: string
       visible:
         type: integer
@@ -165,14 +184,14 @@ definitions:
     type: object
   role.RespInfo:
     properties:
-      create_at:
+      created_at:
         type: string
       creator_id:
         type: integer
       id:
         type: integer
       is_del:
-        type: string
+        type: integer
       key:
         type: string
       name:
@@ -181,11 +200,11 @@ definitions:
         type: string
       status:
         type: integer
-      update_at:
-        type: string
       update_by:
         type: string
       update_time:
+        type: string
+      updated_at:
         type: string
     type: object
   role.RespList:
@@ -228,6 +247,108 @@ info:
   title: hertz-permission
   version: 1.0.0
 paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: This is an api to login
+      parameters:
+      - description: 用户名
+        in: body
+        maxLength: 32
+        name: username
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        maxLength: 32
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 登陆
+      tags:
+      - Auth.Login
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: This is an api to logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 退出登陆
+      tags:
+      - Auth.Logout
+  /api/auth/refresh_token:
+    post:
+      consumes:
+      - application/json
+      description: This is an api to refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 刷新TOKEN
+      tags:
+      - Auth.RefreshToken
   /api/permission/{id}/del:
     delete:
       consumes:
@@ -699,7 +820,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: This is a api to add role
+      description: This is a api to del role
       parameters:
       - description: 角色ID
         example: 1
@@ -1199,6 +1320,35 @@ paths:
       summary: 添加用户
       tags:
       - UserAdd
+  /api/user/current:
+    get:
+      consumes:
+      - application/json
+      description: This is an api to get current user info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CurrentUser'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 当前用户信息
+      tags:
+      - CurrentUser
   /api/user/list:
     get:
       consumes:

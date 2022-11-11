@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-08 11:21:43
+ * @LastEditTime: 2022-11-10 15:11:15
  * @Description: Do not edit
  */
 package model
@@ -40,8 +40,8 @@ type Permission struct {
 	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
 	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
 	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	CreatedAt  time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
+	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 }
 
 type PermissionShow struct {
@@ -184,7 +184,7 @@ func (model Permission) Edit(tx *gorm.DB) (err error) {
 		return
 	}
 
-	err = tx.Updates(&model).Error
+	err = tx.Save(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.PermissionNotExistCode)

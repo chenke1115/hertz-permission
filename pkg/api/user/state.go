@@ -1,15 +1,19 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:43:09
- * @LastEditTime: 2022-11-09 17:24:16
+ * @LastEditTime: 2022-11-10 14:17:24
  * @Description: Do not edit
  */
 package user
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -31,11 +35,35 @@ type ReqStateData struct {
 // @Router      /api/user/{user_id}/state [put]
 func StateHandler(ctx context.Context, c *app.RequestContext) {
 	var (
-		err error
+		err  error
+		ID   int
+		req  ReqStateData
+		user model.User
 	)
 
 	// Response
 	defer func() {
 		response.HandleResponse(c, err, nil)
 	}()
+
+	// ID
+	if ID, err = strconv.Atoi(c.Param("id")); err != nil {
+		err = errors.WrapCode(err, status.UserMissIDCode)
+		return
+	}
+
+	// BindAndValidate
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		err = errors.WrapCode(err, status.UserErrorParamCode)
+		return
+	}
+
+	// Find
+	if user, err = model.GetUserByID(ID); err != nil {
+		return
+	}
+
+	user.Status = req.Status
+	err = user.Edit(model.GetDB())
 }

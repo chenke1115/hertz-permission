@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-11-08 14:08:02
+ * @LastEditTime: 2022-11-10 15:18:12
  * @Description: Do not edit
  */
 package model
@@ -30,9 +30,9 @@ type Role struct {
 	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
 	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
 	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	IsDel      string    `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
-	CreatedAt  time.Time `json:"create_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"update_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	IsDel      int       `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
+	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
+	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 }
 
 type RoleShow struct {
@@ -158,7 +158,7 @@ func (model Role) Edit(tx *gorm.DB) (err error) {
 		return
 	}
 
-	err = tx.Updates(&model).Error
+	err = tx.Save(&model).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.RoleNotExistCode)
@@ -180,8 +180,9 @@ func (model Role) Edit(tx *gorm.DB) (err error) {
  * @return {*}
  */
 func (model Role) Del(tx *gorm.DB) (err error) {
-	// Do del
-	if err = tx.Unscoped().Delete(model).Error; err != nil {
+	// set is_del
+	model.IsDel = status.StateEnabled
+	if err = tx.Updates(&model).Error; err != nil {
 		err = iErrors.WrapCode(err, iErrors.BadRequest)
 	}
 

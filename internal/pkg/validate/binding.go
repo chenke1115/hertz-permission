@@ -1,3 +1,9 @@
+/*
+ * @Author: changge <changge1519@gmail.com>
+ * @Date: 2022-11-11 14:13:19
+ * @LastEditTime: 2022-11-11 14:29:38
+ * @Description: Do not edit
+ */
 package validate
 
 import (
@@ -5,11 +11,25 @@ import (
 	"regexp"
 
 	"github.com/chenke1115/hertz-permission/internal/pkg/conver"
+	"github.com/chenke1115/hertz-permission/internal/pkg/match"
 
 	"github.com/cloudwego/hertz/pkg/app/server/binding"
 )
 
 func init() {
+	/**
+	 * @description: Is nickname
+	 * @param {...interface{}} args
+	 * @return {*}
+	 */
+	binding.MustRegValidateFunc("checkNickname", func(args ...interface{}) error {
+		if !match.IsNicknameString(conver.Strval(args[0])) {
+			return fmt.Errorf("命名不符合规范")
+		}
+
+		return nil
+	})
+
 	/**
 	 * @description: check length and make up of password
 	 * @param {...interface{}} args

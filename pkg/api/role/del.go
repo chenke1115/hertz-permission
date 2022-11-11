@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:46:27
- * @LastEditTime: 2022-11-01 15:10:52
+ * @LastEditTime: 2022-11-10 15:25:56
  * @Description: Do not edit
  */
 package role
@@ -20,7 +20,7 @@ import (
 
 // DelHandler goDoc
 // @Summary     删除角色
-// @Description This is a api to add role
+// @Description This is a api to del role
 // @Tags        RoleDel
 // @Accept      json
 // @Produce     json

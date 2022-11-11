@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-08 18:04:18
- * @LastEditTime: 2022-11-08 18:07:09
+ * @LastEditTime: 2022-11-11 11:10:43
  * @Description: Do not edit
  */
 package consts

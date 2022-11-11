@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2022-11-03 14:10:00
+ * @LastEditTime: 2022-11-11 16:53:51
  * @Description: Do not edit
  */
 package test
@@ -28,6 +28,7 @@ func RegisterRoute(h *server.Hertz) {
 
 	// use middleware
 	h.Use(
+		middleware.Cors(),     // CORS
 		middleware.Recovery(), // Recovery
 	)
 
