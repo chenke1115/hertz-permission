@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 16:15:00
- * @LastEditTime: 2022-11-11 15:49:55
+ * @LastEditTime: 2022-11-14 15:30:23
  * @Description: Do not edit
  */
 package model
@@ -138,5 +138,24 @@ func GetRolesByUID(uid int) (roles []string, err error) {
 		Where("user_role.uid = ? ", uid).
 		Joins("inner join role on user_role.role_id = role.id").
 		Scan(&roles).Error
+	return
+}
+
+/**
+ * @description: Get permissions by uid
+ * @param {int} uid
+ * @return {*}
+ */
+func GetPermissionsByUID(uid int) (permissions []string, err error) {
+	var roleIDs []int
+	err = GetDB().Model(&UserRole{}).
+		Select("role_id").
+		Where("uid = ?", uid).
+		Scan(&roleIDs).Error
+	if len(roleIDs) < 1 {
+		return
+	}
+
+	permissions, err = GetPermissionsByRoleIDs(roleIDs)
 	return
 }

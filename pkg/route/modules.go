@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:20:25
- * @LastEditTime: 2022-11-11 16:24:43
+ * @LastEditTime: 2022-11-14 10:38:08
  * @Description: Do not edit
  */
 package route
@@ -11,6 +11,7 @@ import (
 	"github.com/chenke1115/hertz-permission/pkg/api/permission"
 	"github.com/chenke1115/hertz-permission/pkg/api/role"
 	"github.com/chenke1115/hertz-permission/pkg/api/user"
+	"github.com/chenke1115/hertz-permission/pkg/middleware"
 
 	"github.com/cloudwego/hertz/pkg/route"
 )
@@ -40,6 +41,9 @@ func LoadModulesWithoutAuth(g *route.RouterGroup) {
  * @return {*}
  */
 func LoadModulesWithAuth(g *route.RouterGroup) {
+	// Jwt and permission
+	g.Use(middleware.JwtMiddlewareFunc, middleware.PermissionMiddleware)
+
 	permission.RegisterPermissionRouter(g)
 	role.RegisterRoleRouter(g)
 	user.RegisterUserRouter(g)

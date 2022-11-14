@@ -1,17 +1,20 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-22 10:48:17
- * @LastEditTime: 2022-11-11 18:26:01
+ * @LastEditTime: 2022-11-14 16:52:04
  * @Description: Do not edit
  */
 package middleware
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
+	"github.com/chenke1115/hertz-permission/internal/constant/global"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/array"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/hash"
 	"github.com/chenke1115/hertz-permission/pkg/model"
@@ -72,8 +75,8 @@ func Jwt() *jwt.HertzJWTMiddleware {
 				Name:        claims[nameKey].(string),
 				Account:     claims[accountKey].(string),
 				CustomerID:  int(claims[customerIDKey].(float64)),
-				Roles:       claims[rolesKey].([]string),
-				Permissions: claims[permissionsKey].([]string),
+				Roles:       array.ToArray(claims[rolesKey]),
+				Permissions: []string{},
 			}
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
@@ -138,7 +141,7 @@ func Jwt() *jwt.HertzJWTMiddleware {
 
 /**
  * @description: NoRoute
- * @use h.NoRoute(jwt.MiddlewareFunc(), jwt.NoRoute())
+ * @use h.NoRoute(jwt.MiddlewareFunc, jwt.NoRoute())
  * @return app.HandlerFunc
  */
 func JwtNoRoute() app.HandlerFunc {
@@ -189,23 +192,49 @@ func GetCurrentUser(ctx context.Context, c *app.RequestContext) (user *model.Cur
 	}
 
 	// Get cache
-	// cacheKey := fmt.Sprintf(consts.PermissionRoleCacheKey, user.Authority)
-	// cacheVal := global.Session.Get(cacheKey)
-	// if cacheVal != nil {
-	// 	user.Permissions = cacheVal.([]string)
-	// 	return
-	// }
+	cacheKey := fmt.Sprintf(consts.UserPermissionCacheKey, user.ID)
+	cacheVal := global.Session.Get(cacheKey)
+	if cacheVal != nil {
+		user.Permissions = cacheVal.([]string)
+		return
+	}
 
 	// Permission
-	// role, _ := models.GetRoleByName(user.Authority)
-	// if role.Permission == nil {
-	// 	return
-	// }
+	user.Permissions, _ = model.GetPermissionsByUID(user.ID)
+	if user.Permissions == nil {
+		user.Permissions = []string{}
+	}
 
-	// user.Permissions = *role.Permission
 	// Set cache
-	// global.Session.Set(cacheKey, user.Permissions)
-	// global.Session.Save()
+	global.Session.Set(cacheKey, user.Permissions)
+	global.Session.Save()
+
+	return
+}
+
+/**
+ * @description: Clean current user cache
+ * @param {context.Context} ctx
+ * @param {*app.RequestContext} c
+ * @return {*}
+ */
+func CleanCurrentUserCache(ctx context.Context, c *app.RequestContext) (err error) {
+	// Get token data
+	var user *model.CurrentUser
+	if data, ok := c.Get(identityKey); ok {
+		user = data.(*model.CurrentUser)
+	}
+
+	if user == nil {
+		err = errors.New(errors.Forbidden)
+		return
+	}
+
+	cacheKey := fmt.Sprintf(consts.UserPermissionCacheKey, user.ID)
+	cacheVal := global.Session.Get(cacheKey)
+	if cacheVal != nil {
+		global.Session.Clear()
+	}
 
 	return
 }

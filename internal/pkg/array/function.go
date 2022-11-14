@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-30 10:50:33
- * @LastEditTime: 2022-10-12 14:58:28
+ * @LastEditTime: 2022-11-14 15:51:25
  * @Description: Do not edit
  */
 package array
@@ -104,4 +104,36 @@ func StructToArray(data interface{}) (strArr []string) {
 	}
 
 	return
+}
+
+/**
+ * @description: Conver interface{} To array
+ * @param {interface{}} data
+ * @return {*}
+ */
+func ToArray(data interface{}) (strArr []string) {
+	interArr := data.([]interface{})
+	for _, v := range interArr {
+		strArr = append(strArr, v.(string))
+	}
+
+	return
+}
+
+/**
+ * @description: Duplicate removal
+ * @param {[]int} arr
+ * @return {*}
+ */
+func UniqueArray(arr []int) []int {
+	newArr := make([]int, 0)
+	tempArr := make(map[int]bool, len(newArr))
+	for _, v := range arr {
+		if !tempArr[v] {
+			tempArr[v] = true
+			newArr = append(newArr, v)
+		}
+	}
+
+	return newArr
 }

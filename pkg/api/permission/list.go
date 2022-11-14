@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2022-11-04 09:28:46
+ * @LastEditTime: 2022-11-14 17:12:21
  * @Description: Do not edit
  */
 package permission
@@ -21,7 +21,7 @@ import (
 
 type RespList struct {
 	Total       int64                   `json:"total"`
-	Permissions *[]model.PermissionShow `json:"permissions"`
+	Permissions *[]model.PermissionShow `json:"data"`
 	query.PaginationQuery
 }
 

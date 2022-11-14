@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-10 15:11:15
+ * @LastEditTime: 2022-11-14 16:29:19
  * @Description: Do not edit
  */
 package model
@@ -293,4 +293,17 @@ func IsValidRoute(key string) bool {
 	}
 
 	return false
+}
+
+/**
+ * @description: Get permission keys by ids
+ * @param {[]int} ids
+ * @return {*}
+ */
+func GetPermissionKeysByIDs(ids []int) (perKeys []string, err error) {
+	err = GetDB().Model(&Permission{}).
+		Select("key").
+		Where("id in (?) and `key` <> ''", ids).
+		Scan(&perKeys).Error
+	return
 }

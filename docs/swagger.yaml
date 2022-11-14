@@ -159,16 +159,16 @@ definitions:
     type: object
   permission.RespList:
     properties:
+      data:
+        items:
+          $ref: '#/definitions/model.PermissionShow'
+        type: array
       etime:
         type: string
       limit:
         type: integer
       offset:
         type: integer
-      permissions:
-        items:
-          $ref: '#/definitions/model.PermissionShow'
-        type: array
       stime:
         type: string
       total:
@@ -209,16 +209,16 @@ definitions:
     type: object
   role.RespList:
     properties:
+      data:
+        items:
+          $ref: '#/definitions/model.RoleShow'
+        type: array
       etime:
         type: string
       limit:
         type: integer
       offset:
         type: integer
-      roles:
-        items:
-          $ref: '#/definitions/model.RoleShow'
-        type: array
       stime:
         type: string
       total:
@@ -226,6 +226,10 @@ definitions:
     type: object
   user.RespList:
     properties:
+      data:
+        items:
+          $ref: '#/definitions/model.APIUser'
+        type: array
       etime:
         type: string
       limit:
@@ -236,10 +240,6 @@ definitions:
         type: string
       total:
         type: integer
-      users:
-        items:
-          $ref: '#/definitions/model.APIUser'
-        type: array
     type: object
 host: 127.0.0.1:8080
 info:
@@ -253,14 +253,14 @@ paths:
       - application/json
       description: This is an api to login
       parameters:
-      - description: 用户名
+      - description: 用户名[超管初始账户：admin]
         in: body
         maxLength: 32
         name: username
         required: true
         schema:
           type: string
-      - description: 密码
+      - description: 密码[超管初始密码：Admin123!]
         in: body
         maxLength: 32
         name: password

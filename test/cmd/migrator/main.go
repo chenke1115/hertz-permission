@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-31 11:50:38
- * @LastEditTime: 2022-11-08 15:28:37
+ * @LastEditTime: 2022-11-14 09:49:20
  * @Description: Do not edit
  */
 package main
@@ -10,8 +10,8 @@ import (
 	"flag"
 	"path"
 
+	"github.com/chenke1115/hertz-permission/internal/configs"
 	"github.com/chenke1115/hertz-permission/pkg/model"
-	"github.com/chenke1115/hertz-permission/test/configs"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"gorm.io/gorm"
 )

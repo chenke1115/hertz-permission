@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-03 15:56:20
+ * @LastEditTime: 2022-11-14 14:08:25
  * @Description: Do not edit
  */
 package permission
@@ -14,6 +14,7 @@ import (
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	_ "github.com/chenke1115/hertz-permission/internal/pkg/errors/validate"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -80,7 +81,8 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// set UpdateBy and UpdateTime
-	permission.UpdateBy = "admin" // TODO
+	cuser, _ := middleware.GetCurrentUser(ctx, c)
+	permission.UpdateBy = cuser.Account
 	permission.UpdateTime = date.DateUnix()
 
 	err = permission.Create(model.GetDB())

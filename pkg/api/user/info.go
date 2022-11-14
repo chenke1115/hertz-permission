@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 16:11:52
- * @LastEditTime: 2022-11-11 16:14:20
+ * @LastEditTime: 2022-11-14 16:55:26
  * @Description: Do not edit
  */
 package user
@@ -39,6 +39,12 @@ func CurrentUserHandler(ctx context.Context, c *app.RequestContext) {
 
 		response.HandleResponse(c, err, &currentUser)
 	}()
+
+	// Clean permission cache
+	err = middleware.CleanCurrentUserCache(ctx, c)
+	if err != nil {
+		return
+	}
 
 	currentUser, err = middleware.GetCurrentUser(ctx, c)
 }

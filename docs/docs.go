@@ -32,7 +32,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "maxLength": 32,
-                        "description": "用户名",
+                        "description": "用户名[超管初始账户：admin]",
                         "name": "username",
                         "in": "body",
                         "required": true,
@@ -42,7 +42,7 @@ const docTemplate = `{
                     },
                     {
                         "maxLength": 32,
-                        "description": "密码",
+                        "description": "密码[超管初始密码：Admin123!]",
                         "name": "password",
                         "in": "body",
                         "required": true,
@@ -2175,6 +2175,12 @@ const docTemplate = `{
         "permission.RespList": {
             "type": "object",
             "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.PermissionShow"
+                    }
+                },
                 "etime": {
                     "type": "string"
                 },
@@ -2183,12 +2189,6 @@ const docTemplate = `{
                 },
                 "offset": {
                     "type": "integer"
-                },
-                "permissions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.PermissionShow"
-                    }
                 },
                 "stime": {
                     "type": "string"
@@ -2251,6 +2251,12 @@ const docTemplate = `{
         "role.RespList": {
             "type": "object",
             "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RoleShow"
+                    }
+                },
                 "etime": {
                     "type": "string"
                 },
@@ -2259,12 +2265,6 @@ const docTemplate = `{
                 },
                 "offset": {
                     "type": "integer"
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.RoleShow"
-                    }
                 },
                 "stime": {
                     "type": "string"
@@ -2277,6 +2277,12 @@ const docTemplate = `{
         "user.RespList": {
             "type": "object",
             "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.APIUser"
+                    }
+                },
                 "etime": {
                     "type": "string"
                 },
@@ -2291,12 +2297,6 @@ const docTemplate = `{
                 },
                 "total": {
                     "type": "integer"
-                },
-                "users": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.APIUser"
-                    }
                 }
             }
         }

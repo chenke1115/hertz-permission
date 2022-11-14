@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-11-11 18:17:14
+ * @LastEditTime: 2022-11-14 11:30:01
  * @Description: Do not edit
  */
 package model
@@ -13,6 +13,8 @@ import (
 
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/constant/types"
+	"github.com/chenke1115/hertz-permission/internal/pkg/array"
 	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-permission/internal/pkg/hash"
@@ -269,6 +271,20 @@ func CheckUsernameAndPassword(username string, hashedPassword string) (cuser Cur
  */
 func (cuser CurrentUser) IsOwner(id int) bool {
 	return cuser.CustomerID == id
+}
+
+/**
+ * @description: Judge the user is super user or not
+ * @return {*}
+ */
+func (cuser CurrentUser) IsSuperUser() bool {
+	for _, role := range cuser.Roles {
+		if array.InArray(role, types.SuperRoleArr) {
+			return true
+		}
+	}
+
+	return false
 }
 
 /**

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-26 15:20:57
- * @LastEditTime: 2022-10-31 13:47:48
+ * @LastEditTime: 2022-11-14 17:28:45
  * @Description: Do not edit
  */
 package main
@@ -10,11 +10,13 @@ import (
 	"flag"
 	"path"
 
+	"github.com/chenke1115/hertz-permission/internal/configs"
 	"github.com/chenke1115/hertz-permission/test"
-	"github.com/chenke1115/hertz-permission/test/configs"
 )
 
 var configFile = flag.String("c", path.Base("app.yaml"), "config file")
+
+// var configFile = flag.String("c", "/Users/changge/program/go/src/github.com/chenke1115/hertz-permission/app.yaml", "config file")
 
 // @title    hertz-permission
 // @version  1.0.0

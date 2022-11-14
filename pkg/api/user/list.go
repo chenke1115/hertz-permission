@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:42:44
- * @LastEditTime: 2022-11-09 17:42:49
+ * @LastEditTime: 2022-11-14 17:11:58
  * @Description: Do not edit
  */
 package user
@@ -19,7 +19,7 @@ import (
 
 type RespList struct {
 	Total int64            `json:"total"`
-	Users *[]model.APIUser `json:"users"`
+	Users *[]model.APIUser `json:"data"`
 	query.PaginationQuery
 }
 

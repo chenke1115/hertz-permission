@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-07 10:15:42
+ * @LastEditTime: 2022-11-14 14:09:27
  * @Description: Do not edit
  */
 package role
@@ -13,6 +13,7 @@ import (
 	"github.com/chenke1115/hertz-permission/internal/pkg/date"
 	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -63,8 +64,9 @@ func AddHandler(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	role.CreatorID = 1      // TODO
-	role.UpdateBy = "admin" // TODO
+	cuser, _ := middleware.GetCurrentUser(ctx, c)
+	role.CreatorID = cuser.ID
+	role.UpdateBy = cuser.Account
 	role.UpdateTime = date.DateUnix()
 
 	err = role.Create(model.GetDB())

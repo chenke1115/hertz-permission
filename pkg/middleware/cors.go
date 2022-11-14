@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-19 17:09:52
- * @LastEditTime: 2022-10-14 17:29:04
+ * @LastEditTime: 2022-11-14 14:15:19
  * @Description: Do not edit
  */
 package middleware
@@ -16,7 +16,7 @@ import (
 // CORS
 func Cors() app.HandlerFunc {
 	return cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:8000"}, // Allowed domains, need to bring schema
+		AllowOrigins: []string{"*"}, // Allowed domains, need to bring schema
 		AllowMethods: []string{
 			"GET",
 			"POST",

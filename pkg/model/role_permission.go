@@ -1,13 +1,14 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:55:40
- * @LastEditTime: 2022-11-08 14:10:28
+ * @LastEditTime: 2022-11-14 15:52:24
  * @Description: Do not edit
  */
 package model
 
 import (
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
+	"github.com/chenke1115/hertz-permission/internal/pkg/array"
 	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
 
@@ -140,4 +141,23 @@ func IsExistPermissionID(permission_id int) bool {
 	err := GetDB().Model(&RolePermission{}).
 		First(&RolePermission{}, "permission_id = ?", permission_id).Error
 	return err == nil
+}
+
+/**
+ * @description: Do not edit
+ * @param {[]int} ids
+ * @return {*}
+ */
+func GetPermissionsByRoleIDs(ids []int) (permissions []string, err error) {
+	var perIDs []int
+	err = GetDB().Model(&RolePermission{}).
+		Select("permission_id").
+		Where("role_id in (?)", ids).
+		Scan(&perIDs).Error
+	if len(perIDs) < 1 {
+		return
+	}
+
+	permissions, err = GetPermissionKeysByIDs(array.UniqueArray(perIDs))
+	return
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 10:55:15
- * @LastEditTime: 2022-11-11 15:16:18
+ * @LastEditTime: 2022-11-14 13:50:10
  * @Description: Do not edit
  */
 package auth
@@ -30,8 +30,8 @@ type ReqLoginData struct {
 // @Tags        Auth.Login
 // @Accept      json
 // @Produce     json
-// @Param       username body     string true "用户名" maxlength(32)
-// @Param       password body     string true "密码"  maxlength(32)
+// @Param       username body     string true "用户名[超管初始账户：admin]"    maxlength(32)
+// @Param       password body     string true "密码[超管初始密码：Admin123!]" maxlength(32)
 // @Success     200      {object} response.BaseResponse{data=interface{}}
 // @Failure     400      {object} response.BaseResponse{data=interface{}}
 // @Router      /api/auth/login [post]

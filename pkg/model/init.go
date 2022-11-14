@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2022-11-09 15:42:51
+ * @LastEditTime: 2022-11-14 09:48:51
  * @Description: Do not edit
  */
 package model
@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/chenke1115/hertz-permission/internal/configs"
 	"github.com/chenke1115/hertz-permission/internal/pkg/query"
-	"github.com/chenke1115/hertz-permission/test/configs"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

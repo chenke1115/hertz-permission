@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-22 11:35:57
- * @LastEditTime: 2022-11-11 11:32:21
+ * @LastEditTime: 2022-11-14 11:28:42
  * @Description: Do not edit
  */
 package middleware
@@ -29,12 +29,12 @@ func permissionCheck() app.HandlerFunc {
 			url := conver.Strval(c.Request.RequestURI())
 
 			// Check
-			// if !currentUser.IsSuper() {
-			if !currentUser.CheckPermission(url) {
-				response.HandleResponse(c, errors.New(errors.Forbidden), nil)
-				c.Abort()
+			if !currentUser.IsSuperUser() {
+				if !currentUser.CheckPermission(url) {
+					response.HandleResponse(c, errors.New(errors.Forbidden), nil)
+					c.Abort()
+				}
 			}
-			// }
 
 			c.Next(ctx)
 		}
