@@ -1,13 +1,14 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-11-14 11:30:01
+ * @LastEditTime: 2022-11-15 10:58:27
  * @Description: Do not edit
  */
 package model
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 
@@ -98,9 +99,10 @@ func (q UserQuery) Search() (list *[]APIUser, total int64, err error) {
 	}
 
 	if q.Status != "" {
-		tx = tx.Where("`user`.`status` = ?", q.Status)
-	} else {
-		tx = tx.Where("`user`.`status` = ?", status.StateEnabled)
+		state, _ := strconv.Atoi(q.Status)
+		if array.In(state, []int{status.StateInit, status.StateEnabled}) {
+			tx = tx.Where("`user`.`status` = ?", q.Status)
+		}
 	}
 
 	// Get data

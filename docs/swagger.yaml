@@ -968,7 +968,7 @@ paths:
       - description: 角色标识
         example: “SYS_ADMIN”
         in: body
-        name: Key
+        name: key
         required: true
         schema:
           type: string

@@ -864,7 +864,7 @@ const docTemplate = `{
                     {
                         "example": "“SYS_ADMIN”",
                         "description": "角色标识",
-                        "name": "Key",
+                        "name": "key",
                         "in": "body",
                         "required": true,
                         "schema": {

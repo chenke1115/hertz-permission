@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-14 14:09:27
+ * @LastEditTime: 2022-11-15 11:40:26
  * @Description: Do not edit
  */
 package role
@@ -33,7 +33,7 @@ type ReqAddData struct {
 // @Accept      json
 // @Produce     json
 // @Param       name   body     string true  "角色名"             example(“系统管理员”)
-// @Param       Key    body     string true  "角色标识"            example(“SYS_ADMIN”)
+// @Param       key    body     string true  "角色标识"            example(“SYS_ADMIN”)
 // @Param       status body     int    false "角色状态[1:正常;0:停用]" Enums(1, 0)
 // @Param       remark body     string false "备注"              maxlength(255)
 // @Success     200    {object} response.BaseResponse{data=interface{}}
