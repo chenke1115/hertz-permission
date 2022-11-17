@@ -10,7 +10,7 @@ import (
 	"flag"
 	"path"
 
-	"github.com/chenke1115/hertz-permission/internal/configs"
+	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"gorm.io/gorm"

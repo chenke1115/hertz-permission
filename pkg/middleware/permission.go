@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-22 11:35:57
- * @LastEditTime: 2022-11-14 11:28:42
+ * @LastEditTime: 2022-11-17 18:15:49
  * @Description: Do not edit
  */
 package middleware
@@ -9,10 +9,9 @@ package middleware
 import (
 	"context"
 
-	"github.com/chenke1115/hertz-permission/internal/pkg/conver"
-	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
-
+	"github.com/chenke1115/go-common/functions/conver"
+	"github.com/chenke1115/hertz-common/pkg/errors"
+	"github.com/chenke1115/hertz-common/pkg/response"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -26,7 +25,7 @@ func permissionCheck() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		if currentUser, _ := GetCurrentUser(ctx, c); currentUser != nil {
 			// Url string
-			url := conver.Strval(c.Request.RequestURI())
+			url := conver.ToString(c.Request.RequestURI())
 
 			// Check
 			if !currentUser.IsSuperUser() {

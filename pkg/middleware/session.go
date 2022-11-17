@@ -10,9 +10,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/chenke1115/hertz-permission/internal/configs"
+	"github.com/chenke1115/go-common/configs"
+	"github.com/chenke1115/hertz-common/global"
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
-	"github.com/chenke1115/hertz-permission/internal/constant/global"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
 	"github.com/hertz-contrib/sessions/redis"

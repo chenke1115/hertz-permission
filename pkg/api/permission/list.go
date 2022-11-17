@@ -9,11 +9,11 @@ package permission
 import (
 	"context"
 
+	"github.com/chenke1115/hertz-common/pkg/errors"
+	_ "github.com/chenke1115/hertz-common/pkg/errors/validate"
+	"github.com/chenke1115/hertz-common/pkg/query"
+	"github.com/chenke1115/hertz-common/pkg/response"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	_ "github.com/chenke1115/hertz-permission/internal/pkg/errors/validate"
-	"github.com/chenke1115/hertz-permission/internal/pkg/query"
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"

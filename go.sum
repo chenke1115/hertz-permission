@@ -16,6 +16,10 @@ github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7/go.mod h1:2ZlV9BaU
 github.com/bytedance/sonic v1.3.0/go.mod h1:V973WhNhGmvHxW6nQmsHEfHaoU9F3zTF+93rH03hcUQ=
 github.com/bytedance/sonic v1.5.0 h1:XWdTi8bwPgxIML+eNV1IwNuTROK6EUrQ65ey8yd6fRQ=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=
+github.com/chenke1115/go-common v0.1.1 h1:fulc/NyFa3fdeDn2GEM2GAnDoUVyFYMr4ZD66zkgi/U=
+github.com/chenke1115/go-common v0.1.1/go.mod h1:SL4EmM3bL+lvcTWztvun04K4nOUdCd0awY6OoGQtnt0=
+github.com/chenke1115/hertz-common v0.1.0 h1:YeHYqPtCSf5oN2EmjA92a6gL84s7+ftnuziBGFiNflM=
+github.com/chenke1115/hertz-common v0.1.0/go.mod h1:mUO3CQejH7t+PCe+VwmmHrntVfYCWaOPSjS86qzI3So=
 github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06 h1:1sDoSuDPWzhkdzNVxCxtIaKiAe96ESVPv8coGwc1gZ4=
 github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06/go.mod h1:DH46F32mSOjUmXrMHnKwZdA8wcEefY7UVqBKYGjpdQY=
 github.com/cloudwego/hertz v0.0.1/go.mod h1:prTyExvsH/UmDkvfU3dp3EHsZFQISfT8R7BirvpTKdo=

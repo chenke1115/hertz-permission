@@ -9,10 +9,10 @@ package auth
 import (
 	"context"
 
+	"github.com/chenke1115/hertz-common/pkg/errors"
+	"github.com/chenke1115/hertz-common/pkg/response"
+	_ "github.com/chenke1115/hertz-common/pkg/validate"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
-	_ "github.com/chenke1115/hertz-permission/internal/pkg/validate"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 
 	"github.com/cloudwego/hertz/pkg/app"

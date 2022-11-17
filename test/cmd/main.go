@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-26 15:20:57
- * @LastEditTime: 2022-11-14 17:28:45
+ * @LastEditTime: 2022-11-17 18:04:07
  * @Description: Do not edit
  */
 package main
@@ -10,7 +10,7 @@ import (
 	"flag"
 	"path"
 
-	"github.com/chenke1115/hertz-permission/internal/configs"
+	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/hertz-permission/test"
 )
 

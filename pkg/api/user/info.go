@@ -9,7 +9,7 @@ package user
 import (
 	"context"
 
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-common/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 

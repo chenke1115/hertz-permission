@@ -9,8 +9,8 @@ package permission
 import (
 	"context"
 
-	"github.com/chenke1115/hertz-permission/internal/constant/global"
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-common/global"
+	"github.com/chenke1115/hertz-common/pkg/response"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-22 10:48:17
- * @LastEditTime: 2022-11-14 16:52:04
+ * @LastEditTime: 2022-11-17 18:15:37
  * @Description: Do not edit
  */
 package middleware
@@ -11,12 +11,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/chenke1115/go-common/functions/conver"
+	"github.com/chenke1115/go-common/functions/hash"
+	"github.com/chenke1115/hertz-common/global"
+	"github.com/chenke1115/hertz-common/pkg/errors"
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
-	"github.com/chenke1115/hertz-permission/internal/constant/global"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/pkg/array"
-	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	"github.com/chenke1115/hertz-permission/internal/pkg/hash"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -75,7 +75,7 @@ func Jwt() *jwt.HertzJWTMiddleware {
 				Name:        claims[nameKey].(string),
 				Account:     claims[accountKey].(string),
 				CustomerID:  int(claims[customerIDKey].(float64)),
-				Roles:       array.ToArray(claims[rolesKey]),
+				Roles:       conver.ToArray(claims[rolesKey]),
 				Permissions: []string{},
 			}
 		},

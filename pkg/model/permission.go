@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-14 16:29:19
+ * @LastEditTime: 2022-11-17 18:08:45
  * @Description: Do not edit
  */
 package model
@@ -12,15 +12,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chenke1115/hertz-permission/internal/constant/global"
+	"github.com/chenke1115/go-common/functions/array"
+	"github.com/chenke1115/go-common/functions/conver"
+	"github.com/chenke1115/go-common/functions/date"
+	"github.com/chenke1115/go-common/functions/match"
+	"github.com/chenke1115/hertz-common/global"
+	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
+	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
+	"github.com/chenke1115/hertz-common/pkg/query"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/internal/constant/types"
-	"github.com/chenke1115/hertz-permission/internal/pkg/array"
-	"github.com/chenke1115/hertz-permission/internal/pkg/date"
-	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
-	"github.com/chenke1115/hertz-permission/internal/pkg/match"
-	"github.com/chenke1115/hertz-permission/internal/pkg/query"
 
 	"gorm.io/gorm"
 )
@@ -76,7 +77,7 @@ func (model Permission) TableName() string {
  */
 func (model Permission) Before() error {
 	// Type
-	if model.Type != "" && !array.In(model.Type, array.StructToArray(types.PermissionTypeArr)) {
+	if model.Type != "" && !array.In(model.Type, conver.StructToArray(types.PermissionTypeArr)) {
 		return iErrors.New(status.PermissionTypeErrorCode)
 	}
 

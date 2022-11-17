@@ -9,7 +9,7 @@ package middleware
 import (
 	"context"
 
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
+	"github.com/chenke1115/hertz-common/pkg/response"
 
 	"github.com/cloudwego/hertz/pkg/app"
 )

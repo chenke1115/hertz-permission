@@ -9,9 +9,9 @@ package model
 import (
 	"time"
 
+	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
+	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
 
 	"gorm.io/gorm"
 )

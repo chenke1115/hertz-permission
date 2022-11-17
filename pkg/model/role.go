@@ -10,13 +10,13 @@ import (
 	"errors"
 	"time"
 
+	"github.com/chenke1115/go-common/functions/array"
+	"github.com/chenke1115/go-common/functions/date"
+	"github.com/chenke1115/go-common/functions/match"
+	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
+	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
+	"github.com/chenke1115/hertz-common/pkg/query"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/pkg/array"
-	"github.com/chenke1115/hertz-permission/internal/pkg/date"
-	iErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	gErrors "github.com/chenke1115/hertz-permission/internal/pkg/errors/gorm"
-	"github.com/chenke1115/hertz-permission/internal/pkg/match"
-	"github.com/chenke1115/hertz-permission/internal/pkg/query"
 
 	"gorm.io/gorm"
 )

@@ -10,9 +10,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/chenke1115/go-common/configs"
+	"github.com/chenke1115/hertz-common/global"
 	_ "github.com/chenke1115/hertz-permission/docs"
-	"github.com/chenke1115/hertz-permission/internal/configs"
-	"github.com/chenke1115/hertz-permission/internal/constant/global"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/route"
 

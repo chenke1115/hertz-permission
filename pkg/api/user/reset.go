@@ -10,12 +10,12 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/chenke1115/go-common/functions/hash"
+	"github.com/chenke1115/hertz-common/pkg/errors"
+	"github.com/chenke1115/hertz-common/pkg/response"
+	_ "github.com/chenke1115/hertz-common/pkg/validate"
 	"github.com/chenke1115/hertz-permission/internal/constant/consts"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/pkg/errors"
-	"github.com/chenke1115/hertz-permission/internal/pkg/hash"
-	"github.com/chenke1115/hertz-permission/internal/pkg/response"
-	_ "github.com/chenke1115/hertz-permission/internal/pkg/validate"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
 	"github.com/cloudwego/hertz/pkg/app"
