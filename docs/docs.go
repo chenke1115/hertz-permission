@@ -393,7 +393,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/permission.RespList"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespList"
                                         }
                                     }
                                 }
@@ -809,7 +809,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/permission.RespInfo"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo"
                                         }
                                     }
                                 }
@@ -958,7 +958,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/role.RespList"
+                                            "$ref": "#/definitions/pkg_api_role.RespList"
                                         }
                                     }
                                 }
@@ -1380,7 +1380,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/role.RespInfo"
+                                            "$ref": "#/definitions/pkg_api_role.RespInfo"
                                         }
                                     }
                                 }
@@ -1570,7 +1570,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/user.RespList"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_user.RespList"
                                         }
                                     }
                                 }
@@ -1933,6 +1933,175 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "components": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "visible": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.com_chenke1115_hertz-permission_pkg_api_permission.RespList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.PermissionShow"
+                    }
+                },
+                "etime": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "stime": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.com_chenke1115_hertz-permission_pkg_api_role.RespInfo": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "creator_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_del": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github.com_chenke1115_hertz-permission_pkg_api_role.RespList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RoleShow"
+                    }
+                },
+                "etime": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "stime": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github.com_chenke1115_hertz-permission_pkg_api_user.RespList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.APIUser"
+                    }
+                },
+                "etime": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "stime": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.APIUser": {
             "type": "object",
             "properties": {
@@ -2119,7 +2288,7 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.RespInfo": {
+        "pkg_api_permission.RespInfo": {
             "type": "object",
             "properties": {
                 "alias": {
@@ -2172,7 +2341,7 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.RespList": {
+        "pkg_api_permission.RespList": {
             "type": "object",
             "properties": {
                 "data": {
@@ -2198,19 +2367,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.BaseResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {},
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "role.RespInfo": {
+        "pkg_api_role.RespInfo": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -2248,7 +2405,7 @@ const docTemplate = `{
                 }
             }
         },
-        "role.RespList": {
+        "pkg_api_role.RespList": {
             "type": "object",
             "properties": {
                 "data": {
@@ -2274,7 +2431,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.RespList": {
+        "pkg_api_user.RespList": {
             "type": "object",
             "properties": {
                 "data": {
@@ -2297,6 +2454,18 @@ const docTemplate = `{
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "response.BaseResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
                 }
             }
         }

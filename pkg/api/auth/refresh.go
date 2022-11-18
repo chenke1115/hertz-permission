@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 11:56:14
- * @LastEditTime: 2022-11-11 14:07:48
+ * @LastEditTime: 2022-11-18 17:31:46
  * @Description: Do not edit
  */
 package auth
@@ -25,6 +25,6 @@ import (
 func RefreshHandler(ctx context.Context, c *app.RequestContext) {
 	// Response
 	defer func() {
-		middleware.JwtRefreshHandler(ctx, c)
+		middleware.Jwt().RefreshHandler(ctx, c)
 	}()
 }

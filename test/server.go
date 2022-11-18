@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2022-11-14 15:59:42
+ * @LastEditTime: 2022-11-18 17:20:11
  * @Description: Do not edit
  */
 package test
@@ -36,7 +36,7 @@ func RegisterRoute(h *server.Hertz) {
 	)
 
 	// NoRoute
-	h.NoRoute(middleware.JwtMiddlewareFunc, middleware.JwtNoRoute())
+	h.NoRoute(middleware.JwtMiddlewareFunc(), middleware.JwtNoRoute())
 
 	// Group of api
 	apiGroup := h.Group("api")

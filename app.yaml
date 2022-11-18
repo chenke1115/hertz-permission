@@ -1,6 +1,15 @@
 # Config file
 Debug: true
 
+# App
+App:
+  Name: "hertz-permission"
+  User:
+    Super: ["super_user", "sys_admin"]
+    Password:
+      Salt: "hertz-permission" # use to encode
+      Init: "Admin123!" # default password
+
 # Server config
 Server: 
   Http:
@@ -27,6 +36,13 @@ Redis:
   Addr: ":6379"
   Password:
   Size: 10
+
+# Session
+Session:
+  Driver: "redis" # redis || cookie
+  Name: "hertz-permission"
+  Secret: "secret"
+
 
 # Swagger config
 Swagger:

@@ -1,5 +1,116 @@
 basePath: /
 definitions:
+  github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo:
+    properties:
+      alias:
+        type: string
+      components:
+        type: string
+      created_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      remark:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: integer
+      type:
+        type: string
+      update_by:
+        type: string
+      update_time:
+        type: string
+      updated_at:
+        type: string
+      visible:
+        type: integer
+    type: object
+  github.com_chenke1115_hertz-permission_pkg_api_permission.RespList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.PermissionShow'
+        type: array
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      stime:
+        type: string
+      total:
+        type: integer
+    type: object
+  github.com_chenke1115_hertz-permission_pkg_api_role.RespInfo:
+    properties:
+      created_at:
+        type: string
+      creator_id:
+        type: integer
+      id:
+        type: integer
+      is_del:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+      update_by:
+        type: string
+      update_time:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github.com_chenke1115_hertz-permission_pkg_api_role.RespList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.RoleShow'
+        type: array
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      stime:
+        type: string
+      total:
+        type: integer
+    type: object
+  github.com_chenke1115_hertz-permission_pkg_api_user.RespList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.APIUser'
+        type: array
+      etime:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      stime:
+        type: string
+      total:
+        type: integer
+    type: object
   model.APIUser:
     properties:
       account:
@@ -122,7 +233,7 @@ definitions:
       updated_at:
         type: string
     type: object
-  permission.RespInfo:
+  pkg_api_permission.RespInfo:
     properties:
       alias:
         type: string
@@ -157,7 +268,7 @@ definitions:
       visible:
         type: integer
     type: object
-  permission.RespList:
+  pkg_api_permission.RespList:
     properties:
       data:
         items:
@@ -174,15 +285,7 @@ definitions:
       total:
         type: integer
     type: object
-  response.BaseResponse:
-    properties:
-      code:
-        type: integer
-      data: {}
-      message:
-        type: string
-    type: object
-  role.RespInfo:
+  pkg_api_role.RespInfo:
     properties:
       created_at:
         type: string
@@ -207,7 +310,7 @@ definitions:
       updated_at:
         type: string
     type: object
-  role.RespList:
+  pkg_api_role.RespList:
     properties:
       data:
         items:
@@ -224,7 +327,7 @@ definitions:
       total:
         type: integer
     type: object
-  user.RespList:
+  pkg_api_user.RespList:
     properties:
       data:
         items:
@@ -240,6 +343,14 @@ definitions:
         type: string
       total:
         type: integer
+    type: object
+  response.BaseResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
     type: object
 host: 127.0.0.1:8080
 info:
@@ -522,7 +633,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/permission.RespInfo'
+                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo'
               type: object
         "400":
           description: Bad Request
@@ -661,7 +772,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/permission.RespList'
+                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespList'
               type: object
         "400":
           description: Bad Request
@@ -938,7 +1049,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/role.RespInfo'
+                  $ref: '#/definitions/pkg_api_role.RespInfo'
               type: object
         "400":
           description: Bad Request
@@ -1025,7 +1136,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/role.RespList'
+                  $ref: '#/definitions/pkg_api_role.RespList'
               type: object
         "400":
           description: Bad Request
@@ -1364,7 +1475,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/user.RespList'
+                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_user.RespList'
               type: object
         "400":
           description: Bad Request

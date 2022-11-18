@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 09:56:19
- * @LastEditTime: 2022-11-14 10:37:12
+ * @LastEditTime: 2022-11-18 17:20:05
  * @Description: Do not edit
  */
 package auth
@@ -22,7 +22,7 @@ func RegisterAuthRouter(g *route.RouterGroup) {
 	// Login
 	auth.POST("/login", LoginHandler)
 
-	auth.Use(middleware.JwtMiddlewareFunc, middleware.PermissionMiddleware)
+	auth.Use(middleware.JwtMiddlewareFunc(), middleware.PermissionMiddleware)
 	{
 		// Refresh time can be longer than token timeout
 		auth.POST("/refresh_token", RefreshHandler)

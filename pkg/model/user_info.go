@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-11-15 10:58:27
+ * @LastEditTime: 2022-11-18 16:51:24
  * @Description: Do not edit
  */
 package model
@@ -12,15 +12,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/go-common/functions/array"
 	"github.com/chenke1115/go-common/functions/hash"
 	"github.com/chenke1115/go-common/functions/match"
 	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-common/pkg/query"
-	"github.com/chenke1115/hertz-permission/internal/constant/consts"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-	"github.com/chenke1115/hertz-permission/internal/constant/types"
 
 	"gorm.io/gorm"
 )
@@ -131,8 +130,9 @@ func (model UserInfo) Create(tx *gorm.DB) (err error) {
 		}
 
 		// create user
+		userConf := configs.GetConf().App.User
 		var user = User{
-			Password:  hash.GetHashedPassword(consts.InitPassword, consts.Salt),
+			Password:  hash.GetHashedPassword(userConf.Password.Init, userConf.Password.Salt),
 			AccountID: model.ID,
 		}
 		if err = user.Create(tx); err != nil {
@@ -280,8 +280,9 @@ func (cuser CurrentUser) IsOwner(id int) bool {
  * @return {*}
  */
 func (cuser CurrentUser) IsSuperUser() bool {
+	superRoleArr := configs.GetConf().App.User.Super
 	for _, role := range cuser.Roles {
-		if array.InArray(role, types.SuperRoleArr) {
+		if array.InArray(role, superRoleArr) {
 			return true
 		}
 	}

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:20:25
- * @LastEditTime: 2022-11-14 10:38:08
+ * @LastEditTime: 2022-11-18 17:20:20
  * @Description: Do not edit
  */
 package route
@@ -42,7 +42,7 @@ func LoadModulesWithoutAuth(g *route.RouterGroup) {
  */
 func LoadModulesWithAuth(g *route.RouterGroup) {
 	// Jwt and permission
-	g.Use(middleware.JwtMiddlewareFunc, middleware.PermissionMiddleware)
+	g.Use(middleware.JwtMiddlewareFunc(), middleware.PermissionMiddleware)
 
 	permission.RegisterPermissionRouter(g)
 	role.RegisterRoleRouter(g)

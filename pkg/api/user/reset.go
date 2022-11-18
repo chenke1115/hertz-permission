@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:43:39
- * @LastEditTime: 2022-11-09 18:33:32
+ * @LastEditTime: 2022-11-18 16:58:08
  * @Description: Do not edit
  */
 package user
@@ -10,11 +10,11 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/go-common/functions/hash"
 	"github.com/chenke1115/hertz-common/pkg/errors"
 	"github.com/chenke1115/hertz-common/pkg/response"
 	_ "github.com/chenke1115/hertz-common/pkg/validate"
-	"github.com/chenke1115/hertz-permission/internal/constant/consts"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/pkg/model"
 
@@ -72,11 +72,12 @@ func ResetHandler(ctx context.Context, c *app.RequestContext) {
 	}
 
 	// Check old password
-	if !hash.CheckHashedPassword(req.OldPassword, consts.Salt, user.Password) {
+	userConf := configs.GetConf().App.User
+	if !hash.CheckHashedPassword(req.OldPassword, userConf.Password.Salt, user.Password) {
 		err = errors.New(status.UserIncorrectOldPasswordCode)
 		return
 	}
 
-	user.Password = hash.GetHashedPassword(req.Password, consts.Salt)
+	user.Password = hash.GetHashedPassword(req.Password, userConf.Password.Salt)
 	err = user.Edit(model.GetDB())
 }

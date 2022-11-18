@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 11:55:43
- * @LastEditTime: 2022-11-14 10:31:48
+ * @LastEditTime: 2022-11-18 17:31:33
  * @Description: Do not edit
  */
 package auth
@@ -25,6 +25,6 @@ import (
 func LogoutHandler(ctx context.Context, c *app.RequestContext) {
 	// Response
 	defer func() {
-		middleware.JwtLogoutHandler(ctx, c)
+		middleware.Jwt().LogoutHandler(ctx, c)
 	}()
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-22 10:48:17
- * @LastEditTime: 2022-11-17 18:15:37
+ * @LastEditTime: 2022-11-18 17:31:20
  * @Description: Do not edit
  */
 package middleware
@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/go-common/functions/conver"
 	"github.com/chenke1115/go-common/functions/hash"
 	"github.com/chenke1115/hertz-common/global"
@@ -25,18 +26,13 @@ import (
 )
 
 var (
-	identityKey    = consts.CurrentUserKey
+	identityKey    = "current_user"
 	uidKey         = "uid"
 	nameKey        = "name"
 	accountKey     = "account"
 	customerIDKey  = "customer_id"
 	rolesKey       = "roles"
 	permissionsKey = "permissions"
-
-	JwtMiddlewareFunc = Jwt().MiddlewareFunc()
-	JwtLoginHandler   = Jwt().LoginHandler
-	JwtLogoutHandler  = Jwt().LogoutHandler
-	JwtRefreshHandler = Jwt().RefreshHandler
 )
 
 type login struct {
@@ -50,7 +46,7 @@ type login struct {
  */
 func Jwt() *jwt.HertzJWTMiddleware {
 	authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
-		Realm:       consts.AppName,
+		Realm:       configs.GetConf().App.Name,
 		Key:         []byte("secret key"),
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
@@ -88,7 +84,7 @@ func Jwt() *jwt.HertzJWTMiddleware {
 			username := loginVals.Username
 			password := loginVals.Password
 
-			if cuser, err := model.CheckUsernameAndPassword(username, hash.GetHashedPassword(password, consts.Salt)); err == nil {
+			if cuser, err := model.CheckUsernameAndPassword(username, hash.GetHashedPassword(password, configs.GetConf().App.User.Password.Salt)); err == nil {
 				return &cuser, nil
 			}
 
@@ -137,6 +133,10 @@ func Jwt() *jwt.HertzJWTMiddleware {
 	}
 
 	return authMiddleware
+}
+
+func JwtMiddlewareFunc() app.HandlerFunc {
+	return Jwt().MiddlewareFunc()
 }
 
 /**

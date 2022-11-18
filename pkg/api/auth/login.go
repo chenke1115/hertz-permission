@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 10:55:15
- * @LastEditTime: 2022-11-14 13:50:10
+ * @LastEditTime: 2022-11-18 17:30:20
  * @Description: Do not edit
  */
 package auth
@@ -49,7 +49,7 @@ func LoginHandler(ctx context.Context, c *app.RequestContext) {
 		}
 
 		// Jwt
-		middleware.JwtLoginHandler(ctx, c)
+		middleware.Jwt().LoginHandler(ctx, c)
 	}()
 
 	// BindAndValidate

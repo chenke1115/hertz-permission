@@ -3,7 +3,7 @@ module github.com/chenke1115/hertz-permission
 go 1.18
 
 require (
-	github.com/chenke1115/go-common v0.1.1
+	github.com/chenke1115/go-common v0.1.2
 	github.com/chenke1115/hertz-common v0.1.0
 	github.com/cloudwego/hertz v0.4.0
 	github.com/hertz-contrib/cors v0.0.0-20220601061225-50f4e582beaf
