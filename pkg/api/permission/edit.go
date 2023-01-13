@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:45:52
- * @LastEditTime: 2022-11-14 14:09:01
+ * @LastEditTime: 2023-01-09 14:54:28
  * @Description: Do not edit
  */
 package permission
@@ -41,6 +41,7 @@ type ReqEditData struct {
 // @Tags        PermissionEdit
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id         query    int    true  "权限ID" example(1)
 // @Param       pid        body     int    true  "父级ID" example(1)
 // @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
@@ -51,7 +52,7 @@ type ReqEditData struct {
 // @Param       sort       body     int    false "排序[从小到大]"            default(0)
 // @Param       icon       body     string false "图标"                  maxlength(255)
 // @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
-// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
+// @Param       status     body     int    false "菜单状态[1:正常 0:停用]"     Enums(1, 0)
 // @Param       remark     body     string false "备注"                  maxlength(255)
 // @Success     200        {object} response.BaseResponse{data=interface{}}
 // @Failure     400        {object} response.BaseResponse{data=interface{}}

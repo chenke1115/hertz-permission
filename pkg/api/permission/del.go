@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:46:27
- * @LastEditTime: 2022-11-01 10:46:50
+ * @LastEditTime: 2023-01-09 14:54:22
  * @Description: Do not edit
  */
 package permission
@@ -24,6 +24,7 @@ import (
 // @Tags        PermissionDel
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id  query    int true "权限ID" example(1)
 // @Success     200 {object} response.BaseResponse{data=interface{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}

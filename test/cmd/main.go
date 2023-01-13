@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-26 15:20:57
- * @LastEditTime: 2022-11-18 17:16:29
+ * @LastEditTime: 2023-01-09 14:53:29
  * @Description: Do not edit
  */
 package main
@@ -18,11 +18,14 @@ var configFile = flag.String("c", path.Base("app.yaml"), "config file")
 
 // var configFile = flag.String("c", "/Users/changge/program/go/src/github.com/chenke1115/hertz-permission/app.yaml", "config file")
 
-// @title    hertz-permission
-// @version  1.0.0
-// @BasePath /
-// @host     127.0.0.1:8080
-// @schemes  http
+// @title                      hertz-permission
+// @version                    1.0.0
+// @BasePath                   /
+// @host                       127.0.0.1:8080
+// @schemes                    http
+// @securityDefinitions.apikey authorization
+// @name                       Authorization
+// @in                         header
 func main() {
 	flag.Parse()
 

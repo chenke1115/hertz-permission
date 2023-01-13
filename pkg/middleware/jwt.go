@@ -1,14 +1,16 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-22 10:48:17
- * @LastEditTime: 2022-11-18 17:31:20
+ * @LastEditTime: 2023-01-13 17:06:00
  * @Description: Do not edit
  */
 package middleware
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/chenke1115/go-common/configs"
@@ -26,13 +28,12 @@ import (
 )
 
 var (
-	identityKey    = "current_user"
-	uidKey         = "uid"
-	nameKey        = "name"
-	accountKey     = "account"
-	customerIDKey  = "customer_id"
-	rolesKey       = "roles"
-	permissionsKey = "permissions"
+	identityKey   = "current_user"
+	uidKey        = "uid"
+	nameKey       = "name"
+	accountKey    = "account"
+	customerIDKey = "customer_id"
+	rolesKey      = "roles"
 )
 
 type login struct {
@@ -48,18 +49,17 @@ func Jwt() *jwt.HertzJWTMiddleware {
 	authMiddleware, err := jwt.New(&jwt.HertzJWTMiddleware{
 		Realm:       configs.GetConf().App.Name,
 		Key:         []byte("secret key"),
-		Timeout:     time.Hour,
-		MaxRefresh:  time.Hour,
+		Timeout:     time.Hour * 24,
+		MaxRefresh:  time.Hour * 24,
 		IdentityKey: identityKey,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*model.CurrentUser); ok {
 				return jwt.MapClaims{
-					uidKey:         v.ID,
-					nameKey:        v.Name,
-					accountKey:     v.Account,
-					customerIDKey:  v.CustomerID,
-					rolesKey:       v.Roles,
-					permissionsKey: v.Permissions,
+					uidKey:        v.ID,
+					nameKey:       v.Name,
+					accountKey:    v.Account,
+					customerIDKey: v.CustomerID,
+					rolesKey:      v.Roles,
 				}
 			}
 			return jwt.MapClaims{}
@@ -72,13 +72,14 @@ func Jwt() *jwt.HertzJWTMiddleware {
 				Account:     claims[accountKey].(string),
 				CustomerID:  int(claims[customerIDKey].(float64)),
 				Roles:       conver.ToArray(claims[rolesKey]),
-				Permissions: []string{},
+				Permissions: []model.Permission{},
 			}
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			var loginVals login
 			if err := c.BindAndValidate(&loginVals); err != nil {
-				return "", jwt.ErrMissingLoginValues
+				// return "", jwt.ErrMissingLoginValues
+				return "", fmt.Errorf(errors.GetCodeReason(status.UserLoginErrCode))
 			}
 
 			username := loginVals.Username
@@ -88,7 +89,8 @@ func Jwt() *jwt.HertzJWTMiddleware {
 				return &cuser, nil
 			}
 
-			return nil, jwt.ErrFailedAuthentication
+			// return nil, jwt.ErrFailedAuthentication
+			return nil, fmt.Errorf(errors.GetCodeReason(status.UserLoginErrCode))
 		},
 		Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
 			if _, ok := data.(*model.CurrentUser); ok {
@@ -97,6 +99,12 @@ func Jwt() *jwt.HertzJWTMiddleware {
 			return false
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
+			if strings.ToLower(message) == jwt.ErrExpiredToken.Error() {
+				message = errors.GetCodeReason(status.UserLoginExpiredCode)
+			} else {
+				code = errors.BadRequest
+			}
+
 			c.JSON(code, map[string]interface{}{
 				"code":    code,
 				"message": message,
@@ -135,6 +143,10 @@ func Jwt() *jwt.HertzJWTMiddleware {
 	return authMiddleware
 }
 
+/**
+ * @description: Jwt func
+ * @return {*}
+ */
 func JwtMiddlewareFunc() app.HandlerFunc {
 	return Jwt().MiddlewareFunc()
 }
@@ -192,22 +204,34 @@ func GetCurrentUser(ctx context.Context, c *app.RequestContext) (user *model.Cur
 	}
 
 	// Get cache
-	cacheKey := fmt.Sprintf(consts.UserPermissionCacheKey, user.ID)
-	cacheVal := global.Session.Get(cacheKey)
-	if cacheVal != nil {
-		user.Permissions = cacheVal.([]string)
+	cUserKey := fmt.Sprintf(consts.CurrentUserCacheKey, user.ID)
+	cUser, _ := global.RedisDB.Get(ctx, cUserKey).Result()
+	if cUser != "" {
+		err = json.Unmarshal([]byte(cUser), &user)
 		return
 	}
 
 	// Permission
-	user.Permissions, _ = model.GetPermissionsByUID(user.ID)
-	if user.Permissions == nil {
-		user.Permissions = []string{}
+	if user.IsSuperUser() {
+		user.Permissions, _ = model.GetAllPermissions()
+	} else {
+		user.Permissions, _ = model.GetPermissionsByUID(user.ID)
+		user.PermissionKeys = []string{}
+		if user.Permissions == nil {
+			user.Permissions = []model.Permission{}
+		} else {
+			for _, v := range user.Permissions {
+				user.PermissionKeys = append(user.PermissionKeys, v.Key)
+			}
+		}
 	}
 
 	// Set cache
-	global.Session.Set(cacheKey, user.Permissions)
-	global.Session.Save()
+	cUserData, _ := json.Marshal(user)
+	err = global.RedisDB.Set(ctx, cUserKey, cUserData, 10*time.Minute).Err()
+	if err != nil {
+		return
+	}
 
 	return
 }
@@ -230,10 +254,10 @@ func CleanCurrentUserCache(ctx context.Context, c *app.RequestContext) (err erro
 		return
 	}
 
-	cacheKey := fmt.Sprintf(consts.UserPermissionCacheKey, user.ID)
-	cacheVal := global.Session.Get(cacheKey)
-	if cacheVal != nil {
-		global.Session.Clear()
+	cUserKey := fmt.Sprintf(consts.CurrentUserCacheKey, user.ID)
+	cUser, _ := global.RedisDB.Get(ctx, cUserKey).Result()
+	if cUser != "" {
+		global.RedisDB.Del(ctx, cUserKey)
 	}
 
 	return

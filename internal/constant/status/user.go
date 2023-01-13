@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-01 18:22:13
- * @LastEditTime: 2022-11-09 14:22:29
+ * @LastEditTime: 2022-12-26 10:50:37
  * @Description: Do not edit
  */
 package status
@@ -19,6 +19,8 @@ const (
 	UserUpdateFailCode
 	UserParamUniqueErrCode
 	UserParamBindErrCode
+	UserLoginErrCode
+	UserLoginExpiredCode
 )
 
 // Message for code
@@ -32,4 +34,6 @@ func init() {
 	errors.NewCode(UserUpdateFailCode, "用户变更失败")
 	errors.NewCode(UserParamUniqueErrCode, "用户参数重复, 需保持唯一")
 	errors.NewCode(UserParamBindErrCode, "用户参数绑定失败")
+	errors.NewCode(UserLoginErrCode, "账号或密码错误")
+	errors.NewCode(UserLoginExpiredCode, "登陆已失效")
 }

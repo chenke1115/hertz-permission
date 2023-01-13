@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2022-11-14 14:08:25
+ * @LastEditTime: 2023-01-09 14:54:16
  * @Description: Do not edit
  */
 package permission
@@ -40,16 +40,17 @@ type ReqAddData struct {
 // @Tags        PermissionAdd
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       pid        body     int    true  "父级ID" maximum(10) default(0)
-// @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
-// @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
+// @Param       name       body     string true  "权限名称[允许英文，数字，.]" maxlength(32) example("permission.add")
+// @Param       alias      body     string true  "别名[允许中文，英文，数字，_]"   maxlength(32) example("添加权限")
 // @Param       type       body     string true  "权限类型[D:目录;M:菜单;B:按钮]"   Enums("D", "M", "B")
 // @Param       key        body     string false "权限全局标识[即后端路由，类型为目录可空]" maxlength(32)
 // @Param       components body     string false "前端页面路径[类型为按钮可空]"       maxlength(32)
 // @Param       sort       body     int    false "排序[从小到大]"              default(0)
 // @Param       icon       body     string false "图标"                    maxlength(255)
 // @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"       Enums(1, 0)
-// @Param       status     body     int    false "菜单状态[1:显示;0:隐藏]"       Enums(1, 0)
+// @Param       status     body     int    false "菜单状态[1:正常 0:停用]"       Enums(1, 0)
 // @Param       remark     body     string false "备注"                    maxlength(255)
 // @Success     200        {object} response.BaseResponse{data=interface{}}
 // @Failure     400        {object} response.BaseResponse{data=interface{}}

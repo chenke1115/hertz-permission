@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-11-18 16:51:24
+ * @LastEditTime: 2022-12-02 09:39:52
  * @Description: Do not edit
  */
 package model
@@ -10,7 +10,6 @@ import (
 	"errors"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/go-common/functions/array"
@@ -25,12 +24,11 @@ import (
 )
 
 type UserInfo struct {
-	ID         int       `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
-	Name       string    `json:"name" gorm:"type:varchar(32); not null; comment:用户名"`
-	Account    string    `json:"account" gorm:"type:varchar(32); unique; not null; comment:登录账户"`
-	CustomerID int       `json:"customer_id" gorm:"type:int(11); index; not null; comment:客户ID"`
-	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	ID         int    `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
+	Name       string `json:"name" gorm:"type:varchar(32); not null; comment:用户名"`
+	Account    string `json:"account" gorm:"type:varchar(32); unique; not null; comment:登录账户"`
+	CustomerID int    `json:"customer_id" gorm:"type:int(11); index; not null; comment:客户ID"`
+	DateModel
 }
 
 type APIUser struct {
@@ -46,12 +44,13 @@ type UserQuery struct {
 }
 
 type CurrentUser struct {
-	ID          int      `json:"id"`
-	Name        string   `json:"name"`
-	Account     string   `json:"account"`
-	CustomerID  int      `json:"customer_id"`
-	Roles       []string `json:"roles"`
-	Permissions []string `json:"permissions"`
+	ID             int          `json:"id"`
+	Name           string       `json:"name"`
+	Account        string       `json:"account"`
+	CustomerID     int          `json:"customer_id"`
+	Roles          []string     `json:"roles"`
+	Permissions    []Permission `json:"permissions"`
+	PermissionKeys []string     `json:"perkeys"`
 }
 
 /**
@@ -120,7 +119,7 @@ func (model UserInfo) Create(tx *gorm.DB) (err error) {
 	}
 
 	err = tx.Transaction(func(db *gorm.DB) error {
-		if err = tx.Create(&model).Error; err != nil {
+		if err = db.Create(&model).Error; err != nil {
 			if gErrors.IsUniqueConstraintError(err) {
 				err = iErrors.Wrap(err, status.UserParamUniqueErrCode)
 			} else {
@@ -135,7 +134,7 @@ func (model UserInfo) Create(tx *gorm.DB) (err error) {
 			Password:  hash.GetHashedPassword(userConf.Password.Init, userConf.Password.Salt),
 			AccountID: model.ID,
 		}
-		if err = user.Create(tx); err != nil {
+		if err = user.Create(db); err != nil {
 			return err
 		}
 
@@ -242,6 +241,40 @@ func GetUserInfoByID(id int) (userInfo UserInfo, err error) {
 }
 
 /**
+ * @description: Get by account
+ * @param {int} id
+ * @return {*}
+ */
+func GetUserInfoByAccount(account string) (userInfo UserInfo, err error) {
+	err = GetDB().Model(&UserInfo{}).First(&userInfo, "account = ?", account).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = iErrors.Wrap(err, status.UserNotExistCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}
+
+/**
+ * @description: Get by customerID
+ * @param {int} id
+ * @return {*}
+ */
+func GetUserInfoByCusID(cusID int) (userInfo UserInfo, err error) {
+	err = GetDB().Model(&UserInfo{}).First(&userInfo, "customer_id = ?", cusID).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = iErrors.Wrap(err, status.UserNotExistCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}
+
+/**
  * @description: Check
  * @param {string} username
  * @param {string} hashedPassword
@@ -262,7 +295,7 @@ func CheckUsernameAndPassword(username string, hashedPassword string) (cuser Cur
 	cuser.Name = userInfo.Name
 	cuser.Account = userInfo.Account
 	cuser.CustomerID = userInfo.CustomerID
-	cuser.Roles, err = GetRolesByUID(cuser.ID)
+	cuser.Roles, err = GetRoleKeysByUID(cuser.ID)
 	return
 }
 
@@ -296,8 +329,8 @@ func (cuser CurrentUser) IsSuperUser() bool {
  * @return {*}
  */
 func (cuser CurrentUser) CheckPermission(permissionFunc string) bool {
-	permissions := cuser.Permissions
-	for _, permission := range permissions {
+	permissionKeys := cuser.PermissionKeys
+	for _, permission := range permissionKeys {
 		if strings.HasPrefix(permissionFunc, permission) {
 			return true
 		}

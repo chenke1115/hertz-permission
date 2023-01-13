@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 15:23:25
- * @LastEditTime: 2022-11-09 17:34:42
+ * @LastEditTime: 2023-01-09 14:55:35
  * @Description: Do not edit
  */
 package user
@@ -29,6 +29,7 @@ type ReqEditData struct {
 // @Tags        UserEdit
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id          query    int    true  "用户ID" example(1)
 // @Param       name        body     string true  "用户名"             example("长歌")
 // @Param       account     body     string true  "登陆账户"            example("changge@ismart.com")

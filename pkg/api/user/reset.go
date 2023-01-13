@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:43:39
- * @LastEditTime: 2022-11-18 16:58:08
+ * @LastEditTime: 2023-01-09 14:55:47
  * @Description: Do not edit
  */
 package user
@@ -33,6 +33,7 @@ type ReqResetData struct {
 // @Tags        UserResetPassword
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       user_id          query    int    true "用户列表返回的UserID" example(1)
 // @Param       old_password     body     string true "旧密码" example("Admin123!")
 // @Param       password         body     string true "新密码" example("Admin123#")

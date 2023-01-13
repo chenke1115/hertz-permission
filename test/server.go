@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2022-11-18 17:20:11
+ * @LastEditTime: 2023-01-13 17:01:41
  * @Description: Do not edit
  */
 package test
@@ -12,6 +12,8 @@ import (
 
 	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/hertz-common/global"
+	myLog "github.com/chenke1115/hertz-common/pkg/logs/hlog"
+	"github.com/chenke1115/hertz-common/pkg/redis"
 	_ "github.com/chenke1115/hertz-permission/docs"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/route"
@@ -28,11 +30,9 @@ func RegisterRoute(h *server.Hertz) {
 
 	// use middleware
 	h.Use(
-		middleware.Cors(),          // CORS
-		middleware.AccessLog(),     // AccessLog
-		middleware.Recovery(),      // Recovery
-		middleware.Session(),       // Session
-		middleware.GlobalSession(), // Session
+		middleware.Cors(),      // CORS
+		middleware.AccessLog(), // AccessLog
+		middleware.Recovery(),  // Recovery
 	)
 
 	// NoRoute
@@ -48,8 +48,13 @@ func RegisterRoute(h *server.Hertz) {
 
 func HttpServer(conf *configs.Options) {
 	// Writing to log file and defer close
-	// f := logs.WriteLog(conf)
-	// defer f.Close()
+	myLog.WriteLog(conf)
+
+	// Init redis
+	err := redis.InitClient(conf)
+	if err != nil {
+		panic(err)
+	}
 
 	// server.Default() creates a Hertz with recovery middleware.
 	// Maximum wait time before exit, if not specified the default is 5s

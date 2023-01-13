@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-22 11:35:57
- * @LastEditTime: 2022-11-17 18:15:49
+ * @LastEditTime: 2022-11-17 16:14:54
  * @Description: Do not edit
  */
 package middleware
@@ -12,6 +12,7 @@ import (
 	"github.com/chenke1115/go-common/functions/conver"
 	"github.com/chenke1115/hertz-common/pkg/errors"
 	"github.com/chenke1115/hertz-common/pkg/response"
+
 	"github.com/cloudwego/hertz/pkg/app"
 )
 

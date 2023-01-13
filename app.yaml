@@ -13,19 +13,23 @@ App:
 # Server config
 Server: 
   Http:
-    Addr: ":8080"
+    Addr: "127.0.0.1:8080"
   Client:
   Rpc:
 
 # Log config
 Log:
   Dir: "./logs/"
+  MaxSize: 1     # A file can be up to 20M.
+  MaxBackups: 5   # Save up to 5 files at the same time.
+  MaxAge: 30      # A file can exist for a maximum of 10 days.
+  Compress: false  # Compress with gzip.
 
 # Database config
 Database:
   Driver: "mysql"  # mysql || postgresql || postgres
-  Host: "192.168.0.100"
-  Port: 3306
+  Host: "smileiot.tpddns.cn" # local:192.168.0.100
+  Port: 13306 # local:3306
   Username: "root"
   Password: "asdf1234"
   Dbname: "common"
@@ -33,17 +37,17 @@ Database:
 # Redis config
 Redis:
   Network: "tcp"
-  Addr: ":6379"
+  Addr: "127.0.0.1:6379"
   Password:
-  Size: 10
+  DB: 0
+  Size: 100
 
-# Session
+  # Session
 Session:
   Driver: "redis" # redis || cookie
   Name: "hertz-permission"
   Secret: "secret"
 
-
 # Swagger config
 Swagger:
-  Host: ":8080"
+  Host: "127.0.0.1:8080"

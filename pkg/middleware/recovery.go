@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-09-19 13:59:12
- * @LastEditTime: 2022-11-03 14:06:35
+ * @LastEditTime: 2022-11-23 18:25:35
  * @Description: Do not edit
  */
 package middleware
@@ -24,6 +24,7 @@ func Recovery() app.HandlerFunc {
 			// Catch painc error
 			if e := recover(); e != nil {
 				response.HandleResponse(c, e.(error), nil)
+				c.Abort()
 			}
 		}()
 

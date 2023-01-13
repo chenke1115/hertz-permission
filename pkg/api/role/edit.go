@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:45:52
- * @LastEditTime: 2022-11-07 16:24:18
+ * @LastEditTime: 2023-01-09 14:55:09
  * @Description: Do not edit
  */
 package role
@@ -30,6 +30,7 @@ type ReqEditData struct {
 // @Tags        RoleEdit
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id     query    int    true  "角色ID"            example(1)
 // @Param       name   body     string true  "角色名"             example(“系统管理员”)
 // @Param       Key    body     string true  "角色标识"            example(“SYS_ADMIN”)

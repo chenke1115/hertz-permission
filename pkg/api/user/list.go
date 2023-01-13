@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:42:44
- * @LastEditTime: 2022-11-14 17:11:58
+ * @LastEditTime: 2023-01-09 14:55:42
  * @Description: Do not edit
  */
 package user
@@ -29,6 +29,7 @@ type RespList struct {
 // @Tags        UserList
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Success     200 {object} response.BaseResponse{data=user.RespList{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/list [get]

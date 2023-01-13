@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 11:55:43
- * @LastEditTime: 2022-11-18 17:31:33
+ * @LastEditTime: 2023-01-09 14:56:25
  * @Description: Do not edit
  */
 package auth
@@ -19,6 +19,7 @@ import (
 // @Tags        Auth.Logout
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Success     200 {object} response.BaseResponse{data=interface{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/auth/logout [post]

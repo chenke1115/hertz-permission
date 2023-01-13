@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:55:40
- * @LastEditTime: 2022-11-14 15:52:24
+ * @LastEditTime: 2022-12-02 09:23:28
  * @Description: Do not edit
  */
 package model
@@ -148,7 +148,7 @@ func IsExistPermissionID(permission_id int) bool {
  * @param {[]int} ids
  * @return {*}
  */
-func GetPermissionsByRoleIDs(ids []int) (permissions []string, err error) {
+func GetPermissionsByRoleIDs(ids []int) (permissions []Permission, err error) {
 	var perIDs []int
 	err = GetDB().Model(&RolePermission{}).
 		Select("permission_id").
@@ -158,6 +158,6 @@ func GetPermissionsByRoleIDs(ids []int) (permissions []string, err error) {
 		return
 	}
 
-	permissions, err = GetPermissionKeysByIDs(array.UniqueArray(perIDs))
+	permissions, err = GetPermissionsByIDs(array.UniqueArray(perIDs))
 	return
 }

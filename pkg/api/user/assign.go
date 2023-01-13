@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:38:22
- * @LastEditTime: 2022-11-07 17:18:11
+ * @LastEditTime: 2023-01-09 14:55:31
  * @Description: Do not edit
  */
 package user
@@ -28,6 +28,7 @@ type ReqAssignData struct {
 // @Tags        UserRoleAssign
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id       query    int   true "账户ID"   example(1)
 // @Param       role_ids body     array true "权限ID数组" example([1, 3])
 // @Success     200      {object} response.BaseResponse{data=interface{}}

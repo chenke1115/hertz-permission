@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 16:11:52
- * @LastEditTime: 2022-11-14 16:55:26
+ * @LastEditTime: 2023-01-09 14:55:39
  * @Description: Do not edit
  */
 package user
@@ -22,6 +22,7 @@ import (
 // @Tags        CurrentUser
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Success     200 {object} response.BaseResponse{data=model.CurrentUser{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/current [get]

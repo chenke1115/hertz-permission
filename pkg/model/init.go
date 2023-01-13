@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2022-11-14 09:48:51
+ * @LastEditTime: 2023-01-04 11:50:02
  * @Description: Do not edit
  */
 package model
@@ -11,12 +11,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"reflect"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/chenke1115/go-common/configs"
+	myLog "github.com/chenke1115/hertz-common/pkg/logs/hlog"
 	"github.com/chenke1115/hertz-common/pkg/query"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -26,6 +27,7 @@ import (
 
 type StringArr []string
 type Json map[string]interface{}
+type Time time.Time
 
 var db *gorm.DB
 var once sync.Once
@@ -35,6 +37,11 @@ var Tables []interface{} = []interface{}{
 	Permission{},
 	Role{}, RolePermission{},
 	UserRole{}, UserInfo{}, User{},
+}
+
+type DateModel struct {
+	CreatedAt *Time `json:"created_at" gorm:"type:datetime"`
+	UpdatedAt *Time `json:"updated_at" gorm:"type:datetime"`
 }
 
 /**
@@ -92,11 +99,11 @@ func loadDB() {
 
 	// set db session
 	db = sqldb.Session(&gorm.Session{
-		Logger: logger.New(log.New(os.Stdout, "", log.LstdFlags), logger.Config{
+		Logger: logger.New(log.New(myLog.SqlLog(configs.GetConf()), "", log.LstdFlags), logger.Config{
 			SlowThreshold:             200 * time.Millisecond,
 			LogLevel:                  logMode,
 			IgnoreRecordNotFoundError: true,
-			Colorful:                  true,
+			Colorful:                  false,
 		}),
 	})
 
@@ -203,6 +210,62 @@ func (data *Json) Value() (driver.Value, error) {
 	}
 
 	return json.Marshal(Json(*data))
+}
+
+/**
+ * @description: Format time string
+ * @param {[]byte} data
+ * @return {*}
+ */
+func (t *Time) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		return nil
+	}
+
+	var err error
+	str := string(data)
+	timeStr := strings.Trim(str, "\"")
+	t1, err := time.Parse("2006-01-02 15:04:05", timeStr)
+	*t = Time(t1)
+	return err
+}
+
+/**
+ * @description: MarshalJSON on format Time field with %Y-%m-%d %H:%M:%S
+ * @return {*}
+ */
+func (t Time) MarshalJSON() ([]byte, error) {
+	formatted := fmt.Sprintf("\"%v\"", time.Time(t).Format("2006-01-02 15:04:05"))
+	return []byte(formatted), nil
+}
+
+/**
+ * @description: Scan valueof time.Time
+ * @param {interface{}} value
+ * @return {*}
+ */
+func (t *Time) Scan(v interface{}) error {
+	if value, ok := v.(time.Time); ok {
+		*t = Time(value)
+		return nil
+	}
+	return fmt.Errorf("can not convert %v to timestamp", v)
+}
+
+/**
+ * @description: Value insert timestamp into mysql need this function.
+ * @return {*}
+ */
+func (t Time) Value() (driver.Value, error) {
+	// Type:Time to time.Time
+	var zeroTime time.Time
+	tlt := time.Time(t)
+
+	//判断给定时间是否和默认零时间的时间戳相同
+	if tlt.UnixNano() == zeroTime.UnixNano() {
+		return nil, nil
+	}
+	return tlt, nil
 }
 
 /**

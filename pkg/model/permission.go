@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-11-17 18:08:45
+ * @LastEditTime: 2022-12-26 16:21:03
  * @Description: Do not edit
  */
 package model
@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/chenke1115/go-common/functions/array"
 	"github.com/chenke1115/go-common/functions/conver"
@@ -27,22 +26,21 @@ import (
 )
 
 type Permission struct {
-	ID         int       `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
-	PID        int       `json:"pid" gorm:"column:pid; type:int(11); index; comment:父级ID"`
-	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:权限名称"`
-	Alias      string    `json:"alias" gorm:"type:varchar(64); not null; unique; comment:别名"`
-	Key        string    `json:"key" gorm:"type:varchar(64); comment:权限全局标识[即路由, 类型为目录可空]"`
-	Components string    `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
-	Sort       int       `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
-	Type       string    `json:"type" gorm:"type:char(1); comment:权限类型[D:目录 M:菜单 B:按钮]"`
-	Icon       string    `json:"icon" gorm:"type:varchar(255); comment:图标"`
-	Visible    int       `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示 0:隐藏]"`
-	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常 0:停用]"`
-	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
-	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
-	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	ID         int    `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
+	PID        int    `json:"pid" gorm:"column:pid; type:int(11); index; comment:父级ID"`
+	Name       string `json:"name" gorm:"type:varchar(64); not null; unique; comment:权限名称"`
+	Alias      string `json:"alias" gorm:"type:varchar(64); not null; unique; comment:别名"`
+	Key        string `json:"key" gorm:"type:varchar(64); comment:权限全局标识[即路由, 类型为目录可空]"`
+	Components string `json:"components" gorm:"type:varchar(64); comment:前端页面路径[类型为按钮可空]"`
+	Sort       int    `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
+	Type       string `json:"type" gorm:"type:char(1); comment:权限类型[D:目录 M:菜单 B:按钮]"`
+	Icon       string `json:"icon" gorm:"type:varchar(255); comment:图标"`
+	Visible    int    `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示 0:隐藏]"`
+	Status     int    `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常 0:停用]"`
+	UpdateBy   string `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
+	UpdateTime int    `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
+	Remark     string `json:"remark" gorm:"type:varchar(64); comment:备注"`
+	DateModel
 }
 
 type PermissionShow struct {
@@ -152,6 +150,29 @@ func (query PermissionQuery) Search() (list *[]PermissionShow, total int64, err 
  */
 func (model Permission) Option() (list []PermissionOption, err error) {
 	return model.GetOption(0)
+}
+
+/**
+ * @description: Get permission for menu option
+ * @return {*}
+ */
+func (model Permission) MenuOption() (list map[int]string, err error) {
+	permissions := []Permission{}
+	err = GetDB().Model(&Permission{}).
+		Select("id, name, alias").
+		Where("status = 1").
+		Find(&permissions).Error
+	if err != nil {
+		err = iErrors.WrapCode(err, iErrors.BadRequest)
+		return
+	}
+
+	list = map[int]string{}
+	for _, v := range permissions {
+		list[v.ID] = v.Alias + "[" + v.Name + "]"
+	}
+
+	return
 }
 
 /**
@@ -305,6 +326,44 @@ func GetPermissionKeysByIDs(ids []int) (perKeys []string, err error) {
 	err = GetDB().Model(&Permission{}).
 		Select("key").
 		Where("id in (?) and `key` <> ''", ids).
+		Where("status = 1").
 		Scan(&perKeys).Error
+	return
+}
+
+/**
+ * @description: Get permissions by ids
+ * @param {[]int} ids
+ * @return {*}
+ */
+func GetPermissionsByIDs(ids []int) (permissions []Permission, err error) {
+	err = GetDB().Model(&Permission{}).
+		Where("id in (?) and `key` <> ''", ids).
+		Where("status = 1").
+		Scan(&permissions).Error
+	return
+}
+
+/**
+ * @description: Get all
+ * @return {*}
+ */
+func GetAllPermissions() (permissions []Permission, err error) {
+	err = GetDB().Model(&Permission{}).
+		Where("status = 1").
+		Scan(&permissions).Error
+	return
+}
+
+/**
+ * @description: Get keys
+ * @return {*}
+ */
+func GetPermissionKeys() (perKeys []string, err error) {
+	err = GetDB().Model(&Permission{}).
+		Select("key").
+		Group("key").
+		Scan(&perKeys).Error
+
 	return
 }

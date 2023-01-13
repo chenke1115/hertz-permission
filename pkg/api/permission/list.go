@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2022-11-14 17:12:21
+ * @LastEditTime: 2023-01-09 14:54:39
  * @Description: Do not edit
  */
 package permission
@@ -31,6 +31,7 @@ type RespList struct {
 // @Tags        PermissionList
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Success     200 {object} response.BaseResponse{data=permission.RespList{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/list [get]

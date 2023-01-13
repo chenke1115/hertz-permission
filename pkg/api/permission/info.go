@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 10:33:30
- * @LastEditTime: 2022-11-07 10:39:31
+ * @LastEditTime: 2023-01-09 14:54:33
  * @Description: Do not edit
  */
 package permission
@@ -30,6 +30,7 @@ type RespInfo struct {
 // @Tags        PermissionInfo
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id  query    int true "权限ID" example(1)
 // @Success     200 {object} response.BaseResponse{data=permission.RespInfo{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}

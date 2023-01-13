@@ -1,14 +1,13 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-11-10 15:18:12
+ * @LastEditTime: 2022-12-01 09:17:17
  * @Description: Do not edit
  */
 package model
 
 import (
 	"errors"
-	"time"
 
 	"github.com/chenke1115/go-common/functions/array"
 	"github.com/chenke1115/go-common/functions/date"
@@ -22,17 +21,16 @@ import (
 )
 
 type Role struct {
-	ID         int       `json:"id" gorm:"type:int(11); not null; primaryKey; autoIncrement"`
-	Name       string    `json:"name" gorm:"type:varchar(64); not null; unique; comment:角色名称"`
-	CreatorID  int       `json:"creator_id" gorm:"type:bigint(20); not null; unsigned; comment:创建者ID"`
-	Key        string    `json:"key" gorm:"type:varchar(64); unique; comment:角色标识[跟permission.key区分开]"`
-	Status     int       `json:"status" gorm:"type:tinyint(1); default:1; comment:角色状态[1:正常 0:停用]"`
-	UpdateBy   string    `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
-	UpdateTime int       `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
-	Remark     string    `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	IsDel      int       `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
-	CreatedAt  time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt  time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	ID         int    `json:"id" gorm:"type:int(11); not null; primaryKey; autoIncrement"`
+	Name       string `json:"name" gorm:"type:varchar(64); not null; unique; comment:角色名称"`
+	CreatorID  int    `json:"creator_id" gorm:"type:bigint(20); not null; unsigned; comment:创建者ID"`
+	Key        string `json:"key" gorm:"type:varchar(64); unique; comment:角色标识[跟permission.key区分开]"`
+	Status     int    `json:"status" gorm:"type:tinyint(1); default:1; comment:角色状态[1:正常 0:停用]"`
+	UpdateBy   string `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
+	UpdateTime int    `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
+	Remark     string `json:"remark" gorm:"type:varchar(64); comment:备注"`
+	IsDel      int    `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
+	DateModel
 }
 
 type RoleShow struct {
@@ -88,7 +86,8 @@ func (query RoleQuery) Search() (list *[]RoleShow, total int64, err error) {
 	roles := &[]Role{}
 
 	// Init db-query
-	tx := GetDB().Model(&Role{})
+	tx := GetDB().Model(&Role{}).
+		Where("`is_del` <> 1")
 
 	// Set search conditions
 	if query.Stime != "" {

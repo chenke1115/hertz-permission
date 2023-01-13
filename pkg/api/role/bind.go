@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-08 10:11:54
- * @LastEditTime: 2022-11-08 11:13:13
+ * @LastEditTime: 2023-01-09 14:55:18
  * @Description: Do not edits
  */
 package role
@@ -28,6 +28,7 @@ type ReqBindData struct {
 // @Tags        RoleBindingPermission
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       id             query    int   true "角色ID"   example(1)
 // @Param       permission_ids body     array true "权限ID数组" example([1,2,3])
 // @Success     200            {object} response.BaseResponse{data=interface{}}

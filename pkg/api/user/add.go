@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 10:14:57
- * @LastEditTime: 2022-11-09 14:54:02
+ * @LastEditTime: 2023-01-09 14:55:28
  * @Description: Do not edit
  */
 package user
@@ -29,6 +29,7 @@ type ReqAddData struct {
 // @Tags        UserAdd
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Param       name        body     string true  "用户名"             example("长歌")
 // @Param       account     body     string true  "登陆账户"            example("changge@ismart.com")
 // @Param       customer_id body     int    false "关联客户账户ID" default(0)

@@ -1,14 +1,13 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-08 16:52:22
- * @LastEditTime: 2022-11-10 14:57:03
+ * @LastEditTime: 2022-11-25 17:57:58
  * @Description: Do not edit
  */
 package model
 
 import (
 	"errors"
-	"time"
 
 	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
@@ -18,14 +17,13 @@ import (
 )
 
 type User struct {
-	ID            int       `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
-	Password      string    `json:"password" gorm:"type:varchar(128); not null; comment:密码"`
-	AccountID     int       `json:"account_id" gorm:"unique; not null; comment:账户ID"`
-	ActivateToken string    `json:"activate_token" gorm:"type:varchar(255); comment:生效TOKEN"`
-	ResetToken    string    `json:"reset_token" gorm:"type:varchar(255); comment:重置TOKEN"`
-	Status        int       `json:"enabled" gorm:"type:char(1); index; default:1; comment:生效状态[1:启用 0:失效]"`
-	CreatedAt     time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt     time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	ID            int    `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
+	Password      string `json:"password" gorm:"type:varchar(128); not null; comment:密码"`
+	AccountID     int    `json:"account_id" gorm:"unique; not null; comment:账户ID"`
+	ActivateToken string `json:"activate_token" gorm:"type:varchar(255); comment:生效TOKEN"`
+	ResetToken    string `json:"reset_token" gorm:"type:varchar(255); comment:重置TOKEN"`
+	Status        int    `json:"enabled" gorm:"type:char(1); index; default:1; comment:生效状态[1:启用 0:失效]"`
+	DateModel
 }
 
 /**
@@ -98,6 +96,23 @@ func (model User) Del(tx *gorm.DB) (err error) {
  */
 func GetUserByID(id int) (user User, err error) {
 	err = GetDB().Model(&User{}).First(&user, "id = ?", id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = iErrors.Wrap(err, status.UserNotExistCode)
+		} else {
+			err = iErrors.WrapCode(err, iErrors.BadRequest)
+		}
+	}
+	return
+}
+
+/**
+ * @description: Get by accID
+ * @param {int} id
+ * @return {*}
+ */
+func GetUserByAccID(accID int) (user User, err error) {
+	err = GetDB().Model(&User{}).First(&user, "account_id = ?", accID).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = iErrors.Wrap(err, status.UserNotExistCode)

@@ -1,14 +1,12 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 16:15:00
- * @LastEditTime: 2022-11-14 15:30:23
+ * @LastEditTime: 2022-12-02 09:24:16
  * @Description: Do not edit
  */
 package model
 
 import (
-	"time"
-
 	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
@@ -17,11 +15,10 @@ import (
 )
 
 type UserRole struct {
-	ID        int       `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
-	UID       int       `json:"uid" gorm:"type:int(11); unsigned; not null; index; uniqueIndex:user_role_unique; comment:用户ID"`
-	RoleID    int       `json:"role_id" gorm:"type:int(11); not null;index; uniqueIndex:user_role_unique; comment:角色ID"`
-	CreatedAt time.Time `json:"created_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP"`
-	UpdatedAt time.Time `json:"updated_at" gorm:"type:timestamp; default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	ID     int `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
+	UID    int `json:"uid" gorm:"type:int(11); unsigned; not null; index; uniqueIndex:user_role_unique; comment:用户ID"`
+	RoleID int `json:"role_id" gorm:"type:int(11); not null;index; uniqueIndex:user_role_unique; comment:角色ID"`
+	DateModel
 }
 
 /**
@@ -132,9 +129,37 @@ func (model UserRole) Save(tx *gorm.DB) (err error) {
  * @param {int} uid
  * @return {*}
  */
-func GetRolesByUID(uid int) (roles []string, err error) {
+func GetRolesByUID(uid int) (roles []Role, err error) {
+	err = GetDB().Model(&UserRole{}).
+		Select("role.*").
+		Where("user_role.uid = ? ", uid).
+		Joins("inner join role on user_role.role_id = role.id").
+		Scan(&roles).Error
+	return
+}
+
+/**
+ * @description: Get roleKeys
+ * @param {int} uid
+ * @return {*}
+ */
+func GetRoleKeysByUID(uid int) (roles []string, err error) {
 	err = GetDB().Model(&UserRole{}).
 		Select("role.key").
+		Where("user_role.uid = ? ", uid).
+		Joins("inner join role on user_role.role_id = role.id").
+		Scan(&roles).Error
+	return
+}
+
+/**
+ * @description: Get roleNames
+ * @param {int} uid
+ * @return {*}
+ */
+func GetRoleNamesByUID(uid int) (roles []string, err error) {
+	err = GetDB().Model(&UserRole{}).
+		Select("role.Name").
 		Where("user_role.uid = ? ", uid).
 		Joins("inner join role on user_role.role_id = role.id").
 		Scan(&roles).Error
@@ -146,7 +171,7 @@ func GetRolesByUID(uid int) (roles []string, err error) {
  * @param {int} uid
  * @return {*}
  */
-func GetPermissionsByUID(uid int) (permissions []string, err error) {
+func GetPermissionsByUID(uid int) (permissions []Permission, err error) {
 	var roleIDs []int
 	err = GetDB().Model(&UserRole{}).
 		Select("role_id").

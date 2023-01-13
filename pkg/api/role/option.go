@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:29:31
- * @LastEditTime: 2022-11-07 14:12:44
+ * @LastEditTime: 2023-01-09 14:54:56
  * @Description: Do not edit
  */
 package role
@@ -20,6 +20,7 @@ import (
 // @Tags        RoleOption
 // @Accept      json
 // @Produce     json
+// @Security    authorization
 // @Success     200 {object} response.BaseResponse{data=[]model.RoleOption}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/option [get]
