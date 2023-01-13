@@ -93,6 +93,11 @@ const docTemplate = `{
         },
         "/api/auth/logout": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is an api to logout",
                 "consumes": [
                     "application/json"
@@ -146,6 +151,11 @@ const docTemplate = `{
         },
         "/api/auth/refresh_token": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is an api to refresh token",
                 "consumes": [
                     "application/json"
@@ -199,6 +209,11 @@ const docTemplate = `{
         },
         "/api/permission/add": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to add permission",
                 "consumes": [
                     "application/json"
@@ -225,7 +240,7 @@ const docTemplate = `{
                     {
                         "maxLength": 32,
                         "example": "\"permission.add\"",
-                        "description": "权限名称",
+                        "description": "权限名称[允许英文，数字，.]",
                         "name": "name",
                         "in": "body",
                         "required": true,
@@ -236,7 +251,7 @@ const docTemplate = `{
                     {
                         "maxLength": 32,
                         "example": "\"添加权限\"",
-                        "description": "别名",
+                        "description": "别名[允许中文，英文，数字，_]",
                         "name": "alias",
                         "in": "body",
                         "required": true,
@@ -311,7 +326,7 @@ const docTemplate = `{
                             1,
                             0
                         ],
-                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "description": "菜单状态[1:正常 0:停用]",
                         "name": "status",
                         "in": "body",
                         "schema": {
@@ -370,6 +385,11 @@ const docTemplate = `{
         },
         "/api/permission/list": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of permission list",
                 "consumes": [
                     "application/json"
@@ -394,6 +414,62 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/permission/menu": {
+            "get": {
+                "description": "This is a api of menu option. [选项键值就是上级菜单ID]",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MenuOption"
+                ],
+                "summary": "上级菜单下拉选项",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.BaseResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
                                         }
                                     }
                                 }
@@ -479,6 +555,11 @@ const docTemplate = `{
         },
         "/api/permission/route": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of route option",
                 "consumes": [
                     "application/json"
@@ -489,7 +570,7 @@ const docTemplate = `{
                 "tags": [
                     "PermissionRouteOption"
                 ],
-                "summary": "路由下拉选项",
+                "summary": "路由下拉选项[未添加为权限的路由]",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -502,8 +583,8 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
+                                            "type": "object",
+                                            "additionalProperties": {
                                                 "type": "string"
                                             }
                                         }
@@ -535,6 +616,11 @@ const docTemplate = `{
         },
         "/api/permission/{id}/del": {
             "delete": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to del permission",
                 "consumes": [
                     "application/json"
@@ -598,6 +684,11 @@ const docTemplate = `{
         },
         "/api/permission/{id}/edit": {
             "put": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to edit permission",
                 "consumes": [
                     "application/json"
@@ -717,7 +808,7 @@ const docTemplate = `{
                             1,
                             0
                         ],
-                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "description": "菜单状态[1:正常 0:停用]",
                         "name": "status",
                         "in": "body",
                         "schema": {
@@ -776,6 +867,11 @@ const docTemplate = `{
         },
         "/api/permission/{id}/info": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of permission info",
                 "consumes": [
                     "application/json"
@@ -839,6 +935,11 @@ const docTemplate = `{
         },
         "/api/role/add": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to add role",
                 "consumes": [
                     "application/json"
@@ -864,7 +965,7 @@ const docTemplate = `{
                     {
                         "example": "“SYS_ADMIN”",
                         "description": "角色标识",
-                        "name": "key",
+                        "name": "Key",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -935,6 +1036,11 @@ const docTemplate = `{
         },
         "/api/role/list": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of role list",
                 "consumes": [
                     "application/json"
@@ -958,7 +1064,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/pkg_api_role.RespList"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_role.RespList"
                                         }
                                     }
                                 }
@@ -988,6 +1094,11 @@ const docTemplate = `{
         },
         "/api/role/option": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of role option",
                 "consumes": [
                     "application/json"
@@ -1108,6 +1219,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to binding permission for role",
                 "consumes": [
                     "application/json"
@@ -1180,6 +1296,11 @@ const docTemplate = `{
         },
         "/api/role/{id}/del": {
             "delete": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to del role",
                 "consumes": [
                     "application/json"
@@ -1243,6 +1364,11 @@ const docTemplate = `{
         },
         "/api/role/{id}/edit": {
             "put": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to edit role",
                 "consumes": [
                     "application/json"
@@ -1347,6 +1473,11 @@ const docTemplate = `{
         },
         "/api/role/{id}/info": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of role info",
                 "consumes": [
                     "application/json"
@@ -1410,6 +1541,11 @@ const docTemplate = `{
         },
         "/api/user/add": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to add user",
                 "consumes": [
                     "application/json"
@@ -1494,6 +1630,11 @@ const docTemplate = `{
         },
         "/api/user/current": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is an api to get current user info",
                 "consumes": [
                     "application/json"
@@ -1547,6 +1688,11 @@ const docTemplate = `{
         },
         "/api/user/list": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api for user list",
                 "consumes": [
                     "application/json"
@@ -1600,6 +1746,11 @@ const docTemplate = `{
         },
         "/api/user/{:id}/edit": {
             "put": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to edit user",
                 "consumes": [
                     "application/json"
@@ -1692,6 +1843,11 @@ const docTemplate = `{
         },
         "/api/user/{id}/assign": {
             "post": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api to assign role for user",
                 "consumes": [
                     "application/json"
@@ -1764,6 +1920,11 @@ const docTemplate = `{
         },
         "/api/user/{user_id}/reset": {
             "put": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of reset user password",
                 "consumes": [
                     "application/json"
@@ -1857,6 +2018,11 @@ const docTemplate = `{
         },
         "/api/user/{user_id}/state": {
             "put": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of edit user status",
                 "consumes": [
                     "application/json"
@@ -1996,15 +2162,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2060,15 +2230,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2086,15 +2260,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2146,10 +2324,16 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "permissions": {
+                "perkeys": {
                     "type": "array",
                     "items": {
                         "type": "string"
+                    }
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Permission"
                     }
                 },
                 "roles": {
@@ -2157,6 +2341,59 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "model.Permission": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "components": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "update_by": {
+                    "type": "string"
+                },
+                "update_time": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "visible": {
+                    "type": "integer"
                 }
             }
         },
@@ -2351,15 +2588,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2415,15 +2656,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2441,15 +2686,19 @@ const docTemplate = `{
                     }
                 },
                 "etime": {
+                    "description": "结束时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "limit": {
+                    "description": "单页限制 example(10)",
                     "type": "integer"
                 },
                 "offset": {
+                    "description": "偏移量[页数] example(1)",
                     "type": "integer"
                 },
                 "stime": {
+                    "description": "开始时间 example(\"2016-01-02 03:04:05\")",
                     "type": "string"
                 },
                 "total": {
@@ -2468,6 +2717,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "authorization": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

@@ -42,12 +42,16 @@ definitions:
           $ref: '#/definitions/model.PermissionShow'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -84,12 +88,16 @@ definitions:
           $ref: '#/definitions/model.RoleShow'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -101,12 +109,16 @@ definitions:
           $ref: '#/definitions/model.APIUser'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -140,14 +152,53 @@ definitions:
         type: integer
       name:
         type: string
-      permissions:
+      perkeys:
         items:
           type: string
+        type: array
+      permissions:
+        items:
+          $ref: '#/definitions/model.Permission'
         type: array
       roles:
         items:
           type: string
         type: array
+    type: object
+  model.Permission:
+    properties:
+      alias:
+        type: string
+      components:
+        type: string
+      created_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      key:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      remark:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: integer
+      type:
+        type: string
+      update_by:
+        type: string
+      update_time:
+        type: integer
+      updated_at:
+        type: string
+      visible:
+        type: integer
     type: object
   model.PermissionOption:
     properties:
@@ -275,12 +326,16 @@ definitions:
           $ref: '#/definitions/model.PermissionShow'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -317,12 +372,16 @@ definitions:
           $ref: '#/definitions/model.RoleShow'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -334,12 +393,16 @@ definitions:
           $ref: '#/definitions/model.APIUser'
         type: array
       etime:
+        description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        description: 单页限制 example(10)
         type: integer
       offset:
+        description: 偏移量[页数] example(1)
         type: integer
       stime:
+        description: 开始时间 example("2016-01-02 03:04:05")
         type: string
       total:
         type: integer
@@ -428,6 +491,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 退出登陆
       tags:
       - Auth.Logout
@@ -457,6 +522,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 刷新TOKEN
       tags:
       - Auth.RefreshToken
@@ -493,6 +560,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 删除权限
       tags:
       - PermissionDel
@@ -573,7 +642,7 @@ paths:
         name: visible
         schema:
           type: integer
-      - description: 菜单状态[1:显示;0:隐藏]
+      - description: 菜单状态[1:正常 0:停用]
         enum:
         - 1
         - 0
@@ -608,6 +677,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 修改权限
       tags:
       - PermissionEdit
@@ -644,6 +715,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 权限详情
       tags:
       - PermissionInfo
@@ -661,7 +734,7 @@ paths:
         required: true
         schema:
           type: integer
-      - description: 权限名称
+      - description: 权限名称[允许英文，数字，.]
         example: '"permission.add"'
         in: body
         maxLength: 32
@@ -669,7 +742,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: 别名
+      - description: 别名[允许中文，英文，数字，_]
         example: '"添加权限"'
         in: body
         maxLength: 32
@@ -719,7 +792,7 @@ paths:
         name: visible
         schema:
           type: integer
-      - description: 菜单状态[1:显示;0:隐藏]
+      - description: 菜单状态[1:正常 0:停用]
         enum:
         - 1
         - 0
@@ -754,6 +827,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 添加权限
       tags:
       - PermissionAdd
@@ -783,9 +858,42 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 权限列表
       tags:
       - PermissionList
+  /api/permission/menu:
+    get:
+      consumes:
+      - application/json
+      description: This is a api of menu option. [选项键值就是上级菜单ID]
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.BaseResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: 上级菜单下拉选项
+      tags:
+      - MenuOption
   /api/permission/option:
     get:
       consumes:
@@ -832,9 +940,9 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  items:
+                  additionalProperties:
                     type: string
-                  type: array
+                  type: object
               type: object
         "400":
           description: Bad Request
@@ -845,7 +953,9 @@ paths:
                 data:
                   type: object
               type: object
-      summary: 路由下拉选项
+      security:
+      - authorization: []
+      summary: 路由下拉选项[未添加为权限的路由]
       tags:
       - PermissionRouteOption
   /api/role/{id}/bind:
@@ -924,6 +1034,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 绑定权限
       tags:
       - RoleBindingPermission
@@ -960,6 +1072,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 删除角色
       tags:
       - RoleDel
@@ -1024,6 +1138,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 编辑角色
       tags:
       - RoleEdit
@@ -1060,6 +1176,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 角色详情
       tags:
       - RoleInfo
@@ -1079,7 +1197,7 @@ paths:
       - description: 角色标识
         example: “SYS_ADMIN”
         in: body
-        name: key
+        name: Key
         required: true
         schema:
           type: string
@@ -1118,6 +1236,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 添加角色
       tags:
       - RoleAdd
@@ -1136,7 +1256,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/pkg_api_role.RespList'
+                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_role.RespList'
               type: object
         "400":
           description: Bad Request
@@ -1147,6 +1267,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 角色列表
       tags:
       - RoleList
@@ -1178,6 +1300,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 角色下拉选项
       tags:
       - RoleOption
@@ -1234,6 +1358,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 编辑用户
       tags:
       - UserEdit
@@ -1276,6 +1402,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 角色分配
       tags:
       - UserRoleAssign
@@ -1333,6 +1461,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 用户密码重置
       tags:
       - UserResetPassword
@@ -1378,6 +1508,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 用户状态变更
       tags:
       - UserStateEdit
@@ -1428,6 +1560,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 添加用户
       tags:
       - UserAdd
@@ -1457,6 +1591,8 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 当前用户信息
       tags:
       - CurrentUser
@@ -1486,9 +1622,16 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 用户列表
       tags:
       - UserList
 schemes:
 - http
+securityDefinitions:
+  authorization:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
