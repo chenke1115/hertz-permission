@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:43:09
- * @LastEditTime: 2023-01-09 14:55:55
+ * @LastEditTime: 2023-02-03 11:31:32
  * @Description: Do not edit
  */
 package user
@@ -19,18 +19,18 @@ import (
 )
 
 type ReqStateData struct {
-	Status int `json:"status,requried" form:"status,requried"` //lint:ignore SA5008 ignoreCheck
+	Status int `json:"status,requried" form:"status,requried"` // 用户状态[1:启用 0:失效]【必填】
 }
 
 // StateHandler goDoc
 // @Summary     用户状态变更
 // @Description This is a api of edit user status
-// @Tags        UserStateEdit
-// @Accept      json
+// @Tags        User【用户】
+// @Accept      x-www-form-urlencoded
 // @Produce     json
 // @Security    authorization
-// @Param       user_id query    int true "用户列表返回的UserID"   example(1)
-// @Param       status  body     int true "用户状态[1:启用 0:失效]" Enums(1, 0)
+// @Param       user_id path     int          true "用户列表返回的UserID" example(1)
+// @Param       data    formData ReqStateData true "请求数据"
 // @Success     200     {object} response.BaseResponse{data=interface{}}
 // @Failure     400     {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/{user_id}/state [put]

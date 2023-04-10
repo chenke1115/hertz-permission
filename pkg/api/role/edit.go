@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:45:52
- * @LastEditTime: 2023-01-09 14:55:09
+ * @LastEditTime: 2023-04-10 14:36:20
  * @Description: Do not edit
  */
 package role
@@ -18,26 +18,23 @@ import (
 )
 
 type ReqEditData struct {
-	Name   string `json:"name,required" form:"name,required"` //lint:ignore SA5008 ignoreCheck
-	Key    string `json:"key,required" form:"key,required"`   //lint:ignore SA5008 ignoreCheck
-	Status int    `json:"status" form:"status"`
-	Remark string `json:"remark" form:"remark"`
+	Name   string `json:"name,required" form:"name,required"` // 角色名【必填】
+	Key    string `json:"key,required" form:"key,required"`   // 角色标识【必填】
+	Status int    `json:"status" form:"status"`               // 角色状态[1:正常;0:停用]
+	Remark string `json:"remark" form:"remark"`               // 备注
 }
 
 // EditHandler goDoc
 // @Summary     编辑角色
 // @Description This is a api to edit role
-// @Tags        RoleEdit
+// @Tags        Role【角色】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Param       id     query    int    true  "角色ID"            example(1)
-// @Param       name   body     string true  "角色名"             example(“系统管理员”)
-// @Param       Key    body     string true  "角色标识"            example(“SYS_ADMIN”)
-// @Param       status body     int    false "角色状态[1:正常;0:停用]" Enums(1, 0)
-// @Param       remark body     string false "备注"              maxlength(255)
-// @Success     200    {object} response.BaseResponse{data=interface{}}
-// @Failure     400    {object} response.BaseResponse{data=interface{}}
+// @Param       id   path     int         true "角色ID" example(1)
+// @Param       data formData ReqEditData true "请求数据"
+// @Success     200  {object} response.BaseResponse{data=interface{}}
+// @Failure     400  {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/{id}/edit [put]
 func EditHandler(ctx context.Context, c *app.RequestContext) {
 	var (

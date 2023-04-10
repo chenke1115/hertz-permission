@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:55:40
- * @LastEditTime: 2022-12-02 09:23:28
+ * @LastEditTime: 2023-04-10 14:37:34
  * @Description: Do not edit
  */
 package model
@@ -11,7 +11,6 @@ import (
 	iErrors "github.com/chenke1115/hertz-common/pkg/errors"
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-
 	"gorm.io/gorm"
 )
 

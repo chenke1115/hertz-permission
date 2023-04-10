@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:46:27
- * @LastEditTime: 2023-01-09 14:54:22
+ * @LastEditTime: 2023-02-03 09:58:27
  * @Description: Do not edit
  */
 package permission
@@ -21,11 +21,11 @@ import (
 // DelHandler goDoc
 // @Summary     删除权限
 // @Description This is a api to del permission
-// @Tags        PermissionDel
+// @Tags        Permission【权限】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Param       id  query    int true "权限ID" example(1)
+// @Param       id  path     int true "权限ID" example(1)
 // @Success     200 {object} response.BaseResponse{data=interface{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/{id}/del [delete]

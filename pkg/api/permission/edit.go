@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:45:52
- * @LastEditTime: 2023-01-09 14:54:28
+ * @LastEditTime: 2023-04-10 14:28:32
  * @Description: Do not edit
  */
 package permission
@@ -22,40 +22,30 @@ import (
 )
 
 type ReqEditData struct {
-	Name       string `json:"name,required" form:"name,required" vd:"len($)<64"`             //lint:ignore SA5008 ignoreCheck
-	Alias      string `json:"alias,required" form:"alias,required" vd:"len($)<64"`           //lint:ignore SA5008 ignoreCheck
-	Type       string `json:"type,required" form:"type,required"`                            //lint:ignore SA5008 ignoreCheck
-	Key        string `json:"key,required" form:"key,required"`                              //lint:ignore SA5008 ignoreCheck
-	Components string `json:"components,required" form:"components,required" vd:"len($)<64"` //lint:ignore SA5008 ignoreCheck
-	PID        int    `json:"pid" form:"pid" default:"0"`
-	Sort       int    `json:"sort" form:"sort" default:"0"`
-	Icon       string `json:"icon" form:"icon"`
-	Visible    int    `json:"visible" form:"visible" default:"1"`
-	Status     int    `json:"status" form:"status" default:"1"`
-	Remark     string `json:"remark" form:"remark" vd:"len($)<256"`
+	Name       string `json:"name,required" form:"name,required" vd:"len($)<64"`             // 权限名称[允许英文，数字，.]【必填】example("permission.add")
+	Alias      string `json:"alias,required" form:"alias,required" vd:"len($)<64"`           // 别名[允许中文，英文，数字，_]【必填】example("添加权限")
+	Type       string `json:"type,required" form:"type,required"`                            // 权限类型[D:目录;M:菜单;B:按钮]【必填】Enums("D", "M", "B")
+	Key        string `json:"key,required" form:"key,required"`                              // 权限全局标识[即后端路由，类型为目录可空]【必填】
+	Components string `json:"components,required" form:"components,required" vd:"len($)<64"` // 前端页面路径[类型为按钮可空]【必填】
+	PID        int    `json:"pid" form:"pid" default:"0"`                                    // 父级ID
+	Sort       int    `json:"sort" form:"sort" default:"0"`                                  // 排序[从小到大]
+	Icon       string `json:"icon" form:"icon"`                                              // 图标
+	Visible    int    `json:"visible" form:"visible" default:"1"`                            // 菜单状态[1:显示;0:隐藏]
+	Status     int    `json:"status" form:"status" default:"1"`                              // 菜单状态[1:正常 0:停用]
+	Remark     string `json:"remark" form:"remark" vd:"len($)<256"`                          // 备注
 }
 
 // EditHandler goDoc
 // @Summary     修改权限
 // @Description This is a api to edit permission
-// @Tags        PermissionEdit
-// @Accept      json
+// @Tags        Permission【权限】
+// @Accept      x-www-form-urlencoded
 // @Produce     json
 // @Security    authorization
-// @Param       id         query    int    true  "权限ID" example(1)
-// @Param       pid        body     int    true  "父级ID" example(1)
-// @Param       name       body     string true  "权限名称" maxlength(32) example("permission.add")
-// @Param       alias      body     string true  "别名"   maxlength(32) example("添加权限")
-// @Param       type       body     string true  "权限类型[D:目录;M:菜单;B:按钮]"   Enums("D", "M", "B")
-// @Param       key        body     string false "权限全局标识[即路由，类型为目录可空]" maxlength(32)
-// @Param       components body     string false "前端页面路径[类型为按钮可空]"     maxlength(32)
-// @Param       sort       body     int    false "排序[从小到大]"            default(0)
-// @Param       icon       body     string false "图标"                  maxlength(255)
-// @Param       visible    body     int    false "菜单状态[1:显示;0:隐藏]"     Enums(1, 0)
-// @Param       status     body     int    false "菜单状态[1:正常 0:停用]"     Enums(1, 0)
-// @Param       remark     body     string false "备注"                  maxlength(255)
-// @Success     200        {object} response.BaseResponse{data=interface{}}
-// @Failure     400        {object} response.BaseResponse{data=interface{}}
+// @Param       id   path     int         true "权限ID" example(1)
+// @Param       data formData ReqEditData true "请求数据"
+// @Success     200  {object} response.BaseResponse{data=interface{}}
+// @Failure     400  {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/{id}/edit [put]
 func EditHandler(ctx context.Context, c *app.RequestContext) {
 	var (

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 11:46:59
- * @LastEditTime: 2023-01-09 14:55:04
+ * @LastEditTime: 2023-02-03 10:09:39
  * @Description: Do not edit
  */
 package role
@@ -27,11 +27,11 @@ type RespInfo struct {
 // InfoHandler goDoc
 // @Summary     角色详情
 // @Description This is a api of role info
-// @Tags        RoleInfo
+// @Tags        Role【角色】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Param       id  query    int true "角色ID" example(1)
+// @Param       id  path     int true "角色ID" example(1)
 // @Success     200 {object} response.BaseResponse{data=role.RespInfo{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/{id}/info [get]

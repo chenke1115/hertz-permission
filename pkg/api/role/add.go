@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-31 09:44:07
- * @LastEditTime: 2023-01-09 14:55:22
+ * @LastEditTime: 2023-04-10 14:33:58
  * @Description: Do not edit
  */
 package role
@@ -15,30 +15,26 @@ import (
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/model"
-
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
 type ReqAddData struct {
-	Name   string `json:"name,required" form:"name,required" vd:"len($)<32"` //lint:ignore SA5008 ignoreCheck
-	Key    string `json:"key,required" form:"key,required" vd:"len($)<32"`   //lint:ignore SA5008 ignoreCheck
-	Status int    `json:"status" form:"status"`
-	Remark string `json:"remark" form:"remark" vd:"len($)<256"`
+	Name   string `json:"name,required" form:"name,required" vd:"len($)<32"` // 角色名【必填】 example(“系统管理员”)
+	Key    string `json:"key,required" form:"key,required" vd:"len($)<32"`   // 角色标识【必填】 example(“SYS_ADMIN”)
+	Status int    `json:"status" form:"status"`                              // 角色状态[1:正常;0:停用]
+	Remark string `json:"remark" form:"remark" vd:"len($)<256"`              // 备注
 }
 
 // AddHandler goDoc
 // @Summary     添加角色
 // @Description This is a api to add role
-// @Tags        RoleAdd
-// @Accept      json
+// @Tags        Role【角色】
+// @Accept      x-www-form-urlencoded
 // @Produce     json
 // @Security    authorization
-// @Param       name   body     string true  "角色名"             example(“系统管理员”)
-// @Param       Key    body     string true  "角色标识"            example(“SYS_ADMIN”)
-// @Param       status body     int    false "角色状态[1:正常;0:停用]" Enums(1, 0)
-// @Param       remark body     string false "备注"              maxlength(255)
-// @Success     200    {object} response.BaseResponse{data=interface{}}
-// @Failure     400    {object} response.BaseResponse{data=interface{}}
+// @Param       data formData ReqAddData true "请求数据"
+// @Success     200  {object} response.BaseResponse{data=interface{}}
+// @Failure     400  {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/add [post]
 func AddHandler(ctx context.Context, c *app.RequestContext) {
 	var (

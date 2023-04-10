@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 16:42:44
- * @LastEditTime: 2023-01-09 14:55:42
+ * @LastEditTime: 2023-02-03 10:19:37
  * @Description: Do not edit
  */
 package user
@@ -26,12 +26,13 @@ type RespList struct {
 // ListHandler goDoc
 // @Summary     用户列表
 // @Description This is a api for user list
-// @Tags        UserList
+// @Tags        User【用户】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Success     200 {object} response.BaseResponse{data=user.RespList{}}
-// @Failure     400 {object} response.BaseResponse{data=interface{}}
+// @Param       query query    model.UserQuery true "请求数据"
+// @Success     200   {object} response.BaseResponse{data=user.RespList{}}
+// @Failure     400   {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/list [get]
 func ListHandler(ctx context.Context, c *app.RequestContext) {
 	var (

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2022-12-26 16:21:03
+ * @LastEditTime: 2023-04-10 14:36:58
  * @Description: Do not edit
  */
 package model
@@ -21,7 +21,6 @@ import (
 	"github.com/chenke1115/hertz-common/pkg/query"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/internal/constant/types"
-
 	"gorm.io/gorm"
 )
 
@@ -35,7 +34,7 @@ type Permission struct {
 	Sort       int    `json:"sort" gorm:"type:int(4); default:0; comment:排序[从小到大]"`
 	Type       string `json:"type" gorm:"type:char(1); comment:权限类型[D:目录 M:菜单 B:按钮]"`
 	Icon       string `json:"icon" gorm:"type:varchar(255); comment:图标"`
-	Visible    int    `json:"visible" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:显示 0:隐藏]"`
+	Visible    int    `json:"visible" gorm:"type:tinyint(1); default:0; comment:菜单状态[1:显示 0:隐藏]"`
 	Status     int    `json:"status" gorm:"type:tinyint(1); default:1; comment:菜单状态[1:正常 0:停用]"`
 	UpdateBy   string `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
 	UpdateTime int    `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
@@ -57,7 +56,8 @@ type PermissionOption struct {
 }
 
 type PermissionQuery struct {
-	PermissionShow
+	Key        string `query:"key"`        // 全局标识[后端路由]
+	Components string `query:"components"` // 前端路由
 	query.PaginationQuery
 }
 
@@ -125,9 +125,14 @@ func (query PermissionQuery) Search() (list *[]PermissionShow, total int64, err 
 	if query.Stime != "" {
 		tx = tx.Where("`created_at` >= ?", query.Stime)
 	}
-
 	if query.Etime != "" {
 		tx = tx.Where("`created_at` < ?", query.Etime)
+	}
+	if query.Key != "" {
+		tx = tx.Where("`key` like ?", "%"+query.Key+"%")
+	}
+	if query.Components != "" {
+		tx = tx.Where("`components` like ?", "%"+query.Components+"%")
 	}
 
 	// Get data

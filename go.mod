@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/chenke1115/go-common v0.1.30
-	github.com/chenke1115/hertz-common v0.1.20
+	github.com/chenke1115/hertz-common v0.1.30
 	github.com/cloudwego/hertz v0.4.0
 	github.com/hertz-contrib/cors v0.0.0-20220601061225-50f4e582beaf
 	github.com/hertz-contrib/jwt v1.0.1
@@ -44,7 +44,6 @@ require (
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
-	github.com/hertz-contrib/logger/zap v0.0.0-20221227100845-46a8693d7847 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -67,9 +66,6 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	go.uber.org/atomic v1.7.0 // indirect
-	go.uber.org/multierr v1.6.0 // indirect
-	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect

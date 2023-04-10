@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 16:11:52
- * @LastEditTime: 2023-01-09 14:55:39
+ * @LastEditTime: 2023-02-01 16:47:27
  * @Description: Do not edit
  */
 package user
@@ -19,7 +19,7 @@ import (
 // CurrentUserHandler godoc
 // @Summary     当前用户信息
 // @Description This is an api to get current user info
-// @Tags        CurrentUser
+// @Tags        User【用户】
 // @Accept      json
 // @Produce     json
 // @Security    authorization

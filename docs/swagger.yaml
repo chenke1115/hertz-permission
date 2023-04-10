@@ -45,9 +45,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -61,20 +63,28 @@ definitions:
       created_at:
         type: string
       creator_id:
+        description: 创建者ID
         type: integer
       id:
+        description: 角色ID
         type: integer
       is_del:
+        description: '[0:正常 1:删除]'
         type: integer
       key:
+        description: 角色标识[跟permission.key区分开]
         type: string
       name:
+        description: 角色名称
         type: string
       remark:
+        description: 备注
         type: string
       status:
+        description: 角色状态[1:正常 0:停用]
         type: integer
       update_by:
+        description: 最后操作人
         type: string
       update_time:
         type: string
@@ -91,9 +101,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -112,9 +124,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -126,41 +140,53 @@ definitions:
   model.APIUser:
     properties:
       account:
+        description: 登录账户
         type: string
       created_at:
         type: string
       customer_id:
+        description: 客户ID
         type: integer
       id:
         type: integer
       name:
+        description: 用户名
         type: string
       status:
+        description: 用户状态
         type: integer
       updated_at:
         type: string
       user_id:
+        description: 用户ID
         type: integer
     type: object
   model.CurrentUser:
     properties:
       account:
+        description: 登陆账户
         type: string
       customer_id:
+        description: 客户ID
         type: integer
       id:
+        description: 用户信息ID
         type: integer
       name:
+        description: 用户名
         type: string
       perkeys:
+        description: 权限标识数组
         items:
           type: string
         type: array
       permissions:
+        description: 权限数组
         items:
           $ref: '#/definitions/model.Permission'
         type: array
       roles:
+        description: 角色数组
         items:
           type: string
         type: array
@@ -253,10 +279,13 @@ definitions:
   model.RoleOption:
     properties:
       id:
+        description: 角色ID
         type: integer
       key:
+        description: 角色标识
         type: string
       name:
+        description: 角色名称
         type: string
     type: object
   model.RoleShow:
@@ -264,22 +293,31 @@ definitions:
       created_at:
         type: string
       creator_id:
+        description: 创建者ID
         type: integer
       id:
+        description: 角色ID
         type: integer
       is_del:
+        description: '[0:正常 1:删除]'
         type: integer
       key:
+        description: 角色标识[跟permission.key区分开]
         type: string
       name:
+        description: 角色名称
         type: string
       remark:
+        description: 备注
         type: string
       status:
+        description: 角色状态[1:正常 0:停用]
         type: integer
       update_by:
+        description: 最后操作人
         type: string
       update_time:
+        description: 修改时间
         type: string
       updated_at:
         type: string
@@ -329,9 +367,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -345,20 +385,28 @@ definitions:
       created_at:
         type: string
       creator_id:
+        description: 创建者ID
         type: integer
       id:
+        description: 角色ID
         type: integer
       is_del:
+        description: '[0:正常 1:删除]'
         type: integer
       key:
+        description: 角色标识[跟permission.key区分开]
         type: string
       name:
+        description: 角色名称
         type: string
       remark:
+        description: 备注
         type: string
       status:
+        description: 角色状态[1:正常 0:停用]
         type: integer
       update_by:
+        description: 最后操作人
         type: string
       update_time:
         type: string
@@ -375,9 +423,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -396,9 +446,11 @@ definitions:
         description: 结束时间 example("2016-01-02 03:04:05")
         type: string
       limit:
+        default: 10
         description: 单页限制 example(10)
         type: integer
       offset:
+        default: 1
         description: 偏移量[页数] example(1)
         type: integer
       stime:
@@ -424,23 +476,17 @@ paths:
   /api/auth/login:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is an api to login
       parameters:
-      - description: 用户名[超管初始账户：admin]
-        in: body
-        maxLength: 32
-        name: username
-        required: true
-        schema:
-          type: string
-      - description: 密码[超管初始密码：Admin123!]
-        in: body
-        maxLength: 32
+      - description: 密码[超管初始密码：Admin123!]【必填】 maxlength(32)
+        in: formData
         name: password
-        required: true
-        schema:
-          type: string
+        type: string
+      - description: 用户名[超管初始账户：admin]【必填】 maxlength(32)
+        in: formData
+        name: username
+        type: string
       produces:
       - application/json
       responses:
@@ -464,7 +510,7 @@ paths:
               type: object
       summary: 登陆
       tags:
-      - Auth.Login
+      - Auth【授权】
   /api/auth/logout:
     post:
       consumes:
@@ -495,7 +541,7 @@ paths:
       - authorization: []
       summary: 退出登陆
       tags:
-      - Auth.Logout
+      - Auth【授权】
   /api/auth/refresh_token:
     post:
       consumes:
@@ -526,7 +572,7 @@ paths:
       - authorization: []
       summary: 刷新TOKEN
       tags:
-      - Auth.RefreshToken
+      - Auth【授权】
   /api/permission/{id}/del:
     delete:
       consumes:
@@ -535,7 +581,7 @@ paths:
       parameters:
       - description: 权限ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -564,98 +610,67 @@ paths:
       - authorization: []
       summary: 删除权限
       tags:
-      - PermissionDel
+      - Permission【权限】
   /api/permission/{id}/edit:
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to edit permission
       parameters:
       - description: 权限ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
-      - description: 父级ID
-        example: 1
-        in: body
-        name: pid
-        required: true
-        schema:
-          type: integer
-      - description: 权限名称
-        example: '"permission.add"'
-        in: body
-        maxLength: 32
-        name: name
-        required: true
-        schema:
-          type: string
-      - description: 别名
-        example: '"添加权限"'
-        in: body
-        maxLength: 32
+      - description: 别名[允许中文，英文，数字，_]【必填】example("添加权限")
+        in: formData
         name: alias
-        required: true
-        schema:
-          type: string
-      - description: 权限类型[D:目录;M:菜单;B:按钮]
-        enum:
-        - '"D"'
-        - '"M"'
-        - '"B"'
-        in: body
-        name: type
-        required: true
-        schema:
-          type: string
-      - description: 权限全局标识[即路由，类型为目录可空]
-        in: body
-        maxLength: 32
-        name: key
-        schema:
-          type: string
-      - description: 前端页面路径[类型为按钮可空]
-        in: body
-        maxLength: 32
+        type: string
+      - description: 前端页面路径[类型为按钮可空]【必填】
+        in: formData
         name: components
-        schema:
-          type: string
+        type: string
+      - description: 图标
+        in: formData
+        name: icon
+        type: string
+      - description: 权限全局标识[即后端路由，类型为目录可空]【必填】
+        in: formData
+        name: key
+        type: string
+      - description: 权限名称[允许英文，数字，.]【必填】example("permission.add")
+        in: formData
+        name: name
+        type: string
+      - default: 0
+        description: 父级ID
+        in: formData
+        name: pid
+        type: integer
+      - description: 备注
+        in: formData
+        name: remark
+        type: string
       - default: 0
         description: 排序[从小到大]
-        in: body
+        in: formData
         name: sort
-        schema:
-          type: integer
-      - description: 图标
-        in: body
-        maxLength: 255
-        name: icon
-        schema:
-          type: string
-      - description: 菜单状态[1:显示;0:隐藏]
-        enum:
-        - 1
-        - 0
-        in: body
-        name: visible
-        schema:
-          type: integer
-      - description: 菜单状态[1:正常 0:停用]
-        enum:
-        - 1
-        - 0
-        in: body
+        type: integer
+      - default: 1
+        description: 菜单状态[1:正常 0:停用]
+        in: formData
         name: status
-        schema:
-          type: integer
-      - description: 备注
-        in: body
-        maxLength: 255
-        name: remark
-        schema:
-          type: string
+        type: integer
+      - description: 权限类型[D:目录;M:菜单;B:按钮]【必填】Enums("D", "M", "B")
+        in: formData
+        name: type
+        type: string
+      - default: 1
+        description: 菜单状态[1:显示;0:隐藏]
+        in: formData
+        name: visible
+        type: integer
       produces:
       - application/json
       responses:
@@ -681,7 +696,7 @@ paths:
       - authorization: []
       summary: 修改权限
       tags:
-      - PermissionEdit
+      - Permission【权限】
   /api/permission/{id}/info:
     get:
       consumes:
@@ -690,7 +705,7 @@ paths:
       parameters:
       - description: 权限ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -704,7 +719,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo'
+                  $ref: '#/definitions/pkg_api_permission.RespInfo'
               type: object
         "400":
           description: Bad Request
@@ -719,93 +734,60 @@ paths:
       - authorization: []
       summary: 权限详情
       tags:
-      - PermissionInfo
+      - Permission【权限】
   /api/permission/add:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to add permission
       parameters:
+      - description: 别名[允许中文，英文，数字，_]【必填】example("添加权限")
+        in: formData
+        name: alias
+        type: string
+      - description: 前端页面路径[类型为按钮可空]【必填】
+        in: formData
+        name: components
+        type: string
+      - description: 图标
+        in: formData
+        name: icon
+        type: string
+      - description: 权限全局标识[即后端路由，类型为目录可空]【必填】
+        in: formData
+        name: key
+        type: string
+      - description: 权限名称[允许英文，数字，.]【必填】example("permission.add")
+        in: formData
+        name: name
+        type: string
       - default: 0
         description: 父级ID
-        in: body
-        maximum: 10
+        in: formData
         name: pid
-        required: true
-        schema:
-          type: integer
-      - description: 权限名称[允许英文，数字，.]
-        example: '"permission.add"'
-        in: body
-        maxLength: 32
-        name: name
-        required: true
-        schema:
-          type: string
-      - description: 别名[允许中文，英文，数字，_]
-        example: '"添加权限"'
-        in: body
-        maxLength: 32
-        name: alias
-        required: true
-        schema:
-          type: string
-      - description: 权限类型[D:目录;M:菜单;B:按钮]
-        enum:
-        - '"D"'
-        - '"M"'
-        - '"B"'
-        in: body
-        name: type
-        required: true
-        schema:
-          type: string
-      - description: 权限全局标识[即后端路由，类型为目录可空]
-        in: body
-        maxLength: 32
-        name: key
-        schema:
-          type: string
-      - description: 前端页面路径[类型为按钮可空]
-        in: body
-        maxLength: 32
-        name: components
-        schema:
-          type: string
+        type: integer
+      - description: 备注
+        in: formData
+        name: remark
+        type: string
       - default: 0
         description: 排序[从小到大]
-        in: body
+        in: formData
         name: sort
-        schema:
-          type: integer
-      - description: 图标
-        in: body
-        maxLength: 255
-        name: icon
-        schema:
-          type: string
-      - description: 菜单状态[1:显示;0:隐藏]
-        enum:
-        - 1
-        - 0
-        in: body
-        name: visible
-        schema:
-          type: integer
-      - description: 菜单状态[1:正常 0:停用]
-        enum:
-        - 1
-        - 0
-        in: body
+        type: integer
+      - default: 1
+        description: 菜单状态[1:正常 0:停用]
+        in: formData
         name: status
-        schema:
-          type: integer
-      - description: 备注
-        in: body
-        maxLength: 255
-        name: remark
-        schema:
-          type: string
+        type: integer
+      - description: 权限类型[D:目录;M:菜单;B:按钮]【必填】Enums("D", "M", "B")
+        in: formData
+        name: type
+        type: string
+      - description: 菜单状态[1:显示;0:隐藏]
+        in: formData
+        name: visible
+        type: integer
       produces:
       - application/json
       responses:
@@ -831,12 +813,39 @@ paths:
       - authorization: []
       summary: 添加权限
       tags:
-      - PermissionAdd
+      - Permission【权限】
   /api/permission/list:
     get:
       consumes:
       - application/json
       description: This is a api of permission list
+      parameters:
+      - description: 前端路由
+        in: query
+        name: components
+        type: string
+      - description: 结束时间 example("2016-01-02 03:04:05")
+        in: query
+        name: etime
+        type: string
+      - description: 全局标识[后端路由]
+        in: query
+        name: key
+        type: string
+      - default: 10
+        description: 单页限制 example(10)
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: 偏移量[页数] example(1)
+        in: query
+        name: offset
+        type: integer
+      - description: 开始时间 example("2016-01-02 03:04:05")
+        in: query
+        name: stime
+        type: string
       produces:
       - application/json
       responses:
@@ -847,7 +856,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespList'
+                  $ref: '#/definitions/pkg_api_permission.RespList'
               type: object
         "400":
           description: Bad Request
@@ -862,7 +871,7 @@ paths:
       - authorization: []
       summary: 权限列表
       tags:
-      - PermissionList
+      - Permission【权限】
   /api/permission/menu:
     get:
       consumes:
@@ -891,9 +900,11 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 上级菜单下拉选项
       tags:
-      - MenuOption
+      - Permission【权限】
   /api/permission/option:
     get:
       consumes:
@@ -922,9 +933,11 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 权限下拉选项
       tags:
-      - PermissionOption
+      - Permission【权限】
   /api/permission/route:
     get:
       consumes:
@@ -957,7 +970,7 @@ paths:
       - authorization: []
       summary: 路由下拉选项[未添加为权限的路由]
       tags:
-      - PermissionRouteOption
+      - Permission【权限】
   /api/role/{id}/bind:
     get:
       consumes:
@@ -966,7 +979,7 @@ paths:
       parameters:
       - description: 角色ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -993,26 +1006,28 @@ paths:
                 data:
                   type: object
               type: object
+      security:
+      - authorization: []
       summary: 绑定权限数组
       tags:
-      - RoleBindPermissionList
+      - Role【角色】
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to binding permission for role
       parameters:
       - description: 角色ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
-      - description: 权限ID数组
-        in: body
+      - description: 权限ID数组【必填】example([1,2,3])
+        in: formData
+        items:
+          type: integer
         name: permission_ids
-        required: true
-        schema:
-          type: array
+        type: array
       produces:
       - application/json
       responses:
@@ -1038,7 +1053,7 @@ paths:
       - authorization: []
       summary: 绑定权限
       tags:
-      - RoleBindingPermission
+      - Role【角色】
   /api/role/{id}/del:
     delete:
       consumes:
@@ -1047,7 +1062,7 @@ paths:
       parameters:
       - description: 角色ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -1076,7 +1091,7 @@ paths:
       - authorization: []
       summary: 删除角色
       tags:
-      - RoleDel
+      - Role【角色】
   /api/role/{id}/edit:
     put:
       consumes:
@@ -1085,38 +1100,26 @@ paths:
       parameters:
       - description: 角色ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
-      - description: 角色名
-        example: “系统管理员”
-        in: body
+      - description: 角色标识【必填】
+        in: formData
+        name: key
+        type: string
+      - description: 角色名【必填】
+        in: formData
         name: name
-        required: true
-        schema:
-          type: string
-      - description: 角色标识
-        example: “SYS_ADMIN”
-        in: body
-        name: Key
-        required: true
-        schema:
-          type: string
-      - description: 角色状态[1:正常;0:停用]
-        enum:
-        - 1
-        - 0
-        in: body
-        name: status
-        schema:
-          type: integer
+        type: string
       - description: 备注
-        in: body
-        maxLength: 255
+        in: formData
         name: remark
-        schema:
-          type: string
+        type: string
+      - description: 角色状态[1:正常;0:停用]
+        in: formData
+        name: status
+        type: integer
       produces:
       - application/json
       responses:
@@ -1142,7 +1145,7 @@ paths:
       - authorization: []
       summary: 编辑角色
       tags:
-      - RoleEdit
+      - Role【角色】
   /api/role/{id}/info:
     get:
       consumes:
@@ -1151,7 +1154,7 @@ paths:
       parameters:
       - description: 角色ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
@@ -1165,7 +1168,7 @@ paths:
             - $ref: '#/definitions/response.BaseResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/pkg_api_role.RespInfo'
+                  $ref: '#/definitions/github.com_chenke1115_hertz-permission_pkg_api_role.RespInfo'
               type: object
         "400":
           description: Bad Request
@@ -1180,41 +1183,29 @@ paths:
       - authorization: []
       summary: 角色详情
       tags:
-      - RoleInfo
+      - Role【角色】
   /api/role/add:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to add role
       parameters:
-      - description: 角色名
-        example: “系统管理员”
-        in: body
+      - description: 角色标识【必填】 example(“SYS_ADMIN”)
+        in: formData
+        name: key
+        type: string
+      - description: 角色名【必填】 example(“系统管理员”)
+        in: formData
         name: name
-        required: true
-        schema:
-          type: string
-      - description: 角色标识
-        example: “SYS_ADMIN”
-        in: body
-        name: Key
-        required: true
-        schema:
-          type: string
-      - description: 角色状态[1:正常;0:停用]
-        enum:
-        - 1
-        - 0
-        in: body
-        name: status
-        schema:
-          type: integer
+        type: string
       - description: 备注
-        in: body
-        maxLength: 255
+        in: formData
         name: remark
-        schema:
-          type: string
+        type: string
+      - description: 角色状态[1:正常;0:停用]
+        in: formData
+        name: status
+        type: integer
       produces:
       - application/json
       responses:
@@ -1240,12 +1231,73 @@ paths:
       - authorization: []
       summary: 添加角色
       tags:
-      - RoleAdd
+      - Role【角色】
   /api/role/list:
     get:
       consumes:
       - application/json
       description: This is a api of role list
+      parameters:
+      - in: query
+        name: created_at
+        type: string
+      - description: 创建者ID
+        in: query
+        name: creator_id
+        type: integer
+      - description: 结束时间 example("2016-01-02 03:04:05")
+        in: query
+        name: etime
+        type: string
+      - description: 角色ID
+        in: query
+        name: id
+        type: integer
+      - description: '[0:正常 1:删除]'
+        in: query
+        name: is_del
+        type: integer
+      - description: 角色标识[跟permission.key区分开]
+        in: query
+        name: key
+        type: string
+      - default: 10
+        description: 单页限制 example(10)
+        in: query
+        name: limit
+        type: integer
+      - description: 角色名称
+        in: query
+        name: name
+        type: string
+      - default: 1
+        description: 偏移量[页数] example(1)
+        in: query
+        name: offset
+        type: integer
+      - description: 备注
+        in: query
+        name: remark
+        type: string
+      - description: 角色状态[1:正常 0:停用]
+        in: query
+        name: status
+        type: integer
+      - description: 开始时间 example("2016-01-02 03:04:05")
+        in: query
+        name: stime
+        type: string
+      - description: 最后操作人
+        in: query
+        name: update_by
+        type: string
+      - description: 最后操作人
+        in: query
+        name: update_time
+        type: integer
+      - in: query
+        name: updated_at
+        type: string
       produces:
       - application/json
       responses:
@@ -1271,7 +1323,7 @@ paths:
       - authorization: []
       summary: 角色列表
       tags:
-      - RoleList
+      - Role【角色】
   /api/role/option:
     get:
       consumes:
@@ -1304,39 +1356,32 @@ paths:
       - authorization: []
       summary: 角色下拉选项
       tags:
-      - RoleOption
+      - Role【角色】
   /api/user/{:id}/edit:
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to edit user
       parameters:
       - description: 用户ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
-      - description: 用户名
-        example: '"长歌"'
-        in: body
-        name: name
-        required: true
-        schema:
-          type: string
-      - description: 登陆账户
-        example: '"changge@ismart.com"'
-        in: body
+      - description: 登陆账户 example("changge@ismart.com")
+        in: formData
         name: account
-        required: true
-        schema:
-          type: string
+        type: string
       - default: 0
         description: 关联客户账户ID
-        in: body
+        in: formData
         name: customer_id
-        schema:
-          type: integer
+        type: integer
+      - description: 用户名 example("长歌")
+        in: formData
+        name: name
+        type: string
       produces:
       - application/json
       responses:
@@ -1362,25 +1407,25 @@ paths:
       - authorization: []
       summary: 编辑用户
       tags:
-      - UserEdit
+      - User【用户】
   /api/user/{id}/assign:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to assign role for user
       parameters:
       - description: 账户ID
         example: 1
-        in: query
+        in: path
         name: id
         required: true
         type: integer
-      - description: 权限ID数组
-        in: body
+      - description: 权限ID数组【必填】
+        in: formData
+        items:
+          type: integer
         name: role_ids
-        required: true
-        schema:
-          type: array
+        type: array
       produces:
       - application/json
       responses:
@@ -1406,40 +1451,31 @@ paths:
       - authorization: []
       summary: 角色分配
       tags:
-      - UserRoleAssign
+      - User【用户】
   /api/user/{user_id}/reset:
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api of reset user password
       parameters:
       - description: 用户列表返回的UserID
         example: 1
-        in: query
+        in: path
         name: user_id
         required: true
         type: integer
-      - description: 旧密码
-        example: '"Admin123!"'
-        in: body
-        name: old_password
-        required: true
-        schema:
-          type: string
-      - description: 新密码
-        example: '"Admin123#"'
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
-      - description: 确认新密码
-        example: '"Admin123#"'
-        in: body
+      - description: 确认新密码【必填】example("Admin123#")
+        in: formData
         name: confirm_password
-        required: true
-        schema:
-          type: string
+        type: string
+      - description: 旧密码【必填】example("Admin123!")
+        in: formData
+        name: old_password
+        type: string
+      - description: 新密码【必填】example("Admin123#")
+        in: formData
+        name: password
+        type: string
       produces:
       - application/json
       responses:
@@ -1465,28 +1501,23 @@ paths:
       - authorization: []
       summary: 用户密码重置
       tags:
-      - UserResetPassword
+      - User【用户】
   /api/user/{user_id}/state:
     put:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api of edit user status
       parameters:
       - description: 用户列表返回的UserID
         example: 1
-        in: query
+        in: path
         name: user_id
         required: true
         type: integer
-      - description: 用户状态[1:启用 0:失效]
-        enum:
-        - 1
-        - 0
-        in: body
+      - description: 用户状态[1:启用 0:失效]【必填】
+        in: formData
         name: status
-        required: true
-        schema:
-          type: integer
+        type: integer
       produces:
       - application/json
       responses:
@@ -1512,33 +1543,26 @@ paths:
       - authorization: []
       summary: 用户状态变更
       tags:
-      - UserStateEdit
+      - User【用户】
   /api/user/add:
     post:
       consumes:
-      - application/json
+      - application/x-www-form-urlencoded
       description: This is a api to add user
       parameters:
-      - description: 用户名
-        example: '"长歌"'
-        in: body
-        name: name
-        required: true
-        schema:
-          type: string
-      - description: 登陆账户
-        example: '"changge@ismart.com"'
-        in: body
+      - description: 登陆账户【必填】example("changge@ismart.com")
+        in: formData
         name: account
-        required: true
-        schema:
-          type: string
+        type: string
       - default: 0
         description: 关联客户账户ID
-        in: body
+        in: formData
         name: customer_id
-        schema:
-          type: integer
+        type: integer
+      - description: 用户名【必填】 example("长歌")
+        in: formData
+        name: name
+        type: string
       produces:
       - application/json
       responses:
@@ -1564,7 +1588,7 @@ paths:
       - authorization: []
       summary: 添加用户
       tags:
-      - UserAdd
+      - User【用户】
   /api/user/current:
     get:
       consumes:
@@ -1595,12 +1619,60 @@ paths:
       - authorization: []
       summary: 当前用户信息
       tags:
-      - CurrentUser
+      - User【用户】
   /api/user/list:
     get:
       consumes:
       - application/json
       description: This is a api for user list
+      parameters:
+      - description: 登录账户
+        in: query
+        name: account
+        type: string
+      - in: query
+        name: created_at
+        type: string
+      - description: 客户ID
+        in: query
+        name: customer_id
+        type: integer
+      - description: 结束时间 example("2016-01-02 03:04:05")
+        in: query
+        name: etime
+        type: string
+      - in: query
+        name: id
+        type: integer
+      - default: 10
+        description: 单页限制 example(10)
+        in: query
+        name: limit
+        type: integer
+      - description: 用户名
+        in: query
+        name: name
+        type: string
+      - default: 1
+        description: 偏移量[页数] example(1)
+        in: query
+        name: offset
+        type: integer
+      - description: 用户状态
+        in: query
+        name: status
+        type: string
+      - description: 开始时间 example("2016-01-02 03:04:05")
+        in: query
+        name: stime
+        type: string
+      - in: query
+        name: updated_at
+        type: string
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: integer
       produces:
       - application/json
       responses:
@@ -1626,7 +1698,7 @@ paths:
       - authorization: []
       summary: 用户列表
       tags:
-      - UserList
+      - User【用户】
 schemes:
 - http
 securityDefinitions:

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:29:31
- * @LastEditTime: 2023-01-09 14:54:56
+ * @LastEditTime: 2023-02-01 16:46:06
  * @Description: Do not edit
  */
 package role
@@ -17,7 +17,7 @@ import (
 // OptionHandler goDoc
 // @Summary     角色下拉选项
 // @Description This is a api of role option
-// @Tags        RoleOption
+// @Tags        Role【角色】
 // @Accept      json
 // @Produce     json
 // @Security    authorization

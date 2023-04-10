@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 15:37:19
- * @LastEditTime: 2022-12-01 09:17:17
+ * @LastEditTime: 2023-04-10 14:37:11
  * @Description: Do not edit
  */
 package model
@@ -16,32 +16,31 @@ import (
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-common/pkg/query"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-
 	"gorm.io/gorm"
 )
 
 type Role struct {
-	ID         int    `json:"id" gorm:"type:int(11); not null; primaryKey; autoIncrement"`
-	Name       string `json:"name" gorm:"type:varchar(64); not null; unique; comment:角色名称"`
-	CreatorID  int    `json:"creator_id" gorm:"type:bigint(20); not null; unsigned; comment:创建者ID"`
-	Key        string `json:"key" gorm:"type:varchar(64); unique; comment:角色标识[跟permission.key区分开]"`
-	Status     int    `json:"status" gorm:"type:tinyint(1); default:1; comment:角色状态[1:正常 0:停用]"`
-	UpdateBy   string `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`
-	UpdateTime int    `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`
-	Remark     string `json:"remark" gorm:"type:varchar(64); comment:备注"`
-	IsDel      int    `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`
+	ID         int    `json:"id" gorm:"type:int(11); not null; primaryKey; autoIncrement"`           // 角色ID
+	Name       string `json:"name" gorm:"type:varchar(64); not null; unique; comment:角色名称"`          // 角色名称
+	CreatorID  int    `json:"creator_id" gorm:"type:bigint(20); not null; unsigned; comment:创建者ID"`  // 创建者ID
+	Key        string `json:"key" gorm:"type:varchar(64); unique; comment:角色标识[跟permission.key区分开]"` // 角色标识[跟permission.key区分开]
+	Status     int    `json:"status" gorm:"type:tinyint(1); default:1; comment:角色状态[1:正常 0:停用]"`     //角色状态[1:正常 0:停用]
+	UpdateBy   string `json:"update_by" gorm:"type:varchar(64); comment:最后操作人"`                      // 最后操作人
+	UpdateTime int    `json:"update_time" gorm:"type:int(12); comment:最后操作时间戳"`                      // 最后操作人
+	Remark     string `json:"remark" gorm:"type:varchar(64); comment:备注"`                            // 备注
+	IsDel      int    `json:"is_del" gorm:"type:tinyint(1); default:0; comment:[0:正常 1:删除]"`         // [0:正常 1:删除]
 	DateModel
 }
 
 type RoleShow struct {
 	Role
-	UpdateTime string `json:"update_time"`
+	UpdateTime string `json:"update_time"` // 修改时间
 }
 
 type RoleOption struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Key  string `json:"key"`
+	ID   int    `json:"id"`   // 角色ID
+	Name string `json:"name"` // 角色名称
+	Key  string `json:"key"`  // 角色标识
 }
 
 type RoleQuery struct {

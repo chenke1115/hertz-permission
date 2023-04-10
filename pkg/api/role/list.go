@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2023-01-09 14:55:00
+ * @LastEditTime: 2023-02-03 10:14:33
  * @Description: Do not edit
  */
 package role
@@ -28,12 +28,13 @@ type RespList struct {
 // ListHandler goDoc
 // @Summary     角色列表
 // @Description This is a api of role list
-// @Tags        RoleList
+// @Tags        Role【角色】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Success     200 {object} response.BaseResponse{data=role.RespList{}}
-// @Failure     400 {object} response.BaseResponse{data=interface{}}
+// @Param       query query    model.RoleQuery false "请求数据"
+// @Success     200   {object} response.BaseResponse{data=RespList{}}
+// @Failure     400   {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/list [get]
 func ListHandler(ctx context.Context, c *app.RequestContext) {
 	var (
@@ -61,17 +62,17 @@ func ListHandler(ctx context.Context, c *app.RequestContext) {
 
 	// Bind query param to resp
 	resp.PaginationQuery = query.PaginationQuery
-
 	resp.Roles, resp.Total, err = query.Search()
 }
 
 // BindListHandler goDoc
 // @Summary     绑定权限数组
 // @Description This is a api of bind permission for role
-// @Tags        RoleBindPermissionList
+// @Tags        Role【角色】
 // @Accept      json
 // @Produce     json
-// @Param       id  query    int true "角色ID" example(1)
+// @Security    authorization
+// @Param       id  path     int true "角色ID" example(1)
 // @Success     200 {object} response.BaseResponse{data=[]int{}}
 // @Failure     400 {object} response.BaseResponse{data=interface{}}
 // @Router      /api/role/{id}/bind [get]

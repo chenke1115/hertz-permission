@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 10:35:51
- * @LastEditTime: 2023-01-09 14:54:39
+ * @LastEditTime: 2023-04-10 14:30:17
  * @Description: Do not edit
  */
 package permission
@@ -15,7 +15,6 @@ import (
 	"github.com/chenke1115/hertz-common/pkg/response"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
 	"github.com/chenke1115/hertz-permission/pkg/model"
-
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -28,12 +27,13 @@ type RespList struct {
 // ListHandler goDoc
 // @Summary     权限列表
 // @Description This is a api of permission list
-// @Tags        PermissionList
+// @Tags        Permission【权限】
 // @Accept      json
 // @Produce     json
 // @Security    authorization
-// @Success     200 {object} response.BaseResponse{data=permission.RespList{}}
-// @Failure     400 {object} response.BaseResponse{data=interface{}}
+// @Param       query query    model.PermissionQuery true "请求数据"
+// @Success     200   {object} response.BaseResponse{data=permission.RespList{}}
+// @Failure     400   {object} response.BaseResponse{data=interface{}}
 // @Router      /api/permission/list [get]
 func ListHandler(ctx context.Context, c *app.RequestContext) {
 	var (
@@ -61,6 +61,5 @@ func ListHandler(ctx context.Context, c *app.RequestContext) {
 
 	// Bind query param to resp
 	resp.PaginationQuery = query.PaginationQuery
-
 	resp.Permissions, resp.Total, err = query.Search()
 }

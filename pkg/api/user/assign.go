@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-01 17:38:22
- * @LastEditTime: 2023-01-09 14:55:31
+ * @LastEditTime: 2023-02-03 11:31:21
  * @Description: Do not edit
  */
 package user
@@ -19,20 +19,20 @@ import (
 )
 
 type ReqAssignData struct {
-	RoleIDs []int `json:"role_ids,required" form:"role_ids,required"` //lint:ignore SA5008 ignoreCheck
+	RoleIDs []int `json:"role_ids,required" form:"role_ids,required"` // 权限ID数组【必填】
 }
 
 // AssignHandler goDoc
 // @Summary     角色分配
 // @Description This is a api to assign role for user
-// @Tags        UserRoleAssign
-// @Accept      json
+// @Tags        User【用户】
+// @Accept      x-www-form-urlencoded
 // @Produce     json
 // @Security    authorization
-// @Param       id       query    int   true "账户ID"   example(1)
-// @Param       role_ids body     array true "权限ID数组" example([1, 3])
-// @Success     200      {object} response.BaseResponse{data=interface{}}
-// @Failure     400      {object} response.BaseResponse{data=interface{}}
+// @Param       id   path     int           true "账户ID" example(1)
+// @Param       data formData ReqAssignData true "请求数据"
+// @Success     200  {object} response.BaseResponse{data=interface{}}
+// @Failure     400  {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/{id}/assign [post]
 func AssignHandler(ctx context.Context, c *app.RequestContext) {
 	var (

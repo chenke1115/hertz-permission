@@ -20,35 +20,27 @@ const docTemplate = `{
             "post": {
                 "description": "This is an api to login",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Auth.Login"
+                    "Auth【授权】"
                 ],
                 "summary": "登陆",
                 "parameters": [
                     {
-                        "maxLength": 32,
-                        "description": "用户名[超管初始账户：admin]",
-                        "name": "username",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "密码[超管初始密码：Admin123!]【必填】 maxlength(32)",
+                        "name": "password",
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 32,
-                        "description": "密码[超管初始密码：Admin123!]",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "用户名[超管初始账户：admin]【必填】 maxlength(32)",
+                        "name": "username",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -106,7 +98,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth.Logout"
+                    "Auth【授权】"
                 ],
                 "summary": "退出登陆",
                 "responses": {
@@ -164,7 +156,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth.RefreshToken"
+                    "Auth【授权】"
                 ],
                 "summary": "刷新TOKEN",
                 "responses": {
@@ -216,131 +208,84 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to add permission",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionAdd"
+                    "Permission【权限】"
                 ],
                 "summary": "添加权限",
                 "parameters": [
                     {
-                        "maximum": 10,
+                        "type": "string",
+                        "description": "别名[允许中文，英文，数字，_]【必填】example(\"添加权限\")",
+                        "name": "alias",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "前端页面路径[类型为按钮可空]【必填】",
+                        "name": "components",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "图标",
+                        "name": "icon",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限全局标识[即后端路由，类型为目录可空]【必填】",
+                        "name": "key",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限名称[允许英文，数字，.]【必填】example(\"permission.add\")",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
                         "default": 0,
                         "description": "父级ID",
                         "name": "pid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 32,
-                        "example": "\"permission.add\"",
-                        "description": "权限名称[允许英文，数字，.]",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "备注",
+                        "name": "remark",
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 32,
-                        "example": "\"添加权限\"",
-                        "description": "别名[允许中文，英文，数字，_]",
-                        "name": "alias",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            "\"D\"",
-                            "\"M\"",
-                            "\"B\""
-                        ],
-                        "description": "权限类型[D:目录;M:菜单;B:按钮]",
-                        "name": "type",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "maxLength": 32,
-                        "description": "权限全局标识[即后端路由，类型为目录可空]",
-                        "name": "key",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "maxLength": 32,
-                        "description": "前端页面路径[类型为按钮可空]",
-                        "name": "components",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
+                        "type": "integer",
                         "default": 0,
                         "description": "排序[从小到大]",
                         "name": "sort",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 255,
-                        "description": "图标",
-                        "name": "icon",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "description": "菜单状态[1:显示;0:隐藏]",
-                        "name": "visible",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
+                        "type": "integer",
+                        "default": 1,
                         "description": "菜单状态[1:正常 0:停用]",
                         "name": "status",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 255,
-                        "description": "备注",
-                        "name": "remark",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "权限类型[D:目录;M:菜单;B:按钮]【必填】Enums(\"D\", \"M\", \"B\")",
+                        "name": "type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "name": "visible",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -398,9 +343,49 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionList"
+                    "Permission【权限】"
                 ],
                 "summary": "权限列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "前端路由",
+                        "name": "components",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "etime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "全局标识[后端路由]",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "单页限制 example(10)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "偏移量[页数] example(1)",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "stime",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -413,7 +398,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespList"
+                                            "$ref": "#/definitions/pkg_api_permission.RespList"
                                         }
                                     }
                                 }
@@ -443,6 +428,11 @@ const docTemplate = `{
         },
         "/api/permission/menu": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of menu option. [选项键值就是上级菜单ID]",
                 "consumes": [
                     "application/json"
@@ -451,7 +441,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "MenuOption"
+                    "Permission【权限】"
                 ],
                 "summary": "上级菜单下拉选项",
                 "responses": {
@@ -499,6 +489,11 @@ const docTemplate = `{
         },
         "/api/permission/option": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of permission option",
                 "consumes": [
                     "application/json"
@@ -507,7 +502,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionOption"
+                    "Permission【权限】"
                 ],
                 "summary": "权限下拉选项",
                 "responses": {
@@ -568,7 +563,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionRouteOption"
+                    "Permission【权限】"
                 ],
                 "summary": "路由下拉选项[未添加为权限的路由]",
                 "responses": {
@@ -629,7 +624,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionDel"
+                    "Permission【权限】"
                 ],
                 "summary": "删除权限",
                 "parameters": [
@@ -638,7 +633,7 @@ const docTemplate = `{
                         "example": 1,
                         "description": "权限ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -691,13 +686,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to edit permission",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionEdit"
+                    "Permission【权限】"
                 ],
                 "summary": "修改权限",
                 "parameters": [
@@ -706,123 +701,78 @@ const docTemplate = `{
                         "example": 1,
                         "description": "权限ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "example": 1,
+                        "type": "string",
+                        "description": "别名[允许中文，英文，数字，_]【必填】example(\"添加权限\")",
+                        "name": "alias",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "前端页面路径[类型为按钮可空]【必填】",
+                        "name": "components",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "图标",
+                        "name": "icon",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限全局标识[即后端路由，类型为目录可空]【必填】",
+                        "name": "key",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限名称[允许英文，数字，.]【必填】example(\"permission.add\")",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
                         "description": "父级ID",
                         "name": "pid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 32,
-                        "example": "\"permission.add\"",
-                        "description": "权限名称",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "备注",
+                        "name": "remark",
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 32,
-                        "example": "\"添加权限\"",
-                        "description": "别名",
-                        "name": "alias",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            "\"D\"",
-                            "\"M\"",
-                            "\"B\""
-                        ],
-                        "description": "权限类型[D:目录;M:菜单;B:按钮]",
-                        "name": "type",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "maxLength": 32,
-                        "description": "权限全局标识[即路由，类型为目录可空]",
-                        "name": "key",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "maxLength": 32,
-                        "description": "前端页面路径[类型为按钮可空]",
-                        "name": "components",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
+                        "type": "integer",
                         "default": 0,
                         "description": "排序[从小到大]",
                         "name": "sort",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 255,
-                        "description": "图标",
-                        "name": "icon",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "description": "菜单状态[1:显示;0:隐藏]",
-                        "name": "visible",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
+                        "type": "integer",
+                        "default": 1,
                         "description": "菜单状态[1:正常 0:停用]",
                         "name": "status",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "maxLength": 255,
-                        "description": "备注",
-                        "name": "remark",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "权限类型[D:目录;M:菜单;B:按钮]【必填】Enums(\"D\", \"M\", \"B\")",
+                        "name": "type",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "菜单状态[1:显示;0:隐藏]",
+                        "name": "visible",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -880,7 +830,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "PermissionInfo"
+                    "Permission【权限】"
                 ],
                 "summary": "权限详情",
                 "parameters": [
@@ -889,7 +839,7 @@ const docTemplate = `{
                         "example": 1,
                         "description": "权限ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -905,7 +855,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo"
+                                            "$ref": "#/definitions/pkg_api_permission.RespInfo"
                                         }
                                     }
                                 }
@@ -942,56 +892,39 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to add role",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "RoleAdd"
+                    "Role【角色】"
                 ],
                 "summary": "添加角色",
                 "parameters": [
                     {
-                        "example": "“系统管理员”",
-                        "description": "角色名",
+                        "type": "string",
+                        "description": "角色标识【必填】 example(“SYS_ADMIN”)",
+                        "name": "key",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名【必填】 example(“系统管理员”)",
                         "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "example": "“SYS_ADMIN”",
-                        "description": "角色标识",
-                        "name": "Key",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "description": "角色状态[1:正常;0:停用]",
-                        "name": "status",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "maxLength": 255,
+                        "type": "string",
                         "description": "备注",
                         "name": "remark",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色状态[1:正常;0:停用]",
+                        "name": "status",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1049,9 +982,101 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleList"
+                    "Role【角色】"
                 ],
                 "summary": "角色列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "创建者ID",
+                        "name": "creator_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "etime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "[0:正常 1:删除]",
+                        "name": "is_del",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色标识[跟permission.key区分开]",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "单页限制 example(10)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "偏移量[页数] example(1)",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "备注",
+                        "name": "remark",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色状态[1:正常 0:停用]",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "stime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "最后操作人",
+                        "name": "update_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "最后操作人",
+                        "name": "update_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1107,7 +1132,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleOption"
+                    "Role【角色】"
                 ],
                 "summary": "角色下拉选项",
                 "responses": {
@@ -1155,6 +1180,11 @@ const docTemplate = `{
         },
         "/api/role/{id}/bind": {
             "get": {
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
                 "description": "This is a api of bind permission for role",
                 "consumes": [
                     "application/json"
@@ -1163,7 +1193,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleBindPermissionList"
+                    "Role【角色】"
                 ],
                 "summary": "绑定权限数组",
                 "parameters": [
@@ -1172,7 +1202,7 @@ const docTemplate = `{
                         "example": 1,
                         "description": "角色ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1226,13 +1256,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to binding permission for role",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "RoleBindingPermission"
+                    "Role【角色】"
                 ],
                 "summary": "绑定权限",
                 "parameters": [
@@ -1241,17 +1271,17 @@ const docTemplate = `{
                         "example": 1,
                         "description": "角色ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "description": "权限ID数组",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "权限ID数组【必填】example([1,2,3])",
                         "name": "permission_ids",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array"
-                        }
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1309,7 +1339,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleDel"
+                    "Role【角色】"
                 ],
                 "summary": "删除角色",
                 "parameters": [
@@ -1318,7 +1348,7 @@ const docTemplate = `{
                         "example": 1,
                         "description": "角色ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1377,7 +1407,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleEdit"
+                    "Role【角色】"
                 ],
                 "summary": "编辑角色",
                 "parameters": [
@@ -1386,49 +1416,32 @@ const docTemplate = `{
                         "example": 1,
                         "description": "角色ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "example": "“系统管理员”",
-                        "description": "角色名",
+                        "type": "string",
+                        "description": "角色标识【必填】",
+                        "name": "key",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名【必填】",
                         "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
                     },
                     {
-                        "example": "“SYS_ADMIN”",
-                        "description": "角色标识",
-                        "name": "Key",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "description": "角色状态[1:正常;0:停用]",
-                        "name": "status",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "maxLength": 255,
+                        "type": "string",
                         "description": "备注",
                         "name": "remark",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色状态[1:正常;0:停用]",
+                        "name": "status",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1486,7 +1499,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "RoleInfo"
+                    "Role【角色】"
                 ],
                 "summary": "角色详情",
                 "parameters": [
@@ -1495,7 +1508,7 @@ const docTemplate = `{
                         "example": 1,
                         "description": "角色ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1511,7 +1524,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/pkg_api_role.RespInfo"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_role.RespInfo"
                                         }
                                     }
                                 }
@@ -1548,44 +1561,34 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to add user",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "UserAdd"
+                    "User【用户】"
                 ],
                 "summary": "添加用户",
                 "parameters": [
                     {
-                        "example": "\"长歌\"",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "example": "\"changge@ismart.com\"",
-                        "description": "登陆账户",
+                        "type": "string",
+                        "description": "登陆账户【必填】example(\"changge@ismart.com\")",
                         "name": "account",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
                     },
                     {
+                        "type": "integer",
                         "default": 0,
                         "description": "关联客户账户ID",
                         "name": "customer_id",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名【必填】 example(\"长歌\")",
+                        "name": "name",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1643,7 +1646,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "CurrentUser"
+                    "User【用户】"
                 ],
                 "summary": "当前用户信息",
                 "responses": {
@@ -1701,9 +1704,82 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserList"
+                    "User【用户】"
                 ],
                 "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录账户",
+                        "name": "account",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "客户ID",
+                        "name": "customer_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "etime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "单页限制 example(10)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "偏移量[页数] example(1)",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户状态",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间 example(\"2016-01-02 03:04:05\")",
+                        "name": "stime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "user_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1753,13 +1829,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to edit user",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "UserEdit"
+                    "User【用户】"
                 ],
                 "summary": "编辑用户",
                 "parameters": [
@@ -1768,37 +1844,27 @@ const docTemplate = `{
                         "example": 1,
                         "description": "用户ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "example": "\"长歌\"",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "example": "\"changge@ismart.com\"",
-                        "description": "登陆账户",
+                        "type": "string",
+                        "description": "登陆账户 example(\"changge@ismart.com\")",
                         "name": "account",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
                     },
                     {
+                        "type": "integer",
                         "default": 0,
                         "description": "关联客户账户ID",
                         "name": "customer_id",
-                        "in": "body",
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名 example(\"长歌\")",
+                        "name": "name",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1850,13 +1916,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api to assign role for user",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "UserRoleAssign"
+                    "User【用户】"
                 ],
                 "summary": "角色分配",
                 "parameters": [
@@ -1865,17 +1931,17 @@ const docTemplate = `{
                         "example": 1,
                         "description": "账户ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "description": "权限ID数组",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "权限ID数组【必填】",
                         "name": "role_ids",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array"
-                        }
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1927,13 +1993,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api of reset user password",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "UserResetPassword"
+                    "User【用户】"
                 ],
                 "summary": "用户密码重置",
                 "parameters": [
@@ -1942,38 +2008,26 @@ const docTemplate = `{
                         "example": 1,
                         "description": "用户列表返回的UserID",
                         "name": "user_id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "example": "\"Admin123!\"",
-                        "description": "旧密码",
-                        "name": "old_password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "example": "\"Admin123#\"",
-                        "description": "新密码",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "example": "\"Admin123#\"",
-                        "description": "确认新密码",
+                        "type": "string",
+                        "description": "确认新密码【必填】example(\"Admin123#\")",
                         "name": "confirm_password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "旧密码【必填】example(\"Admin123!\")",
+                        "name": "old_password",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新密码【必填】example(\"Admin123#\")",
+                        "name": "password",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -2025,13 +2079,13 @@ const docTemplate = `{
                 ],
                 "description": "This is a api of edit user status",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "UserStateEdit"
+                    "User【用户】"
                 ],
                 "summary": "用户状态变更",
                 "parameters": [
@@ -2040,21 +2094,14 @@ const docTemplate = `{
                         "example": 1,
                         "description": "用户列表返回的UserID",
                         "name": "user_id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "enum": [
-                            1,
-                            0
-                        ],
-                        "description": "用户状态[1:启用 0:失效]",
+                        "type": "integer",
+                        "description": "用户状态[1:启用 0:失效]【必填】",
                         "name": "status",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -2167,11 +2214,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",
@@ -2189,27 +2238,35 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "creator_id": {
+                    "description": "创建者ID",
                     "type": "integer"
                 },
                 "id": {
+                    "description": "角色ID",
                     "type": "integer"
                 },
                 "is_del": {
+                    "description": "[0:正常 1:删除]",
                     "type": "integer"
                 },
                 "key": {
+                    "description": "角色标识[跟permission.key区分开]",
                     "type": "string"
                 },
                 "name": {
+                    "description": "角色名称",
                     "type": "string"
                 },
                 "remark": {
+                    "description": "备注",
                     "type": "string"
                 },
                 "status": {
+                    "description": "角色状态[1:正常 0:停用]",
                     "type": "integer"
                 },
                 "update_by": {
+                    "description": "最后操作人",
                     "type": "string"
                 },
                 "update_time": {
@@ -2235,11 +2292,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",
@@ -2265,11 +2324,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",
@@ -2284,27 +2345,32 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "account": {
+                    "description": "登录账户",
                     "type": "string"
                 },
                 "created_at": {
                     "type": "string"
                 },
                 "customer_id": {
+                    "description": "客户ID",
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
+                    "description": "用户名",
                     "type": "string"
                 },
                 "status": {
+                    "description": "用户状态",
                     "type": "integer"
                 },
                 "updated_at": {
                     "type": "string"
                 },
                 "user_id": {
+                    "description": "用户ID",
                     "type": "integer"
                 }
             }
@@ -2313,30 +2379,37 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "account": {
+                    "description": "登陆账户",
                     "type": "string"
                 },
                 "customer_id": {
+                    "description": "客户ID",
                     "type": "integer"
                 },
                 "id": {
+                    "description": "用户信息ID",
                     "type": "integer"
                 },
                 "name": {
+                    "description": "用户名",
                     "type": "string"
                 },
                 "perkeys": {
+                    "description": "权限标识数组",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
                 "permissions": {
+                    "description": "权限数组",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Permission"
                     }
                 },
                 "roles": {
+                    "description": "角色数组",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -2477,12 +2550,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "description": "角色ID",
                     "type": "integer"
                 },
                 "key": {
+                    "description": "角色标识",
                     "type": "string"
                 },
                 "name": {
+                    "description": "角色名称",
                     "type": "string"
                 }
             }
@@ -2494,30 +2570,39 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "creator_id": {
+                    "description": "创建者ID",
                     "type": "integer"
                 },
                 "id": {
+                    "description": "角色ID",
                     "type": "integer"
                 },
                 "is_del": {
+                    "description": "[0:正常 1:删除]",
                     "type": "integer"
                 },
                 "key": {
+                    "description": "角色标识[跟permission.key区分开]",
                     "type": "string"
                 },
                 "name": {
+                    "description": "角色名称",
                     "type": "string"
                 },
                 "remark": {
+                    "description": "备注",
                     "type": "string"
                 },
                 "status": {
+                    "description": "角色状态[1:正常 0:停用]",
                     "type": "integer"
                 },
                 "update_by": {
+                    "description": "最后操作人",
                     "type": "string"
                 },
                 "update_time": {
+                    "description": "修改时间",
                     "type": "string"
                 },
                 "updated_at": {
@@ -2593,11 +2678,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",
@@ -2615,27 +2702,35 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "creator_id": {
+                    "description": "创建者ID",
                     "type": "integer"
                 },
                 "id": {
+                    "description": "角色ID",
                     "type": "integer"
                 },
                 "is_del": {
+                    "description": "[0:正常 1:删除]",
                     "type": "integer"
                 },
                 "key": {
+                    "description": "角色标识[跟permission.key区分开]",
                     "type": "string"
                 },
                 "name": {
+                    "description": "角色名称",
                     "type": "string"
                 },
                 "remark": {
+                    "description": "备注",
                     "type": "string"
                 },
                 "status": {
+                    "description": "角色状态[1:正常 0:停用]",
                     "type": "integer"
                 },
                 "update_by": {
+                    "description": "最后操作人",
                     "type": "string"
                 },
                 "update_time": {
@@ -2661,11 +2756,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",
@@ -2691,11 +2788,13 @@ const docTemplate = `{
                 },
                 "limit": {
                     "description": "单页限制 example(10)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 10
                 },
                 "offset": {
                     "description": "偏移量[页数] example(1)",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "stime": {
                     "description": "开始时间 example(\"2016-01-02 03:04:05\")",

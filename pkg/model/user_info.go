@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-07 16:22:05
- * @LastEditTime: 2022-12-02 09:39:52
+ * @LastEditTime: 2023-04-10 14:37:22
  * @Description: Do not edit
  */
 package model
@@ -19,38 +19,37 @@ import (
 	gErrors "github.com/chenke1115/hertz-common/pkg/errors/gorm"
 	"github.com/chenke1115/hertz-common/pkg/query"
 	"github.com/chenke1115/hertz-permission/internal/constant/status"
-
 	"gorm.io/gorm"
 )
 
 type UserInfo struct {
 	ID         int    `json:"id" gorm:"type:int(11); primaryKey; autoIncrement"`
-	Name       string `json:"name" gorm:"type:varchar(32); not null; comment:用户名"`
-	Account    string `json:"account" gorm:"type:varchar(32); unique; not null; comment:登录账户"`
-	CustomerID int    `json:"customer_id" gorm:"type:int(11); index; not null; comment:客户ID"`
+	Name       string `json:"name" gorm:"type:varchar(32); not null; comment:用户名"`             // 用户名
+	Account    string `json:"account" gorm:"type:varchar(32); unique; not null; comment:登录账户"` // 登录账户
+	CustomerID int    `json:"customer_id" gorm:"type:int(11); index; not null; comment:客户ID"`  // 客户ID
 	DateModel
 }
 
 type APIUser struct {
 	UserInfo
-	UserID int `json:"user_id"`
-	Status int `json:"status"`
+	UserID int `json:"user_id"` // 用户ID
+	Status int `json:"status"`  // 用户状态
 }
 
 type UserQuery struct {
 	APIUser
 	query.PaginationQuery
-	Status string `json:"status" form:"status"`
+	Status string `json:"status" form:"status"` // 用户状态
 }
 
 type CurrentUser struct {
-	ID             int          `json:"id"`
-	Name           string       `json:"name"`
-	Account        string       `json:"account"`
-	CustomerID     int          `json:"customer_id"`
-	Roles          []string     `json:"roles"`
-	Permissions    []Permission `json:"permissions"`
-	PermissionKeys []string     `json:"perkeys"`
+	ID             int          `json:"id"`          // 用户信息ID
+	Name           string       `json:"name"`        // 用户名
+	Account        string       `json:"account"`     // 登陆账户
+	CustomerID     int          `json:"customer_id"` // 客户ID
+	Roles          []string     `json:"roles"`       // 角色数组
+	Permissions    []Permission `json:"permissions"` // 权限数组
+	PermissionKeys []string     `json:"perkeys"`     // 权限标识数组
 }
 
 /**

@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-29 14:36:34
- * @LastEditTime: 2023-01-04 11:50:02
+ * @LastEditTime: 2023-03-17 13:58:27
  * @Description: Do not edit
  */
 package model
@@ -69,9 +69,9 @@ func loadDB() {
 	var dsn string
 	switch driver {
 	case "mysql":
-		format := "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=%s"
+		format := "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 		dsn = fmt.Sprintf(format, database.Username, database.Password, database.Host,
-			database.Port, database.Dbname, "Asia%2fShanghai")
+			database.Port, database.Dbname)
 		dialect = mysql.Open(dsn)
 	case "postgres", "postgresql":
 		format := "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=%s"

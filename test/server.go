@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2023-01-13 17:01:41
+ * @LastEditTime: 2023-04-10 14:38:37
  * @Description: Do not edit
  */
 package test
@@ -17,7 +17,6 @@ import (
 	_ "github.com/chenke1115/hertz-permission/docs"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
 	"github.com/chenke1115/hertz-permission/pkg/route"
-
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/swagger"

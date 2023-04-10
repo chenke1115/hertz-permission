@@ -12,7 +12,6 @@ import (
 	"github.com/chenke1115/hertz-permission/pkg/api/role"
 	"github.com/chenke1115/hertz-permission/pkg/api/user"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
-
 	"github.com/cloudwego/hertz/pkg/route"
 )
 

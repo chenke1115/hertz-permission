@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 11:56:14
- * @LastEditTime: 2023-01-09 14:56:19
+ * @LastEditTime: 2023-04-10 14:26:24
  * @Description: Do not edit
  */
 package auth
@@ -16,7 +16,7 @@ import (
 // RefreshHandler godoc
 // @Summary     刷新TOKEN
 // @Description This is an api to refresh token
-// @Tags        Auth.RefreshToken
+// @Tags        Auth【授权】
 // @Accept      json
 // @Produce     json
 // @Security    authorization

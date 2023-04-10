@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-09 10:14:57
- * @LastEditTime: 2023-01-09 14:55:28
+ * @LastEditTime: 2023-02-03 11:31:18
  * @Description: Do not edit
  */
 package user
@@ -18,23 +18,21 @@ import (
 )
 
 type ReqAddData struct {
-	Name       string `json:"name,required" form:"name,required" vd:"len($)<32"`      //lint:ignore SA5008 ignoreCheck
-	Account    string `json:"account,required" form:"account,required" vd:"email($)"` //lint:ignore SA5008 ignoreCheck
-	CustomerID int    `json:"customer_id" form:"customer_id" default:"0"`
+	Name       string `json:"name,required" form:"name,required" vd:"len($)<32"`      // 用户名【必填】 example("长歌")
+	Account    string `json:"account,required" form:"account,required" vd:"email($)"` // 登陆账户【必填】example("changge@ismart.com")
+	CustomerID int    `json:"customer_id" form:"customer_id" default:"0"`             // 关联客户账户ID
 }
 
 // AddHandler goDoc
 // @Summary     添加用户
 // @Description This is a api to add user
-// @Tags        UserAdd
-// @Accept      json
+// @Tags        User【用户】
+// @Accept      x-www-form-urlencoded
 // @Produce     json
 // @Security    authorization
-// @Param       name        body     string true  "用户名"             example("长歌")
-// @Param       account     body     string true  "登陆账户"            example("changge@ismart.com")
-// @Param       customer_id body     int    false "关联客户账户ID" default(0)
-// @Success     200         {object} response.BaseResponse{data=interface{}}
-// @Failure     400         {object} response.BaseResponse{data=interface{}}
+// @Param       data formData ReqAddData true "请求数据"
+// @Success     200  {object} response.BaseResponse{data=interface{}}
+// @Failure     400  {object} response.BaseResponse{data=interface{}}
 // @Router      /api/user/add [post]
 func AddHandler(ctx context.Context, c *app.RequestContext) {
 	var (
