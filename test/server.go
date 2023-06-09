@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-27 09:53:22
- * @LastEditTime: 2023-04-10 14:38:37
+ * @LastEditTime: 2023-06-09 13:56:24
  * @Description: Do not edit
  */
 package test
@@ -13,6 +13,7 @@ import (
 	"github.com/chenke1115/go-common/configs"
 	"github.com/chenke1115/hertz-common/global"
 	myLog "github.com/chenke1115/hertz-common/pkg/logs/hlog"
+	commonMW "github.com/chenke1115/hertz-common/pkg/middleware"
 	"github.com/chenke1115/hertz-common/pkg/redis"
 	_ "github.com/chenke1115/hertz-permission/docs"
 	"github.com/chenke1115/hertz-permission/pkg/middleware"
@@ -29,9 +30,9 @@ func RegisterRoute(h *server.Hertz) {
 
 	// use middleware
 	h.Use(
-		middleware.Cors(),      // CORS
-		middleware.AccessLog(), // AccessLog
-		middleware.Recovery(),  // Recovery
+		commonMW.Cors(),      // CORS
+		commonMW.AccessLog(), // AccessLog
+		commonMW.Recovery(),  // Recovery
 	)
 
 	// NoRoute

@@ -3,12 +3,10 @@ module github.com/chenke1115/hertz-permission
 go 1.18
 
 require (
-	github.com/chenke1115/go-common v0.1.30
-	github.com/chenke1115/hertz-common v0.1.30
-	github.com/cloudwego/hertz v0.4.0
-	github.com/hertz-contrib/cors v0.0.0-20220601061225-50f4e582beaf
+	github.com/chenke1115/go-common v0.1.50
+	github.com/chenke1115/hertz-common v0.1.40
+	github.com/cloudwego/hertz v0.6.4
 	github.com/hertz-contrib/jwt v1.0.1
-	github.com/hertz-contrib/sessions v1.0.0
 	github.com/hertz-contrib/swagger v0.0.0-20220711030440-b6402d4709f0
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
 	github.com/swaggo/swag v1.8.7
@@ -24,10 +22,10 @@ require (
 	github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff // indirect
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7 // indirect
-	github.com/bytedance/sonic v1.5.0 // indirect
+	github.com/bytedance/sonic v1.8.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06 // indirect
-	github.com/cloudwego/netpoll v0.2.6 // indirect
+	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
+	github.com/cloudwego/netpoll v0.3.2 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
@@ -44,6 +42,8 @@ require (
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
+	github.com/hertz-contrib/cors v0.0.0-20230423034624-2bc83a8400f0 // indirect
+	github.com/hertz-contrib/sessions v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
