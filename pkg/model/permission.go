@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-10-28 11:47:56
- * @LastEditTime: 2023-04-10 14:36:58
+ * @LastEditTime: 2023-07-12 17:05:38
  * @Description: Do not edit
  */
 package model
@@ -330,7 +330,7 @@ func IsValidRoute(key string) bool {
 func GetPermissionKeysByIDs(ids []int) (perKeys []string, err error) {
 	err = GetDB().Model(&Permission{}).
 		Select("key").
-		Where("id in (?) and `key` <> ''", ids).
+		Where("id in (?)", ids).
 		Where("status = 1").
 		Scan(&perKeys).Error
 	return
@@ -343,7 +343,7 @@ func GetPermissionKeysByIDs(ids []int) (perKeys []string, err error) {
  */
 func GetPermissionsByIDs(ids []int) (permissions []Permission, err error) {
 	err = GetDB().Model(&Permission{}).
-		Where("id in (?) and `key` <> ''", ids).
+		Where("id in (?)", ids).
 		Where("status = 1").
 		Scan(&permissions).Error
 	return
