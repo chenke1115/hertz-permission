@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-08-22 10:48:17
- * @LastEditTime: 2023-04-10 14:37:47
+ * @LastEditTime: 2023-07-28 11:42:26
  * @Description: Do not edit
  */
 package middleware
@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -110,6 +111,32 @@ func Jwt() *jwt.HertzJWTMiddleware {
 				"message": message,
 			})
 		},
+		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
+			c.JSON(http.StatusOK, map[string]interface{}{
+				"code":    http.StatusOK,
+				"message": http.StatusText(http.StatusOK),
+				"data": map[string]interface{}{
+					"token":  token,
+					"expire": expire.Format("2006-01-02 15:04:05"),
+				},
+			})
+		},
+		RefreshResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
+			c.JSON(http.StatusOK, map[string]interface{}{
+				"code":    http.StatusOK,
+				"message": http.StatusText(http.StatusOK),
+				"data": map[string]interface{}{
+					"token":  token,
+					"expire": expire.Format("2006-01-02 15:04:05"),
+				},
+			})
+		},
+		LogoutResponse: func(ctx context.Context, c *app.RequestContext, code int) {
+			c.JSON(http.StatusOK, map[string]interface{}{
+				"code":    http.StatusOK,
+				"message": http.StatusText(http.StatusOK),
+			})
+		},
 
 		// TokenLookup is a string in the form of "<source>:<name>" that is used
 		// to extract token from the request.
@@ -135,7 +162,6 @@ func Jwt() *jwt.HertzJWTMiddleware {
 	// When you use jwt.New(), the function is already automatically called for checking,
 	// which means you don't need to call it again.
 	errInit := authMiddleware.MiddlewareInit()
-
 	if errInit != nil {
 		hlog.Fatal("authMiddleware.MiddlewareInit() Error:" + errInit.Error())
 	}

@@ -855,7 +855,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/pkg_api_permission.RespInfo"
+                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_permission.RespInfo"
                                         }
                                     }
                                 }
@@ -1089,7 +1089,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github.com_chenke1115_hertz-permission_pkg_api_role.RespList"
+                                            "$ref": "#/definitions/pkg_api_role.RespList"
                                         }
                                     }
                                 }

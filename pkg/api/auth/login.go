@@ -1,7 +1,7 @@
 /*
  * @Author: changge <changge1519@gmail.com>
  * @Date: 2022-11-11 10:55:15
- * @LastEditTime: 2023-04-10 14:32:24
+ * @LastEditTime: 2023-07-27 18:26:45
  * @Description: Do not edit
  */
 package auth
@@ -42,19 +42,18 @@ func LoginHandler(ctx context.Context, c *app.RequestContext) {
 	// Response
 	defer func() {
 		if err != nil {
-			response.HandleResponse(c, err, nil)
+			response.HandleResponseWithStatus(c, errors.BadRequest, err, nil)
 			return
 		}
-
-		// Jwt
-		middleware.Jwt().LoginHandler(ctx, c)
 	}()
 
 	// BindAndValidate
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		err = errors.Newf(status.UserLoginErrCode)
-		c.Abort()
 		return
 	}
+
+	// Jwt
+	middleware.Jwt().LoginHandler(ctx, c)
 }
